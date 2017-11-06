@@ -1,0 +1,76 @@
+<?php 
+	$url_new = $this->url(array('module'=>'product','controller'=>'index','action'=>'add',));
+	$url_delete = $this->url(array('module'=>'product','controller'=>'index','action'=>'delete-product',));
+	$url_sarch = $this->url(array('module'=>'product','controller'=>'index','action'=>'category',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+	//$cate = $this->cate;
+	//echo $cate->getElement("CategoryId");
+?>
+<div class="view_tb_right">
+<title><?php echo $tr->translate("CURRENT_STOCK");?></title>
+<div class="wrapper">
+    <div style="width:100%; margin:0 auto;">
+		   <table class="margin" width="100%">
+				<tr>
+					<td>
+						<div class="view-table">
+							<form method="post" action="<?php echo $formFilter->getAction(); ?>">
+								<table class="shadow" style="width:100%">
+											<tr>
+											    <td class="select" style="width:20%;"><?php echo $tr->translate("LOCATION_NAME");?></td>
+											    <td class="add-edit"><div class="select_d"><?php echo $formFilter->getElement('LocationId');?></div></td>
+												<td class="select" style="width:20%;"><?php echo $tr->translate("SELECT_CATE");?></td>
+												<td class="add-edit" width="30%"><div class="select_d"><?php echo $formFilter->getElement('category_id');?></div></td>
+												
+											</tr>
+											<tr class="heigh">
+												<td class="select"><?php echo $tr->translate("ITEM_NAME")."/".$tr->translate("ITEM_CODE");?></td>
+												<td class="add-edit"><?php echo $formFilter->getElement('p_name');?></td>
+												<td><?php echo $tr->translate("BRANCH_NAME");?></td>
+												<td class="add-edit"><?php echo $formFilter->getElement('branch_id');?></td>
+											</tr>
+											<tr height="40px">
+												<td><?php echo $tr->translate("STATUS");?></td>
+												<td><?php echo $formFilter->getElement('status');?></td>
+												<td><?php //echo $tr->translate("ITEM_NAME");?></td>
+												<td><?php //echo $formFilter->getElement('status');?></td>
+											</tr>
+											<tr>
+											    <td class="select"></td>
+												<td class="add-edit"><?php echo $formFilter->getElement('customer_id');?></td>
+												<td></td>
+												<td class="btn"><input type="submit" value="<?php echo $tr->translate("REFRESH");?>"/></td>
+											</tr>
+										</table>
+							</form>
+						</div>
+						
+					</td>
+				</tr>
+			<tr>
+				<td>
+					<div class="btn" align="right">
+						<?php 
+							$formList = new Application_Form_Frmlist();
+							echo $formList->showAddBuntton($url_new);
+							//echo $formList->showDeleteBuntton($url_delete);
+						?>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+   <div style="position: relative; clear: both;">
+	  	<div class="">
+			<div class="head_form">
+				<?php echo $tr->translate("CURRENT_STOCK");?>
+			</div>
+			<div class="contain_form">
+				<?php echo $this->list; ?>
+			</div>
+		</div>
+ </div>
+ </div>
+</div><!-- end of wrapper -->
+</div><!-- end of .view_tb_right -->

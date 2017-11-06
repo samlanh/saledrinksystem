@@ -1,0 +1,119 @@
+<?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+  $rpt_product_list=$this->url(array('module'=>'report','controller'=>'product','action'=>'rptproductlist'), null, true);
+  $rpt_current=$this->url(array('module'=>'report','controller'=>'product','action'=>'rptcurrentstock'), null, true);
+  $rpt_current_all=$this->url(array('module'=>'report','controller'=>'product','action'=>'rptallcurrentstock'), null, true);
+  $rpt_ajust=$this->url(array('module'=>'report','controller'=>'product','action'=>'rptadjuststock'), null, true);
+  $rpt_transfer=$this->url(array('module'=>'report','controller'=>'product','action'=>'rpttransfer'), null, true);
+  
+  
+  $user_info = new Application_Model_DbTable_DbGetUserInfo();
+	$result = $user_info->getUserInfo();
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage(); 
+	$session_user=new Zend_Session_Namespace('auth');
+	$request=Zend_Controller_Front::getInstance()->getRequest();
+	 $level = $result["level"];
+  
+  ?>
+<div class="row">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat blue-madison">
+						<a class="more" href="<?php echo $rpt_product_list;?>">
+						<div class="visual">
+							<i class="fa fa-comments"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+							</div>
+							<div class="desc">
+								 Product List Report
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat red-intense">
+						<a class="more" href="<?php echo $rpt_current;?>">
+						<div class="visual">
+							<i class="fa fa-bar-chart-o"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 
+							</div>
+							<div class="desc">
+								 Current Stock
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat red-intense">
+						<a class="more" href="<?php echo $rpt_current_all;?>">
+						<div class="visual">
+							<i class="fa fa-bar-chart-o"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 
+							</div>
+							<div class="desc">
+								 Current Stock All Branch
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<?php if($level==1 OR $level==4 OR $level==9){?>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat green-haze">
+						<a class="more" href="<?php echo $rpt_ajust;?>">
+						<div class="visual">
+							<i class="fa fa-shopping-cart"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+							</div>
+							<div class="desc">
+								 Adjust Stock Report
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<!-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat purple-plum">
+						<a class="more" href="<?php //echo $rpt_transfer;?>">
+						<div class="visual">
+							<i class="fa fa-globe"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 
+							</div>
+							<div class="desc">
+								 Transfer Product Report
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div> -->
+				
+				<?php }?>
+			</div>

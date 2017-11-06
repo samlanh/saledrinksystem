@@ -1,0 +1,97 @@
+<title>List User </title>
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$url_new = $this->url(array(
+		'module'=>'rsvacl',
+		'controller'=>'user',
+		'action'=>'add',
+	));
+	
+	$form=$this->form;
+	$formfilter=$this->formfilter;
+?>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("LIST_OF_USER_IN_SYSTEM");?>
+				</div>
+				<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+								</ul>
+					</div>
+			</div>
+			<div class="portlet-body form frmfilter">
+				<form method="post" action="">
+					<div class="form-group" style="padding-top: 6px;">
+						<label class="control-label col-md-2"></label>
+						<label class="control-label col-md-2"><?php echo $formfilter->getElement('ad_search');?></label>
+						<label class="control-label col-md-2"><?php echo $formfilter->getElement('location');?></label>
+						<label class="control-label col-md-2"><?php echo $formfilter->getElement('user_type_filter');?></label>
+						<label class="control-label col-md-2"><?php echo $formfilter->getElement('status_se');?></label>
+						<label class="control-label col-md-2">
+							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+						</label>
+					</div>			
+				</form> 
+				<div class="contain_form" style="clear: both;">
+					<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+					<div id="divPrint" style="width: 100%;">
+						<style>
+							.style{
+								line-height: 20px;font-size: 9px !important;
+								font-family: 'Khmer OS Battambang';
+							}
+							ul{margin: 0;padding:0;}
+							table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+							th{padding: 5px;}
+							.hover:hover{background: #ccc;}
+						</style>	
+						<table class="table2excel" border="1" &#8203;="" style="border-collapse:collapse;border:1px solid #000; font-size:10px;" width="100%" cellspacing="0">
+		                 <tbody><tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td><?php echo $tr->translate("FULL_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("USER_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("USER_TYPE");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("LOCATION");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("CREATE_DATE");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("MODIFY_DTE");?></td>
+							<td><?php echo $tr->translate("STATUS");?></td>
+		                </tr>
+		                <?php $num=1; 
+			                
+		                if(!empty($this->rs))foreach ($this->rs AS $index => $rs){?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["fullname"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["username"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["user_type"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["branch_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["created_date"]));?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["modified_date"]));?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["status"];?></td>
+						</tr>
+						   <?php 
+							
+                    }?>
+		                </tbody>
+		           </table>
+			    </div>
+		   </div>
+		   </div>
+		   </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,126 @@
+<?php 
+	$url_new = $this->url(array('module'=>'product','controller'=>'index','action'=>'add',));
+	$url_edit = $this->url(array('module'=>'product','controller'=>'index','action'=>'edit',));
+	$url_delete = $this->url(array('module'=>'product','controller'=>'index','action'=>'delete',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+	
+	$rs = $this->product;
+?>
+<title><?php echo $tr->translate("PRODUCT_LIST");?></title>
+
+	<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("PRODUCT_LIST");?>
+			</div>
+			
+			<div class="caption pull-right">
+				<a href="<?php echo $url_new;?>"><button id="sample_editable_1_new" class="btn green">Add New <i class="fa fa-plus"></i></button></a>
+			</div>
+			<div class="caption" style="float:right">
+					<?php $formList = new Application_Form_Frmlist(); //echo $formList->showAddBuntton($url_new);?>
+			</div>
+		</div>
+		<div class="portlet-body form">
+			<form class="form-horizontal" method="post" action="" >
+				<div class="form-body">
+							<div class="form-group">
+								<!--  <label class="col-md-1 control-label"><?php //echo $tr->translate("ADVANCE_SEARCH");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('ad_search');?>
+								</div>
+								<!--<label class="col-md-1 control-label"><?php echo $tr->translate("BRANCH");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('branch');?>
+								</div>
+								<!--<label class="col-md-1 control-label"><?php echo $tr->translate("BRAND");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('brand');?>
+								</div>
+								<!--<label class="col-md-1 control-label"><?php echo $tr->translate("CATEGORY");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('category');?>
+								</div>
+							</div>
+							<div class="form-group">
+								<!--<label class="col-md-1 control-label"><?php echo $tr->translate("MODEL");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('model');?>
+								</div>
+								<!--<label class="col-md-1 control-label"><?php echo $tr->translate("SIZE");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('size');?>
+								</div>
+								<!--<label class="col-md-1 control-label"><?php echo $tr->translate("COLOR");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('color');?>
+								</div>
+								<!--<label class="col-md-1 control-label"><?php echo $tr->translate("STATUS");?></label>-->
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('status');?>
+								</div>
+							</div>		
+							
+						<div class="form-group">
+						<label class="control-label col-md-3 pull-right">
+							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+						</label>
+					</div>
+				</div>
+			</form>
+			
+		</div>
+		
+		<!-- Result List -->
+					<!-- BEGIN EXAMPLE TABLE PORTLET-->
+						<div class="portlet-body">
+							<table class="table table-striped table-bordered table-hover" id="sample_2" style="font-size:11px">
+							<thead style="font-size:11px">
+								<tr>
+									<th><?php echo $tr->translate("NO");?></th>
+									<th><?php echo $tr->translate("BRANCH");?></th> 
+									<th><?php echo $tr->translate("ITEM_CODE");?></th>
+									<th><?php echo $tr->translate("ITEM_NAME");?></th>
+									<th><?php echo $tr->translate("CATEGORY");?></th>
+									<!--<th><?php echo $tr->translate("SERIAL_NO");?></th>
+									<th><?php echo $tr->translate("BARCODE");?></th>
+									<th><?php echo $tr->translate("BRAND");?></th>
+									<th><?php echo $tr->translate("MODEL");?></th>
+									<th><?php echo $tr->translate("MEASURE");?></th>-->
+									<th><?php echo $tr->translate("QTY");?></th>
+									<th><?php echo $tr->translate("QTY_WARNING");?></th>
+									<!--<th><?php echo $tr->translate("STATUS");?></th>-->
+									<th><?php echo $tr->translate("ACTION");?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php if(!empty($rs)){ foreach ($rs as $key => $row){?>
+								<tr class="odd gradeX">
+									<td><?php echo $key+1;?></td>
+									<td class="center"><?php echo $row["branch"]?></td>
+									<td><?php echo $row["item_code"]?></td>
+									<td><?php echo $row["item_name"]?></td>
+									<td class="center"><?php echo $row["cat"]?></td>
+									<!--<td><?php echo $row["serial_number"]?> </td>
+									<td><?php echo $row["brand"]?></td>
+									<td><?php echo $row["barcode"]?></td>
+									<td class="center"><?php echo $row["model"]?></td>
+									<td class="center"><?php echo $row["measure"]?></td>-->
+									<td class="center"><?php echo $row["qty"]?></td>
+									<td class="center"><?php echo $row["qty_warning"]?></td>
+									<!--<td class="center"> 
+										<?php echo $row["status"];?>
+									</td>-->
+									<td>
+										<a href="<?php echo $url_edit;?>/id/<?php echo $row["id"]?>"><?php echo $tr->translate("EDIT");?></a>
+									</td>
+								</tr>
+								<?php }}?>
+							</tbody>
+							</table>
+						</div>
+					<!-- END EXAMPLE TABLE PORTLET-->
+			<!-- End Result list -->
+
+</div>

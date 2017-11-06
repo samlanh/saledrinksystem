@@ -1,0 +1,395 @@
+<?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$url_save=$this->url(array("module"=>"sales","controller"=>"saleagent","action"=>"add"));
+$changepassword = $this->url(array("module"=>"rsvacl","controller"=>"user","action"=>"changepassword"));
+$frm_agent = $this->form_agent;
+?>
+<title><?php echo $tr->translate("MENU_SALES_SALE_AGENT_ADD_SALE_AGENT");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("MENU_SALES_SALE_AGENT_ADD_SALE_AGENT");?>
+				</div>
+				<div class="tools">
+					<label>
+						<a href="<?php echo $this->baseUrl();?>/sales/saleagent"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+					</label>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="form_sample" action="" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					<h3 class="form-section"><?php echo $tr->translate("MENU_SALES_SALE_AGENT_ADD_SALE_AGENT_INFO");?></h3>
+						<div class="form-group">
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("LOCATION_NAME");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("branch_id");?>
+								</div>
+							</div>
+						<label class="control-label col-md-2"><?php echo $tr->translate("AGENT_CODE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("code");?>
+								</div>
+							</div>
+					</div>
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("AGENT_NAME");?> <span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("name");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("CON_NUM");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("phone");?>
+								</div>
+							</div>
+						</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-2"><?php echo $tr->translate("POB");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("pob");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("DOB");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement('dob'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("CURRENT_ADD");?><span class="required"></span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i><?php echo $frm_agent->getElement("address");?>
+								</div>
+							</div>
+						<label class="control-label col-md-2"><?php echo $tr->translate("EMAIL_ADD");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("email");?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("POSITION");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("job_title");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("DESC");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("description");?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php //echo $tr->translate("POSITION");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php //echo $frm_agent->getElement("job_title");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("STATUS");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("status");?>
+								</div>
+							</div>
+					</div>
+					<h3 class="form-section"><?php echo $tr->translate("USER_INFO");?></h3>
+					<div class="form-group">
+						<label class="control-label col-md-2"><?php echo $tr->translate("USER_NAME");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("user_name");?>
+									<?php echo $frm_agent->getElement("user_id");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("PASSWORD");?><span class="required"></span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement('password'); ?>
+									<a target="_blank" href="<?php echo $changepassword?>/id/<?php echo $this->user_id;?>">Change Password</a>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("USER_TYPE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("user_type");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("MANAGED_BY");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("manage_by");?>
+								</div>
+							</div>
+					
+					</div>
+					<h3 class="form-section"><?php echo $tr->translate("USER_DOCUMENT_INFO");?></h3>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("BACN_ACCOUNT");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("bank_acc");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("START_WORKING_DATE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("start_working_date");?>
+								</div>
+							</div>
+					</div>
+					
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("REFER_NAME");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("refer_name");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("REFER_PHONE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("refer_phone");?>
+								</div>
+							</div>
+					</div>
+					
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("REFER_ADDRESS");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-10">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("refer_address");?>
+								</div>
+							</div>
+							
+					</div>
+					
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("PHOTO");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("photo");?>
+									<?php echo $frm_agent->getElement("old_photo");?>
+									<?php if(!empty($this->row["photo"])){?>
+										<img alt="" src="<?php echo $this->baseUrl();?>/images/stuffdocument/<?php echo $this->row["photo"];?>" style="width:30%">
+									<?php }?>
+								</div>	
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("DOCUMENT");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("document");?>
+									<?php echo $frm_agent->getElement("old_document");?>
+									<?php if(!empty($this->row["document"])){?>
+										<img alt="" src="<?php echo $this->baseUrl();?>/images/stuffdocument/<?php echo $this->row["document"];?>" style="width:30%">
+									<?php }?>
+								</div>
+							</div>
+							
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("SIGNATURE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("signature");?>
+									<?php echo $frm_agent->getElement("old_signature");?>
+									<?php if(!empty($this->row["signature"])){?>
+										<img alt="" src="<?php echo $this->baseUrl();?>/images/stuffdocument/<?php echo $this->row["signature"];?>" style="width:30%">
+									<?php }?>
+								</div>
+							</div>
+							
+							
+					</div>
+							
+					<div class="form-group">
+						<label  class="col-md-12 col-md-offset-4 col-md-8">
+							<a href="<?php echo $this->baseUrl();?>/sales/saleagent"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+							<button type="submit" name="saveclose" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i> <?php echo $tr->translate("SAVE_CLOSE")?></button>
+							<button type="submit" name="btnsavenew" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+							
+						</label>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end new Location -->
+<div id="overlay-location" class="web_dialog_overlay"></div>
+		<?php $form_stock = $this->form_addstock; ?>
+		<div id="dialog-location" class="web_dialog" style="display:  none;">
+		<form id="frm-location">
+			<div class="web_dialog_title" align="center"><?php echo $tr->translate("ADD_NEW_LOCATION");?>
+				<a href="#" id="btnCloseLocation" class="cancelDailog"></a>
+			</div>
+			<table style="width: 100%; margin:0 auto;" cellpadding="3" cellspacing="0">
+				
+				<tr>
+					<td><?php echo $tr->translate("LOCATION_NAME");?></td>
+					<td><?php echo $form_stock->getElement("StockName");?></td>
+					<td><?php echo $tr->translate("CON_NAME");?></td>
+					<td><?php echo $form_stock->getElement("ContactName");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("CON_NUM");?></td>
+					<td><?php echo $form_stock->getElement("ContactNumber");?></td>
+					<td><?php echo $tr->translate("STOCK_ADD");?></td>
+					<td><?php echo $form_stock->getElement("location_add");?></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td><?php echo $tr->translate("DESC");?></td>
+					<td><?php echo $form_stock->getElement("description");?></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input id="btn_add" Onclick="addNewLocation()" type="button" value="<?php echo $tr->translate("ADD_NEW");?>" />
+						<input id="btncancel_location" class="cancelDailog" type="button" value="<?php echo $tr->translate("CANCEL");?>" />
+					</td>
+					<td colspan="2"></td>
+				</tr>
+	       </table>
+	     </form>
+ </div>
+<script>
+
+function AddLocation(){
+	var location_id= $("#main_stock_id").val();
+	if(location_id==-1){
+		     AddNewLocation(true);
+			 e.preventDefault();
+	  }	
+}
+<?php $url_add_location =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new-location')); ?>
+function addNewLocation(){
+	var location_name = $("#StockName").val();
+	var ContactName   = $("#ContactName").val();
+	var ContactNumber = $("#ContactNumber").val();
+	var location_add  = $("#location_add").val();
+	var remark_add    = $("#description").val();
+	validate_text('#StockName');
+	$.ajax({
+        url: "<?php echo $url_add_location;?>",
+        type: "post",
+        data: {'location_name':location_name,'ContactName':ContactName,'ContactNumber':ContactNumber,'location_add':location_add,'remark_add':remark_add},
+        success: function(data){
+           val = $.parseJSON(data);
+           $('#main_stock_id').append($("<option></option>").attr("value",data).attr("selected",true).text(location_name)); 
+           $('#main_stock_id').next().val(location_name);
+           document.getElementById("frm-location").reset();
+            HideDialoglocation();
+        },
+        error:function(){
+            alert("faile insert");
+            $("#result").html('There is error while submit');
+        }
+    });
+ 
+}
+<?php $url_code =  $this->url(array('module'=>'sales','controller'=>'sale-agent','action'=>'get-sale-agent-code')); ?>
+function getSaleCode(){
+				id=$("#branch_id").val();
+				$.ajax({
+						url:"<?php echo $url_code;?>",
+						type:"post",
+						data:{'id':id},
+						success: function(data){
+							value = $.parseJSON(data);
+								//$("#code").val(value);
+						},
+						error:function(e){
+							alert(e);
+						}
+					});
+}
+</script>

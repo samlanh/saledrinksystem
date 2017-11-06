@@ -1,0 +1,186 @@
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$url_submit = $this->url(array('module'=>'salse','controller'=>'return','action'=>'item-tocustomer',));
+	$url_cancel = $this->url(array('module'=>'sales','controller'=>'return','action'=>'return-out'));
+	$frm_order = $this->form_return;
+	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+?>
+<div class="right" style="width:98%;">
+			<form id="orderFrm" action"<?php echo $url_submit;?>" method="post">
+				<div class="contorl-cus">
+			        <?php  $frmctrol=$this->control ;?>
+			        <a href="<?php echo BASE_URL?>/sales/return/item-tocustomer" class="new"><?php echo $tr->translate("NEW");?></a>
+			        <?php echo $frmctrol->getElement('Save');?>
+			        <?php echo $frmctrol->getElement('SaveNew');?>
+			        <a href="<?php echo $url_cancel ?>" class="cancel"><?php echo $tr->translate("CANCEL");?></a>
+			    	<input onclick="closeMe()" type="button" name='btn_close' value="Close" class="close" />
+			    </div>
+			    <div class="" style="padding:20px;">
+			    <div class="view-table">
+				    <div class="head_form">
+						<?php echo $tr->translate("Return Info");?>
+					</div>
+					<div class="contain_form shadow">
+						<table>
+							<tr class="height">
+								<td><?php echo $tr->translate("REFERENCE");?></td>
+								<td width="30%"><?php echo $frm_order->getElement("return_id");?></td>
+								<td class="oinput"><?php echo ($tr->translate("RETURN_OUT_NUM"));?></td>
+								<td width="30%"><?php echo $frm_order->getElement("invoice_no");?></td>
+							</tr>
+							<tr class="height">
+								<td><?php echo $tr->translate("LOCATION_NAME");?></td>
+								<td><?php echo $frm_order->getElement("LocationId");?></td>
+								<td><?php echo $tr->translate("RETURN_DATE");?></td>
+								<td><?php echo $frm_order->getElement("return_date");?></td>
+							</tr>
+							
+						</table>
+					</div>
+				</div>
+				<br />
+			    <div class="head_form">
+					<?php echo $tr->translate("RETURN_ITEM");?>
+				</div>
+				<div class="contain_form">
+						<table>
+							<tr>
+								<td valign="top" colspan="2">
+						   		<div class="view-table">
+									<table class="collape" id="table_order">
+										<tr class="row-table1" height="33px">
+											<td class="sub-tdheader"><?php echo $tr->translate("NUM");?></td>
+											<td class="sub-tdheader" width="100px"><?php echo $tr->translate("ITEM_NAME_CAP");?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("QTY_RETURN"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("PRICE"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("SUB_TOTAL"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("REMARK"));?></td>
+										</tr>
+									</table>
+									</div>
+									<input type="hidden" id="identity" name="identity" />
+									<table>
+										<tr>
+											<td class="new-row">
+												<div class="btn">
+													<button class="positive" type="button" id="new_item"  name= "new_followup" value="New">
+														&nbsp;<img src="<?php echo BASE_URL?>/images/icon/new-row.png" alt=""/><?php echo $tr->translate("ADD");?>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+						<div class="view-table">
+						<table style="width:95%; margin:0 auto;">
+						     <tr class="height">
+						     		<td><?php echo $tr->translate("REMARK");?></td>
+						            <td width="30%"><div class="select_d"><?php ?></div></td>
+							        <td><?php echo $tr->translate("All Subtotal");?></td>
+							        <td width="30%"><?php echo $frm_order->getElement("all_total");?></td>
+						     </tr>
+						     <tr class="height">
+						            <td colspan="2" rowspan="2"><?php echo $frm_order->getelement("remark_return");?></td>
+						             <td><?php //echo $tr->translate("PAID");?></td>
+						             <td><?php //echo $frm_order->getElement("paid");?></td>
+						      </tr>
+						       <tr class="height">
+									  <td><?php // echo $tr->translate("BALANCE");?></td>
+						              <td><?php //echo $frm_order->getElement("balance");?></td>
+						       </tr>
+					 </table>
+					 </div>
+					</div>
+				</div>	
+			</form>
+</div>
+<script>
+<?php $url_getcurrentitem = $this->url(array('module'=>'product','controller'=>'AdjustStock','action'=>'get-current-quantity'));?>
+var index5 = 0;
+var option5 = '<?php echo $this->productOption; ?>';
+var locationOption = '<?php echo $this->locationOption; ?>';
+var value_item = '',value_loca = '';
+
+
+//var baseUrl = '<?php echo BASE_URL; ?>';
+var template = '';
+// add order record
+function addRow() {
+	index5++; var first = index5;
+	template='<tr id="row_order_'+index5+'" style="height:33px;">';
+	var inp = '';
+	if(index5 == 1) {
+		template+='<td class="quater-input">&nbsp;</td>';
+	} else {
+		template+='<td class="quater-input"><img onClick="deleteRecord('+index5+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+		//inp = '<input type="text" style="position: relative;margin-top: -15px; top:-15px; width: 211px;" onchange="AddLocation('+index5+')" class="validate[required] ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" value="">';
+	}
+	template+='<td class="quater-input" width="30%"><select class="validate[required]" Onchange="ShowPopupProduct('+ index5 + ')" id="item_id_'+index5+'" name="item_id_'+index5+'" >'+option5+'</select>'+inp+'</td>'; 
+	template+='<td class="quater-input"><input type="text" style="width:88%;" onBlur="calculatePrice('+index5+')" class="validate[required,custom[number]] input" id="qty_return_'+index5+'" name="qty_return_'+index5+'" /></td>';
+	template+='<td class="quater-input"><input type="text" class="input" id="price_'+index5+'" style="width:88%;" onBlur="calculatePrice('+index5+')" name="price_'+index5+'" /></td>';
+	template+='<td class="quater-input"><input readonly="readonly" type="text" style="width:88%;" class="validate[required,custom[number]] input" id="sub_total_'+index5+'" name="sub_total_'+index5+'" /></td>';
+	template+='<td class="quater-input"><input type="text" class="input" id="remark_'+index5+'" name="remark_'+index5+'" style="width:90%;" /></td>';
+	
+	template+="</tr>";
+	$('#table_order').append(template);
+	if($('#identity').val()!="") {
+		var identity = $('#identity').val();
+		$('#identity').val(identity+','+index5);
+	} else {$('#identity').val(index5);}
+	$("#orderFrm").validationEngine();
+	$("#item_id_"+index5).chosen();
+	$("#LocationId_"+index5).chosen();
+}
+
+//add default row or record when click
+$('#new_item').click(addRow);
+//add default row or record when ready
+jQuery(document).ready(function(){
+	addRow();
+});
+function deleteRecord(index) {
+	var identity = $('#identity').val();
+	var arrays = identity.split(',');
+	for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+	}
+	var strings = arrays.join(',');
+	$('#identity').val(strings);
+	$("#row_order_"+index).remove();	
+}
+function netTotal() {
+	// total for all record(total part)
+	var netTotal=0;
+	var rowId = $('#identity').val();
+	var rowIDArray = rowId.split(',');
+	for(var n = 0; n < rowIDArray.length; n++) {
+		netTotal += Number($('#sub_total_'+rowIDArray[n]).val());
+	}
+	$('#all_total').val(netTotal);
+	var balance = netTotal-$('#paid').val();
+	$('#balance').val(balance);
+}
+
+function doRemain(){
+	// total for all record(total part)
+	var total = $('#all_total').val();
+	var paid = $('#paid').val();
+	var remain = total-paid;
+	$('#balance').val(remain);
+}
+// Calculate price of order
+function calculatePrice(index) {
+	// total price
+	var price = $('#price_'+index).val();
+	var qty = $('#qty_return_'+index).val();
+	var total = price * qty;
+	$('#sub_total_'+index).val(total);
+	// total price
+	netTotal();
+	//doTotal();
+}
+
+
+</script>

@@ -1,0 +1,79 @@
+<?php 
+	$url_new = $this->url(array('module'=>'product','controller'=>'index','action'=>'add',));
+	$url_edit = $this->url(array('module'=>'product','controller'=>'index','action'=>'edit',));
+	$url_delete = $this->url(array('module'=>'product','controller'=>'index','action'=>'delete',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+	$rs = $this->product;
+?>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("PRODUCT_LIST");?>
+				</div>
+				<a href="<?php echo $url_new;?>" class="btn btn-bg blue  pull-right">
+					<i class="fa fa-plus"></i>&nbsp;<?php echo $tr->translate("ADD_NEW");?>
+				</a>
+			</div>
+			<div class="portlet-body form frmfilter">
+				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
+					<div class="form-group">
+							<label class="control-label col-md-3">
+								<?php echo $formFilter->getElement('ad_search');?>
+							</label>
+							<label class="control-label col-md-3">
+								<?php echo $formFilter->getElement('branch');?>
+							</label>
+							<label class="control-label col-md-3">
+								<?php echo $formFilter->getElement('brand');?>
+							</label>
+							<label class="control-label col-md-3">
+								<?php echo $formFilter->getElement('category');?>
+							</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3">
+								<?php echo $formFilter->getElement('model');?>
+							</label>
+							<label class="control-label col-md-3">
+								<?php echo $formFilter->getElement('color');?>
+							</label>
+							<label class="control-label col-md-3">
+								<?php echo $formFilter->getElement('status');?>
+							</label>
+							<label class="control-label col-md-3">
+								<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+							</label>
+						</div>				
+				</form> 
+				<div class="contain_form" style="clear: both;">
+						<?php echo $this->list; ?>
+			    </div>
+		   </div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

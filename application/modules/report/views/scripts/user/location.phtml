@@ -1,0 +1,103 @@
+<?php 
+	$url_new = $this->url(array('module'=>'product','controller'=>'branch','action'=>'add',));
+	$url_edit = $this->url(array('module'=>'product','controller'=>'branch','action'=>'edit',));
+	$url_delete = $this->url(array('module'=>'product','controller'=>'branch','action'=>'delete',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+	
+	$rs = $this->resulr;
+?>
+<title><?php echo $tr->translate("LOCATION_LIST");?></title>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("SALE_AGENT_LIST");?>
+				</div>
+				<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+									
+								</ul>
+					</div>
+			</div>
+			<div class="portlet-body form">
+				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 6px;">
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('branch_name');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('status');?></label>
+						<label class="control-label col-md-2">
+							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+						</label>
+					</div>	
+				</form> 
+					<div class="contain_form" style="clear: both;">
+						<?php //echo $this->list; ?>
+						<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+					<div id="divPrint" style="width: 100%;">
+						<style>
+							.style{
+								line-height: 20px;font-size: 9px !important;
+								font-family: 'Khmer OS Battambang';
+							}
+							ul{margin: 0;padding:0;}
+							table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+							th{padding: 5px;}
+							.hover:hover{background: #ccc;}
+						</style>	
+						<table class="table2excel" border="1" &#8203;="" style="border-collapse:collapse;border:1px solid #000; font-size:10px;" width="100%" cellspacing="0">
+		                 <tbody>
+						 <tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    
+							<th><?php echo $tr->translate("NO");?></th>
+									<th><?php echo $tr->translate("BRANCH_NAME");?></th>
+									<th><?php echo $tr->translate("CODE");?></th>
+									<th><?php echo $tr->translate("PREFIX");?></th>
+									<th><?php echo $tr->translate("CONTACT_NAME");?></th>
+									<th><?php echo $tr->translate("PHONE");?></th>
+									<th><?php echo $tr->translate("EMAIL");?></th>
+									<th><?php echo $tr->translate("OFFICE_PHONE");?></th>
+									<th><?php echo $tr->translate("ADDRESS");?></th>
+									<th><?php echo $tr->translate("STATUS");?></th>
+						</tr>
+		                <?php if(!empty($rs)){ foreach ($rs as $key => $row){ ?>
+						<tr class='row-format hover' style="border:1px solid #000;">
+						   <td><?php echo $key+1;?></td>
+									<td><?php echo $row["name"]?></td>
+									<td><?php echo $row["branch_code"]?></td>
+									<td><?php echo $row["prefix"]?></td>
+									<td><?php echo $row["contact"]?></td>
+									<td><?php echo $row["phone"]?></td>
+									<td><a href="mailto:shuxer@gmail.com"><?php echo $row["email"]?> </a></td>
+									<td><?php echo $row["office_tel"]?></td>
+									<td class="center"><?php echo $row["address"]?></td>
+									<td>
+										<?php if($row["status"] == 1){?>
+										<span class="label label-sm label-success"><?php echo $tr->translate("ACTIVE");?> </span>
+										<?php }else{?>
+										<span class="label label-sm label-danger"><?php echo $tr->translate("DEACTIVE");?> </span>
+										<?php }?>
+									</td>
+						</tr>
+						<?php }}?>
+		                </tbody>
+		           </table>
+			    </div>
+		   </div>
+					</div>
+		   </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,338 @@
+<?php 
+defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$form=$this->form;
+
+
+	$url_submit =  $this->url(array('module'=>'product','controller'=>'index','action'=>'edit'));
+    $url_cencel =  $this->url(array('module'=>'product','controller'=>'index','action'=>'index'));
+    $url_check =  $this->url(array('module'=>'product','controller'=>'index','action'=>'check'));
+    $url_new = $this->url(array('module'=>'product','controller'=>'index','action'=>'add'));
+?>						 
+<title><?php echo $tr->translate("EDIT_PRODUCT");?></title>
+<body>
+
+		<form class="form-horizontal" method="post" action="<?php echo $url_submit;?>" >				
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-gift"></i><?php echo $tr->translate("EDIT_PRODUCT");?>
+							</div>
+							<div class="tools">
+									<label><a href="<?php echo $url_cencel;?>"><button type="button" name="calcel" class="btn red"><i class="fa fa-times"></i><?php echo $tr->translate("GO_BACK");?></button></a></label>
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="tabbable-custom ">
+								<ul class="nav nav-tabs ">
+									<li class="active">
+										<a href="#tab_5_1" data-toggle="tab">
+										<?php echo $tr->translate("PRODUCT_INFO");?> </a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab_5_1">
+									<!--<div class="portlet box blue">
+								<div class="portlet-title">
+									<div class="caption">
+											<i class="fa fa-globe"></i><?php echo $tr->translate("PRODUCT_INFO");?>
+									</div>
+									
+								</div>-->
+								<div class="portlet-body form">
+									 
+										<div class="form-body">
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("PRODUCT_NAME");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('name');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("PRODUCT_CODE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('pro_code');?>
+														</div>	
+													</div>
+														
+													<div class="form-group">
+														
+																		
+														<label class="col-md-2 control-label"><?php echo $tr->translate("BARCODE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('barcode');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("SERIAL_NAME");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('serial');?>
+														</div>
+													</div>
+																
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("BRAND_NAME");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('brand');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("MODEL");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('model');?>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("CATEGORY");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('category');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("SIZE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('size');?>
+														</div>
+														
+													</div>
+													
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("COLOR");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('color');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("NOTE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('description');?>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("MEASURE");?></label>
+														<div class="col-md-2">
+															<?php echo $form->getElement('measure');?>
+														</div>
+														
+														<div class="col-md-2">
+															<?php echo $form->getElement('unit');?>
+														</div>
+														<label class="col-md-1 control-label" id="lb_measure" style="text-align: center;"></label>
+														
+														<label class="col-md-1 control-label" style="text-align: center;">=</label>
+														<div class="col-md-2">
+															<?php echo $form->getElement('qty_unit');?>
+														</div>
+														
+														<div class="col-md-2">
+															<?php echo $form->getElement('label');?>
+														</div>
+														
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php //echo $tr->translate("COLOR");?></label>
+														<div class="col-md-4">
+															<?php //echo $form->getElement('color');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('status');?>
+														</div>
+													</div>
+													<h3 class="form-section"><?php echo $tr->translate("PRODUCT_QTY_LOCATION_INFO");?></h3>
+													<div class="portlet box blue">
+														<div class="portlet-title">
+															<div class="caption" style="width:100%">
+															<?php echo $form->getElement('branch');?>
+															</div>
+														</div>
+													</div>
+													
+													<div class="portlet box blue">
+														<div class="portlet-title">
+															<div class="caption">
+																<i class="fa fa-cogs"></i><?php echo $tr->translate("PRODUCT_LOCATION");?>
+															</div>
+														</div>
+														<div class="portlet-body">
+															<div class="table-responsive">
+																<table class="table table-bordered">
+																<thead>
+																<tr>
+																	<th>#</th>
+																	<th><?php echo $tr->translate("LOCATION_NAME");?></th>
+																	<th><?php echo $tr->translate("CURRENT_STOCK");?></th>
+																	<th><?php echo $tr->translate("QTY_WARNING");?></th>
+																	<th><?php echo $tr->translate("ACTION");?></th>
+																</tr>
+																</thead>
+																<tbody id="tr_location">
+																
+																</tbody>
+																</table>
+															</div>
+															<input type="hidden" name="identity" id="identity" value="<?php //echo $identity;?>" >
+														</div>
+													</div>
+												
+											</div>
+										</div>
+										<h3 class="form-section"><?php echo $tr->translate("PRODUCT_PRICE_INFO");?></h3>
+										<div class="portlet box blue">
+											<div class="portlet-title">
+												<div class="caption" style="width:100%">
+															<?php echo $form->getElement('price_type');?>
+												</div>
+											</div>
+										</div>
+										<div class="portlet-body">
+											<div class="table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th><?php echo $tr->translate("TYPE_NAME");?></th>
+															<th><?php echo $tr->translate("PRICE");?></th>
+															<th><?php echo $tr->translate("REMARK");?></th>
+															<th><?php echo $tr->translate("ACTION");?></th>
+														</tr>
+													</thead>
+													<tbody id="tr_price_type">
+													</tbody>
+												</table>
+											</div>
+												<input type="hidden" name="identity_price" id="identity_price" value="<?php //echo $identity;?>" >
+										</div>
+										<div class="form-group">
+											<label  class="col-md-12 col-md-offset-4 col-md-8">
+												<a href="<?php echo $this->baseUrl();?>/sales/saleagent"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+												<button type="submit" name="save_close" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i> <?php echo $tr->translate("GO_EDIT")?></button>
+												
+											</label>
+										</div>
+							<!--</div>-->
+									</div>
+									
+								</div>
+							</div>
+							
+						</div>
+					</div>
+							
+			</form>		
+			      
+<script>
+$( document ).ready(function() {
+	addProLocation();
+	addPriceType();
+});
+
+	function getMeasureLabel(){
+		var sel = $("#measure");
+		var text = $("option:selected",sel).text();
+		document.getElementById('lb_measure').innerHTML = text; 
+	}
+	index = 0;
+	function addProLocation(){
+		<?php if(!empty($this->rs_location)){foreach ($this->rs_location as $key=> $rs){?>
+		index++;
+		id = '<?php echo $rs["location_id"];?>';
+		inx = '<?php echo $key+1;?>';
+			template='<tr id="row_location_<?php echo $key+1;?>">';
+			template+='<td><?php echo $key+1;?></td>';
+			template+='<td><?php echo $rs["name"];?><input type="hidden" id="branch_id_<?php echo $key+1;?>" name="branch_id_<?php echo $key+1;?>" value="'+id+'"</td>';
+			template+='<td><input type="text" id="current_qty_<?php echo $key+1;?>" name="current_qty_<?php echo $key+1;?>"  value="<?php echo $rs['qty'];?>" class="form-control"></td>'; 
+			template+='<td><input type="text" id="qty_warning_<?php echo $key+1;?>" name="qty_warnning_<?php echo $key+1;?>" value="<?php echo $rs['qty_warning'];?>" class="form-control"></td>';
+			template+='<td><button type="button" onClick="deleteRecord(<?php echo $key+1;?>,1)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_location').append(template);
+			if($('#identity').val()!="") {
+				var identity = $('#identity').val();
+				$('#identity').val(identity+','+inx);
+			} else {$('#identity').val(inx);}
+		<?php }}?>
+	}
+	
+	function addNewProLocation(){
+			index++;
+			var branch_text = $("#branch");
+			var txt_br = $("option:selected",branch_text).text();
+			var branch_id = $("#branch").val();
+			template='<tr id="row_location_'+index+'">';
+			template+='<td>'+index+'</td>';
+			template+='<td>'+txt_br+'<input type="hidden" id="branch_id_'+index+'" name="branch_id_'+index+'" value="'+branch_id+'" </td>';
+			template+='<td><input type="text" id="current_qty_'+index+'" name="current_qty_'+index+'" class="form-control"></td>'; 
+			template+='<td><input type="text" id="qty_warning_'+index+'" name="qty_warnning_'+index+'" class="form-control"></td>';
+			template+='<td><button type="button" onClick="deleteRecord('+index+',1)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_location').append(template);
+			if($('#identity').val()!="") {
+				var identity = $('#identity').val();
+				$('#identity').val(identity+','+index);
+			} else {$('#identity').val(index);}
+			
+	}
+	function addPriceType(){
+		<?php if(!empty($this->rs_price)){foreach ($this->rs_price as $key=> $rs){?>
+		indexs++;
+		id_price = '<?php echo $rs["type_id"];?>';
+		inx_price = '<?php echo $key+1;?>';
+			template='<tr id="row_price_<?php echo $key+1;?>">';
+			template+='<td><?php echo $key+1;?></td>';
+			template+='<td><?php echo $rs["name"];?><input type="hidden" id="price_type_<?php echo $key+1;?>" name="price_type_<?php echo $key+1;?>" value="'+id_price+'"</td>';
+			template+='<td><input type="text" id="price_<?php echo $key+1;?>" name="price_<?php echo $key+1;?>" value="<?php echo $rs["price"];?>" class="form-control"></td>'; 
+			template+='<td><input type="text" id="price_remark_<?php echo $key+1;?>" name="price_remark_<?php echo $key+1;?>" value="<?php echo $rs["remark"];?>" class="form-control"></td>'; 
+			template+='<td><button type="button" onClick="deleteRecord(<?php echo $key+1;?>,2)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_price_type').append(template);
+			if($('#identity_price').val()!="") {
+				var identity_price = $('#identity_price').val();
+				$('#identity_price').val(identity_price+','+inx_price);
+			} else {$('#identity_price').val(inx_price);}
+		<?php }}?>
+	}
+	
+	indexs=0;
+	function addNewPriceType(){
+			indexs++;
+			var price_text = $("#price_type");
+			var txt_pr = $("option:selected",price_text).text();
+			var price_id = $("#price_type").val();
+			template='<tr id="row_price_'+indexs+'">';
+			template+='<td>'+indexs+'</td>';
+			template+='<td>'+txt_pr+'<input type="hidden" id="price_type_'+indexs+'" name="price_type_'+indexs+'" value="'+price_id+'" </td>';
+			template+='<td><input type="text" id="price_'+indexs+'" name="price_'+indexs+'" class="form-control"></td>'; 
+			template+='<td><input type="text" id="price_remark_'+indexs+'" name="price_remark_'+indexs+'" class="form-control"></td>'; 
+			template+='<td><button type="button" onClick="deleteRecord('+indexs+',2)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_price_type').append(template);
+			if($('#identity_price').val()!="") {
+				var identity_price = $('#identity_price').val();
+				$('#identity_price').val(identity_price+','+indexs);
+			} else {$('#identity_price').val(indexs);}
+			
+	}
+	function deleteRecord(index,type) {
+		if(type==1){
+			var identity = $('#identity').val();
+			var arrays = identity.split(',');
+		}else{
+			var identity = $('#identity_price').val();
+			var arrays = identity.split(',');
+		}
+		
+		for(var i=0;i<arrays.length;i++) {
+			if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		
+		if(type==1){
+			$('#identity').val(strings);
+			$("#row_location_"+index).remove();
+		}else{
+			$('#identity_price').val(strings);
+			$("#row_price_"+index).remove();
+		}
+		
+
+		// total price
+	}
+</script>		
+</body>
+</html>

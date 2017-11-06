@@ -1,0 +1,164 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage(); 
+	$url_submit =  $this->url(array('module'=>'product','controller'=>'Index','action'=>'add'));
+	$lostIteminfo = $this->form;
+	$lostItemDetail = $this->lostItemDetail;
+?>
+<title><?php echo $tr->translate("MENU_PRODUCT_INDEX_PRODUCT_DETAIL");?></title>
+<div class="wrapper">
+<div class="left">
+</div>
+<div class="right">
+	<div id="tabs" class="tabs-bottom">
+				<ul style="border-top:1px solid #999;">
+					<li><a href="#tabs-1"><?php echo $tr->translate("PRODUCT_INFO");?></a></li>
+					<li><a href="#tabs-2"><?php echo $tr->translate("PRODUCT_QTY");?></a></li>
+					<li><a href="#tabs-3"><?php echo $tr->translate("MOVE_MENT");?></a></li>
+					<li><a href="#tabs-4"><?php echo $tr->translate("ORDER_HISTORY");?></a></li>
+					<li><a href="#tabs-5"><?php echo $tr->translate("PURCHASE_HISTORY");?></a></li>
+				</ul>
+				<div class="tabs-spacer"></div>
+					<div class="btn" align="right">
+						     <a href="<?php echo BASE_URL."/product/index/update/id/".$lostIteminfo['pro_id']; ?>" class="negative">
+						        <img src="<?php echo BASE_URL?>/images/icon/edit.png" alt=""/>
+						        <?php echo $tr->translate("EDIT");?>
+						    </a> 
+						    <!--<a href="<?php echo BASE_URL."/product/index/index/id/".$lostIteminfo['pro_id']; ?>" class="negative">
+						        <img src="<?php echo BASE_URL?>/images/icon/delete-row.png" alt=""/>
+						        <?php echo $tr->translate("DE_ACTIVE");?>
+						    </a>-->			
+						    <a href="<?php echo BASE_URL."/product/index/index"; ?>" class="negative">
+						        <img src="<?php echo BASE_URL?>/images/icon/previous.gif" alt=""/>
+						        <?php echo $tr->translate("BACK"); ?>
+						    </a>
+			           </div>
+			<div id="tabs-1">
+					<div class="head_form">
+						<?php echo $tr->translate("PRODUCT_INFO");?>
+					</div>
+					<div class="contain_form">
+						<table>
+							<tr>
+								<td class="field" width="25%"><?php echo $tr->translate("ITEM_NAME");?></td>
+								<td class="value"><?php echo $lostIteminfo['item_name'];?></td>
+								<td class="photo" rowspan="5">
+									<?php echo '<img style="width: 100px;" src="'.BASE_URL.'/images/fi-upload/'.$lostIteminfo['photo'].'" />';?>
+								</td>
+							</tr>
+							<tr>
+								<td class="field"><?php echo $tr->translate("ITEM_CODE");?></td>
+								<td class="value"><?php echo $lostIteminfo['item_code'];?></td>
+							</tr>
+							<tr>
+								<td class="field"><?php echo $tr->translate("CATEGORY_NAME");?></td>
+								<td class="value"><?php echo $lostIteminfo['Name'];?></td>
+							</tr>
+							<tr>
+								<td class="field"><?php echo $tr->translate("BRANCH_NAME");?></td>
+								<td class="value"><?php echo $lostIteminfo['branch_name'];?></td>
+							</tr>
+							<tr>
+								<td class="field"><?php echo $tr->translate("STOCK_TYPE");?></td>
+								<td class="value"><?php echo ($lostIteminfo['stock_type']==1)? $tr->translate("STOCKABLE"): $tr->translate("NON_STOCKED"); ?></td>
+							</tr>
+							<tr>
+								<td class="field"><?php echo $tr->translate("REMARK");?></td>
+								<td class="value"><?php echo $lostIteminfo['remark'];?></td>
+							</tr>
+						</table>
+					</div><!-- end of .contaub_form -->
+					<br/>
+		   		<div class="view-table">
+					<div class="head_form">
+						<?php echo $tr->translate("PRODUCT LOCATION");?>
+					</div>
+					<div class="contain_form">
+						<table class="collape" style="width: 94%;">
+							<tr height="25px">
+								<td class="sub-tdheader"><?php echo $tr->translate("NUM");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("LOCATION_NAME");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("PRODUCT_QTY");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("QTY_ON_AVALIABLE");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("QTY_ON_ORDER");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("QTY_ON_SOLD");?></td>
+							</tr>
+							<?php 
+								if(count($lostItemDetail) > 0) {
+									$i = 0;
+									foreach($lostItemDetail as $item) {
+										$i++;
+										?>
+										<tr class="trbody">
+											<td><?php echo $i;?></td>
+											<td><?php echo $item['Name'];?></td>
+											<td><?php echo $item['qty'];?></td>
+											<td><?php echo $item['qty_avaliable'];?></td>
+											<td><?php echo $item['plqty_order'];?></td>
+											<td><?php echo $item['plqty_onsold'];?></td>
+										</tr>
+									<?php }} ?>
+						</table>
+					</div><!-- end of .contaub_form -->
+				</div><!-- end of view-table -->
+			</div><!-- tab1 -->	
+			<div id="tabs-2">
+				<div class='view-table'>
+	        		<table border='1px' style="border:1px solid #ccc;" width='50%'>
+			        	<?php //order history
+							$rows_qty = $this->pro_qty ;		
+						?>
+							<tr class="head-table">
+								<td colspan="2"><?php echo $tr->translate("PRO_LOCATION_ALL_STOCK");?></td>
+							</tr>
+							<tr class="row-table1">
+								<td><?php echo $tr->translate("QTY_ON_HAND");?></td>
+								<td><?php echo $rows_qty["qty_onhand"] ?></td>
+							</tr>
+							<tr class='row-table0'>
+								<td><?php echo $tr->translate("QTY_ON_SOLD");?></td>
+								<td><?php echo $rows_qty["qty_onsold"] ?></td>
+							</tr>
+							<tr class='row-table1'>
+								<td><?php echo $tr->translate("QTY_ON_ORDER");?></td>
+								<td><?php echo $rows_qty["qty_onorder"] ?></td>
+							</tr>
+							<tr class='row-table0'>
+								<td><?php echo $tr->translate("QTY_ON_AVALIABLE");?></td>
+								<td><?php echo $rows_qty["qty_available"] ?></td>
+							</tr>			        	 
+					</table>
+			   </div>
+			</div><!-- tab2 -->
+			<div id="tabs-3">
+		   		<div class="">
+					<div class="head_form">
+						<?php echo $tr->translate("MOVE_MENT");?>
+					</div>
+					<div class="contain_form">
+					<!-- move history -->
+						<?php echo $this->list_history; ?>
+					</div>
+				</div><!-- end of .view-table -->
+			</div><!-- tab 3 -->
+			<div id="tabs-4">
+		   		<div class="">
+					<div class="head_form">
+						<?php echo $tr->translate("ORDER_HISTORY");?>
+					</div>
+					<div class="contain_form">
+					<!-- move history -->
+						<?php echo $this->list_order_history; ?>
+					</div>
+				</div><!-- end of .view-table -->
+			</div><!-- tab 4 -->
+			<div id="tabs-5">
+				<div class="head_form">
+							<?php echo $tr->translate("PURCHASE_HISTORY");?>
+				</div>
+					<div class="contain_form">
+						<?php echo $this->list_purchase_history;  ?>
+				   </div>
+			</div><!-- tab 5 -->
+	</div><!-- end main tabe -->
+</div><!-- end right -->
+</div><!-- end wrapper -->

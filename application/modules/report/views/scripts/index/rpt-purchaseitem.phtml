@@ -1,0 +1,238 @@
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+$frm_sales_report = $this->form_search;
+?>
+<title><?php echo $tr->translate("RPT_PURCHASE_DETAIL");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("RPT_PURCHASE_DETAIL");?>
+				</div>
+					<div class="btn-group pull-right">
+					 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+					   Actions <i class="fa fa-angle-down"></i>
+					 </button>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href="#" onclick="doPrint();">
+								<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+							</a>
+						</li>
+						<li>
+							<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+            <div class="portlet-body form frmfilter">
+				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 6px;">
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("txt_search");?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("branch_id");?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('brand_id');?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("category_id");?></label>
+					</div>
+					<div class="form-group" style="padding-top: 6px;">
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('item');?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('start_date');?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("end_date");?></label>
+						<label class="control-label col-md-3">
+						<input type="submit" value="<?php echo $tr->translate("SEARCH")?>"  class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /></label>
+					</div><div style="clear:both;"></div>	
+				</form> 
+	<div style=" min-height:12cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm;overflow: scroll;">
+	<div id="divPrint" style="width: 100%;">
+	<style>
+		.style{
+			line-height: 25px;font-size: 12px !important;
+			font-family: 'Khmer OS Battambang';
+		}
+		ul{margin: 0;padding:0;}
+		table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+		th{padding: 5px;}
+		.hover:hover{background: #ccc;}
+	</style>
+		<table style="font-family: 'Khmer OS Content'; width:100%;">
+			<tbody>
+			<tr>
+		    	<td align="center">
+		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0">
+		            	<tbody><tr>
+		                	<td width="20%" valign="top"><img src="<?php echo $this->baseUrl();?>/images/logo.jpg" height="55px"></td>
+		                	<td width="60%" valign="top">
+		                		<ul>
+		                			<li style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("COMPANY_CUSTOMER");?></li>
+		                			<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("RPT_PURCHASE_DETAIL");?></li>
+		                			<li style="text-align:center; font-size:13px;"><?php echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li>
+		                		</ul>
+		                	</td>
+		                    <td width="20%"></td>
+		                </tr> 
+		                <tr>
+		                	<td colspan="3" valign="top">
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody><tr>
+		                				<td style="font-size: 11px;">
+		                				    <span style="white-space: nowrap;"><?php echo $tr->translate("ADDRESS_COMPANY");?></span>
+		                					<br><?php echo $tr->translate("TEL_COMPANY");?> 
+		                				</td>
+		                				<td width="65%"></td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr>   
+		            </tbody></table>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td class="table2excel" id="exportExcel">
+		            <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+		                 <tbody><tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 205x; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+		                    <td><?php echo $tr->translate("BRANCH_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("VENDOR_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("PURCHASE_ORDER");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("ORDER_DATE");?></td>
+							<td><?php echo $tr->translate("DATE_IN");?></td>
+							<td><?php echo $tr->translate("CURRNECY_TYPE");?></td>
+							<td><?php echo $tr->translate("CATE_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("BRAND_NAME");?></td>
+							<td><?php echo $tr->translate("ITEM_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ITEM_CODE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("QTY");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("ITEM_PRICE");?></td>
+							<td><?php echo $tr->translate("TOTAL");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ORDER_STATUS");?></td>
+							<td>&nbsp;<?php echo $tr->translate("BY_USER");?></td>
+		                </tr>
+		                <?php $num=1; 
+		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
+		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
+		                if(!empty($this->product_rs))foreach ($this->product_rs AS $index => $rs){?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["branch_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["vendor_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["order_number"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_order"]));?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_in"]));?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["curr_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["cate_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["brand_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_code"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo number_format($rs["qty_order"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["curr_name"]."&nbsp;";echo number_format($rs["price"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["curr_name"]."&nbsp;".number_format($rs["sub_total"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["purchase_status"];?></td>
+						   <td>&nbsp;<?php echo $rs["user_name"];?></td>
+						</tr>
+						   <?php 
+							if($rs['currency_id']==1){
+								$d_netotal = $d_netotal+$rs["net_total"];
+								$d_paid = $d_paid+$rs["paid"];
+								$d_balance = $d_balance+$rs["balance"];
+							}else if($rs['currency_id']==2){
+								$r_netotal = $r_netotal+$rs["net_total"];
+								$r_paid = $r_paid+$rs["paid"];
+								$r_balance = $r_balance+$rs["balance"];
+							}else{
+								$b_netotal = $b_netotal+$rs["net_total"];
+								$b_paid = $b_paid+$rs["paid"];
+								$b_balance = $b_balance+$rs["balance"];
+							}
+                    }?>
+		                </tbody>
+		           </table>
+		            <br>
+		             <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+		                <tbody><tr height="30px;" bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:2px 0px; ">
+		                    <td><strong><?php echo $tr->translate("PURCHASE_AMOUNT");?></strong></td>
+		                    <td><strong><?php echo $tr->translate("PAID");?></strong></td>
+		                    <td><strong><?php echo $tr->translate("BALANCE");?></strong></td>
+		                </tr>
+		                 <tr class="style" style=" line-height: 24px; font-size:11px;">
+		                    <td>&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
+		                    <td>&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>
+		                    <td>&nbsp;<?php echo number_format($d_balance,2);?>&nbsp;</td>
+		                 </tr>
+		               </tbody>
+		             </table>
+		              <br>
+		              <table align="center" width="100%">
+						   <tbody><tr style="font-size: 11px;">
+						        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'">យល់ព្រមដោយ</th>
+						        <th></th>
+						        <th style="width:20%;text-align:center; font-family:'Khmer MEF2'">ត្រួតពិនិត្យដោយ</th>
+						        <th></th>
+						        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'">រៀបចំដោយ</th>
+						   </tr>
+						</tbody>
+					</table>	
+		    		</td>
+		    	</tr>
+			</tbody>
+		</table>
+		</div>
+	  </div>		
+	</div>
+	 </div>
+   </div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script>
+function doPrint() {var divToPrint = document.getElementById('divPrint');var htmlToPrint = '' +'<style type="text/css">' +'</style>';htmlToPrint += divToPrint.outerHTML;window.document.write(htmlToPrint);window.print();window.close();}
+
+/*var currentTime = new Date();
+var month = currentTime.getMonth() + 1;
+var day = currentTime.getDate();
+var year = currentTime.getFullYear();
+	var date =(year + "-" + month + "-" + day );
+
+var start_date = $('#start_date').val();
+var end_date =$('#end_date').val();
+
+if(end_date!="" | start_date!=""){
+    start_date = $('#start_date').val();
+	end_date =$('#end_date').val();
+	
+}else{
+	start_date = $('#start_date').val(date);
+	end_date = $('#end_date').val(date);
+}*/
+
+<?php //$url_item_filter =  $this->url(array('module'=>'report','controller'=>'index','action'=>'get-item-filter')); ?>
+/*function getProductFilter(){
+	var location_id=$("#LocationId").val();
+	var branch_id = $('#branch_id').val();
+	var category_id = $('#category_id').val();
+		$.ajax({
+			url:"<?php //echo $url_item_filter;?>",
+			type:"post",
+			data:{'category_id':category_id,'branch_id':branch_id,'location_id':location_id},
+			success: function(data){
+				items = $.parseJSON(data);
+				if(items){
+					 $('#item').empty();
+					 $('#item').val('').trigger("liszt:updated");
+					 $('#item').append($("<option></option>").attr("value","").text("Please Select Item"));
+					 for (var index = 1 ; index <= items.length; index++) {
+							$('#item').append($("<option></option>").attr("value",items[index-1]['pro_id']).text(items[index-1]['item_code'] + items[index-1]['item_name'])); 
+							$("select#item").find("option#items[index-1]['pro_id']").attr("selected", true);
+					 }           
+					$('#item').val('').trigger("liszt:updated");
+				}else{
+					 $('#item').empty();
+					 $('#item').val('').trigger("liszt:updated");
+						 $('#item').append($("<option></option>").attr("value","").text("No Items Result!"));
+						 $('#item').val('').trigger("liszt:updated");
+				}
+			},
+			error:function(){
+			}
+		});
+	}*/
+</script>

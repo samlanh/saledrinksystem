@@ -1,0 +1,346 @@
+<?php 
+	$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+	//print_r($this->product);
+?>
+<title><?php echo $tr->translate("Invoice Report");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("Invoice Report");?>
+				</div>
+						<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;បោះពុម្ភ/Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+								</ul>
+					</div>
+			</div>
+            <div class="portlet-body form frmfilter">
+					<div style="clear:both;"></div>	
+	<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+<div id="divPrint" style="width: 100%;">
+	<style>
+		.style{
+			line-height: 20px;font-size: 12px !important;
+			font-family: 'Khmer OS Battambang';
+		}
+		ul{margin: 0;padding:0;}
+		table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+		th{padding: 5px;}
+		ul.pur_info li{line-height:18px; 
+				font-weight: normal !important;}
+		ul.pur_info li strong{font-weight: bold;}
+       .hover:hover{background: #ccc;}
+	</style>
+		<table style="font-family: 'Khmer OS Content'; width:100%;">
+			<tbody>
+			<tr>
+		    	<td align="center">
+		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0" >
+		            	<tbody>
+						<?php if($this->product[0]["branch_id"]==3 OR $this->product[0]["branch_id"]==6){?>
+						<tr>
+								<td colspan="3" align="center"><div style="width:100%;display: block;font-size:26px; font-family:'Khmer MEF2';"><u>វិក័យបត្រ </u></div></td>
+							</tr>
+		            	
+						
+						<?php }else{?>
+							<?php if($this->product[0]['show_by']==2 OR $this->product[0]['show_by']==3 ){?>
+		            	<tr>
+		            		<td colspan="3" align="center"><img src="<?php echo $this->baseUrl()."/images/logo/".$this->product[0]['logo'];?>" style="max-width: 100%;" /></td>
+		            	</tr>
+		            	<?php } if($this->product[0]['show_by']==1 OR $this->product[0]['show_by']==3 ){?>
+		            	<tr>
+		                	<td width="40%" valign="top" style="text-align:left; font-size:26px; font-family:'Khmer MEF2';padding-bottom:0px;"><?php echo $this->product[0]['branch_code'];?></td>
+		                	<td width="20%" valign="top">
+		                	</td>
+		                    <td width="40%"></td>
+		                </tr> 
+		                <?php }?>
+						<?php }?>
+		                <tr>
+		                	<td colspan="3" valign="top" style="padding-top: 10px;"><br />
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody>
+		                			<tr>
+		                				<td style="font-size: 12px;" valign="top" width="40%;">
+		                				<div style="width:100%;display: block;font-size:16px; font-family:'Khmer MEF2';white-space: nowrap;"><u>ពត៌មានអតិថិជន / CUSTOMER INFORMATION</u></div>
+		                				   <ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>ឈ្មោះក្រុមហ៊ុន / Company Name : </strong><?php echo $this->product[0]['customer_name'];?></li>
+			                					<li style="text-align: left;"><strong>ឈ្មោះអ្នកទំនាក់ទំនង / Contact Person : </strong><?php echo $this->product[0]['contact_name'];?></li>
+			                					<li style="text-align: left;"><strong>លេខទូរសព្ទ / Contact Number : </strong><?php echo $this->product[0]['contact_phone'];?></li>
+			                					<li style="text-align: left;"><strong>សារអេឡិចត្រូនិច / Email : </strong><?php echo $this->product[0]['email'];?></li>
+			                					<li style="text-align: left;"><strong>អាសយដ្ឋាន /  Address: </strong><?php echo $this->product[0]['add_name']."&nbsp;".$this->product[0]['province'];?></li>
+		                					</ul>
+		                				</td>
+		                				<td width="25"></td>
+		                				<td width="35%" style="text-align: left;font-size: 12px;">
+											<?php if($this->product[0]["branch_id"]!=3 AND $this->product[0]["branch_id"]!=6){?>
+		                					<div style="width:100%;display: block;font-size:16px; font-family:'Khmer MEF2';"><u>វិក័យបត្រ </u></div>
+											<?php }?>
+		                					<ul class='pur_info'>
+			                					<!--<li style="text-align: left;"><strong>សាខា​ / Location : </strong><?php echo $this->product[0]['prefix'];?></li>-->
+			                					<li style="text-align: left;"><strong>លេខវិក័យបត្រ / Invoice No. : </strong><?php echo $this->product[0]['invoice_no'];?></li>
+		                					    <li style="text-align: left;"><strong>កាលបរិច្ឋេទ / Date : </strong><?php echo date("d/m/Y",strtotime($this->product[0]['invoice_date']));?></li>
+		                						<li style="text-align: left;"><strong>លក់ដោយ / Sale Person : </strong><?php echo $this->product[0]['staff_name'];?></li>
+		                					    <li style="text-align: left;"><strong>ចេញដោយ / Bill Issuer : </strong><?php echo $this->product[0]['biller'];?></li>
+			                			    </ul>
+		                				</td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr>   
+		            </tbody></table>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td class="table2excel" id="exportExcel"><br />
+		            <table border="1" class="tb_print" style="border-collapse:collapse;font-size:12px;" width="100%" cellspacing="0">
+		                 <tbody>
+						<tr align="center" style="font-weight:bold; line-height: 20px;  padding:1px 0px; white-space: nowrap;border:1px solid #fff;border-bottom: 1px solid #000 !important; ">
+		                    <td colspan="7" align="center" style="font-size: 13px;padding-bottom: 5px;">ទំនិញដែលបានទិញហើយក្រុមហ៊ុនយើងខ្ញុំ មិនទទួលដូរយកវិញទេ ។សូមអរគុណ
+		                    <br>Goods Sold Can Not Be Returned, Thank you !</td>
+		                </tr>
+						<tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:14px; padding:1px 0px; white-space: nowrap; ">
+		                    <td style="border:1px solid #000;">&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td style="border:1px solid #000;"><?php echo $tr->translate("PRODUCT_DISCRIPTION");?></td>
+							<td style="border:1px solid #000;">&nbsp;<?php echo $tr->translate("QTY");?></td>
+							<td width="10%" style="border:1px solid #000;">&nbsp;<?php echo $tr->translate("UNIT_PRICE_CAP");?></td>
+							<td width="10%" style="border:1px solid #000;">&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
+							<!--<td width="10%" style="border:1px solid #000;">&nbsp;<?php //echo $tr->translate("ITEM_PRICE");?></td>-->
+							<td style="border:1px solid #000;">&nbsp;<?php echo $tr->translate("AMOUNT");?></td>
+		                </tr>
+		                <?php $num=1; 
+		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
+		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
+		                if(!empty($this->product))foreach ($this->product AS $index => $rs){?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
+						   <?php 
+						   /*$sing="";
+						   if($rs['qty_unit']>0 AND $rs['qty_detail']>0){
+						   	$sing=" + ";
+						   }
+						   $unitqty = ($rs['qty_unit']);
+						   $qty_detail = ($rs['qty_detail']);
+						   if($rs['qty_unit']>0){$unitqty=number_format($unitqty,0)." ".$rs["measue_name"];}else{$unitqty="";}
+						   if($rs['qty_detail']>0){
+						   	$qty_detail=number_format($qty_detail,2)." ".$rs["unit_label"];}else{$qty_detail="";}*/
+							$raw_qty = $rs["qty_order"];
+						   $array = explode(".",$rs["qty_order"]);
+						   $qty = $array[0];
+						   $qty_unit = ($raw_qty*$rs["qty_perunit"]) - ($rs["qty_perunit"]*$array[0]);
+						   $l_qty = 0;
+						   
+							
+							if($rs["measure_id"]==32){
+								if($raw_qty>0){
+									if($qty>0 and $qty_unit>0){
+										$l_qty = $qty." ".$rs["measue_name"]." និង ".round($qty_unit)." ".$rs["unit_label"];
+									}elseif($qty==0 and $qty_unit>0){
+										$l_qty = round($qty_unit)." ".$rs["unit_label"];
+									}elseif($qty>0 and $qty_unit==0){
+										$l_qty =  $qty." ".$rs["measue_name"];
+									}
+								   }else{
+									$l_qty = 0;
+								   }
+								   $item_price = $rs["price"];
+								   $disc = $rs["disc_value"];
+							}else{
+								$l_qty = ($raw_qty*$rs["qty_perunit"])." ".$rs["unit_label"];
+								//$item_price = $rs["price"];
+								$item_price = $rs["price"]/($rs["qty_perunit"]);
+								 $disc = $rs["disc_value"];
+								//$disc = $rs["disc_value"]/($raw_qty*$rs["qty_perunit"]);
+							}
+						   ?>
+						   <td style="white-space: nowrap; text-align:center;">&nbsp;<?php echo $l_qty;//echo $unitqty.$sing.$qty_detail; //$rs["qty_order"];?></td>
+						   <td>&nbsp;<?php echo number_format($item_price,2);?><span style="float: right;"><?php echo $rs["curr_name"]."&nbsp;";?></span></td>
+						   <td>&nbsp;<?php echo number_format($disc,2);?><span style="float: right;"><?php echo $rs["curr_name"]."&nbsp;";?></span></td>
+						   <!--<td>&nbsp;<?php //echo number_format($rs["dsub_total"]/$rs['qty_order'],2);?></td>-->
+						   <td style="white-space: nowrap;">&nbsp;<?php echo number_format($rs["dsub_total"],2);?>​<span style="float: right;"><?php echo $rs["curr_name"]."&nbsp;";?></span> <?php //echo number_format(($rs["qty_detail"]),0).$rs['unit_label'];?></td>
+						   
+						</tr>
+						   <?php  }?>
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td  style="border:1px solid #000;">&nbsp;&nbsp;Total</td>
+						<td style="border:1px solid #000; font-weight: bold;font-size: 13px;font-family:'Open Sans', sans-serif;">&nbsp;<?php echo number_format($this->product[0]['sub_total'],2);?>​<span style="float: right;"><?php echo $this->product[0]["curr_name"]."&nbsp;";?></span></td>
+					</tr>
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td  style="border:1px solid #000;">&nbsp;&nbsp;Discount</td>
+						<td style="border:1px solid #000;font-weight: bold;font-size: 13px;font-family:'Open Sans', sans-serif;">&nbsp;
+						<?php echo number_format($this->product[0]['vdiscount'],2);?>
+						<span style="float: right;"><?php  echo ($this->product[0]['discount_type']==1)?'%':0;?></span></td>
+					</tr>
+					
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td  style="border:1px solid #000;">&nbsp;&nbsp;Deposit</td>
+						<td style="border:1px solid #000;font-weight: bold;font-size: 13px;font-family:'Open Sans', sans-serif;">&nbsp;<?php echo number_format($this->product[0]['paid_amount'],2);?><span style="float: right;"><?php echo $this->product[0]["curr_name"]."&nbsp;";?></span></td>
+					</tr>
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td  style="border-left:1px solid #000;border-bottom:1px solid #000;">&nbsp;&nbsp;Balance</td>
+					<?php 
+						if($this->product[0]['discount_type']==1){//%
+							$discountamount =$this->product[0]['vdiscount']*$this->product[0]['sub_total']/100;
+						}else{
+							$discountamount =$this->product[0]['vdiscount'];
+						}
+						?>
+						<td style="border-left:1px solid #000;border-bottom:1px solid #000;font-weight: bold; font-size: 13px;font-family:'Open Sans', sans-serif;">&nbsp;<?php echo number_format($this->product[0]['sub_total']-($discountamount+$this->product[0]['paid_amount']),2);?><span style="float: right;"><?php echo $this->product[0]["curr_name"]."&nbsp;";?></span></td>
+					
+					</tr>
+					<?php if($this->InvoiceRow >1){?>
+						<tr  style="border:1px solid #fff;border-bottom:1px dotted #000;" height="20px">
+							<td colspan="7">&nbsp;</td>
+						</tr>
+						<tr >
+						   <td colspan="7" style="white-space: nowrap;border:1px dotted #000;border-left:1px dotted #000;padding:10px;">
+								 <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px; margin:0 auto;" width="98%" cellspacing="0">
+									<tr style="text-align:left;">
+										<td colspan="7" style="border:1px solid #fff;font-size: 14px; "><u>សម្គាល់​ ៖</u></td>
+									</tr>
+									<tr style="text-align:left;">
+										<td colspan="7" style="border:1px solid #fff; border-bottom:1px solid #000;font-size: 14px;">ទឹកប្រាក់នៅជំពាក់សរុប</td>
+									</tr>
+									<tr style="text-align:center;">
+										<td>ល.រ</td>
+										<td>ថ្ងៃ/ខែ/ឆ្នាំ</td>
+										<td>វិក័យបត្រ</td>
+										<td>ចំនួនទឹកប្រាក់</td>
+										<td>បញ្ចុះតម្លៃ</td>
+										<td>ទឹកប្រាក់បានបង់</td>
+										<td>ទឹកប្រាក់នៅខ្វះ</td>
+									</tr>
+									<?php $key =-1;$balance = 0;if(!empty($this->rsinvoice)) foreach($this->rsinvoice as $key =>$rs){?>
+									<?php 
+									$remain_balance = $rs["sub_total"]-($rs["discount"]+$rs["paid_amount"]);
+									if($remain_balance>0){
+									?>
+									<tr style="text-align:center;">
+										<td><?php echo $key+1;?></td>
+										<td><?php echo date("d/m/Y",strtotime($rs["invoice_date"]));?></td>
+										<td><?php echo $rs["invoice_no"];?></td>
+										<td><?php echo number_format($rs["sub_total"],2);?></td>
+										<td><?php echo $rs["discount"];?></td>
+										<td><?php echo number_format($rs["paid_amount"],2);//ត្រូវយកប្រាក់ដែលបានបង់សរុប?></td>
+										<td><?php echo number_format($rs["sub_total"]-($rs["discount"]+$rs["paid_amount"]),2);
+										$balance =$balance + $rs["balance_after"];
+										?>​<span style="float: right;">$ &nbsp;</span></td>
+									</tr>
+									<?php }?>
+									<?php } 
+									$remain_balance = $this->product[0]['sub_total']-$this->product[0]['paid_amount']-$this->product[0]['vdiscount'];
+									if($remain_balance>0){
+									?>
+									<tr style="text-align:center;">
+										<td><?php echo $key+2;?></td>
+										<td><?php echo date("d/m/Y",strtotime($this->product[0]['invoice_date']));?></td>
+										<td><?php echo $this->product[0]['invoice_no'];?></td>
+										<td><?php echo number_format($this->product[0]['sub_total'],2);?></td>
+										<td><?php echo number_format($this->product[0]['vdiscount'],2);?></td>
+										<td><?php echo number_format($this->product[0]['paid_amount'],2);?></td>
+										<td><?php echo number_format($this->product[0]['sub_total']-$this->product[0]['paid_amount']-$this->product[0]['vdiscount'],2);
+										$balance =$balance + $this->product[0]['balance']
+										?>​<span style="float: right;">$ &nbsp;</span></td>
+									</tr>
+									<?php }?>
+									<tr>
+									    <td colspan="6" style="font-size:14px;border-bottom:1px solid #fff;border-left:1px solid #fff;text-align:right; ">ប្រាក់នៅខ្វះរួមសរុប&nbsp;</td>
+										<td style="font-weight:bold;border-left:1px solid #000;font-size: 14px;font-family:'Open Sans', sans-serif;">&nbsp;<?php echo number_format($balance,2);?>​<span style="float: right;">$ &nbsp;</span></td>
+									</tr>									
+								</table><br />
+						   </td> 
+						</tr>
+						<?php } ?>
+						<tr>
+							<td colspan="7" style="border:1px solid #fff;border-top:1px dotted #000;">
+							<strong  style="font-size: 13px;"><u>ខសន្យា និងលក្ខខណ្ឌទូទៅ/ General Term & Conditions</u></strong>
+								<style>
+									ul.termcodition li{ line-height: 20px;list-style-type: none; font-size: 12px;}
+								</style>
+								<ul class="termcodition">
+								<?php if(!empty($this->rscondition))foreach ($this->rscondition as $key =>$rst){ ?>
+									<li style="text-align: left;"><?php echo $key+1;echo "-".$rst['con_khmer'];?></li>
+									<li style="text-align: left;"><?php echo $rst['con_english'];?></li>
+								<?php }?>
+								</ul>
+							</td>
+					</tr>
+		                </tbody>
+		           </table>
+		              <table align="center" width="100%">
+						   <tbody>
+						   <tr style="font-size: 13px;">
+							<td style="width:20%;text-align:center;  font-family:'Khmer MEF2'; white-space: nowrap;">រៀបចំដោយ  / Prepared By</td>
+						        <td></td>
+						        <td style="width:20%;text-align:center;  font-family:'Khmer MEF2'; white-space: nowrap;">អ្នកកាន់ឃ្លាំង  / Stock Controller</td>
+						        <td></td>
+						        <td style="width:20%;text-align:center; font-family:'Khmer MEF2';white-space: nowrap;">អ្នកដឹក  / Delivery Man</td>
+						        <td></td>
+						        <td style="width:20%;text-align:center;font-family:'Khmer MEF2';white-space: nowrap;">អតិថិជន  /​ Customer</td>
+						   </tr>
+						   <!--<tr style="font-size: 13px; height: 75px;">
+						        <td valign="bottom" style="width:20%;text-align:center;  font-family:'Khmer MEF2'; white-space: nowrap;">ឈ្មោះ  /Name : <span style=""><?php echo $this->product[0]['biller'];?></span></td>
+						        <td></td>
+						        <td valign="bottom" style="width:20%;text-align:center; font-family:'Khmer MEF2';white-space: nowrap;">ឈ្មោះ  /Name--------------------------</td>
+						        <td></td>
+						        <td valign="bottom" style="width:20%;text-align:center;font-family:'Khmer MEF2';white-space: nowrap;">ឈ្មោះ  /Name--------------------------</td>
+								<td></td>
+						        <td valign="bottom" style="width:20%;text-align:center;font-family:'Khmer MEF2';white-space: nowrap;">ឈ្មោះ  /Name--------------------------</td>
+						   </tr>-->
+						   <tr style="font-size: 13px;height: 95px;">
+								<td style="width:20%;text-align:center;white-space: nowrap;">ថ្ងៃ  /Date:----------------------------------</td>
+						        <td></td>
+						        <td style="width:20%;text-align:center;white-space: nowrap;">ថ្ងៃ  /Date:----------------------------------</td>
+						        <td></td>
+						        <td style="width:20%;text-align:center;white-space: nowrap;">ថ្ងៃ  /Date:----------------------------------</td>
+						        <td></td>
+						        <td style="width:20%;text-align:center;white-space: nowrap;">ថ្ងៃ  /Date:----------------------------------</td>
+						   </tr>
+						</tbody>
+					</table>	
+		    		</td>
+		    	</tr>
+			</tbody>
+		</table>
+		</div>
+	  </div>		
+	</div>
+	 </div>
+   </div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script>
+
+
+function doPrint() {
+    var divToPrint = document.getElementById('divPrint');
+    var htmlToPrint = '' +
+        '<style type="text/css">' +
+        '</style>';
+    htmlToPrint += divToPrint.outerHTML;
+    //newWin = window.open("");
+    window.document.write(htmlToPrint);
+    window.print();
+    window.close();
+}
+
+</script>

@@ -1,0 +1,99 @@
+<?php 					
+	$url_new = $this->url(array('module'=>'sales','controller'=>'saleagent','action'=>'add',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+?>
+<meta charset="utf-8" />
+<title>Sale agent Report</title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("SALE_AGENT_LIST");?>
+				</div>
+				<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+									
+								</ul>
+					</div>
+			</div>
+			<div class="portlet-body form">
+				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 6px;">
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('text_search');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('branch_id');?></label>
+						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php echo $formFilter->getElement('start_date');?></div></label>
+						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php echo $formFilter->getElement('end_date');?></div></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('status');?></label>
+						<label class="control-label col-md-2">
+							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+						</label>
+					</div>	
+				</form> 
+					<div class="contain_form" style="clear: both;">
+						<?php //echo $this->list; ?>
+						<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+					<div id="divPrint" style="width: 100%;">
+						<style>
+							.style{
+								line-height: 20px;font-size: 9px !important;
+								font-family: 'Khmer OS Battambang';
+							}
+							ul{margin: 0;padding:0;}
+							table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+							th{padding: 5px;}
+							.hover:hover{background: #ccc;}
+						</style>	
+						<table class="table2excel" border="1" &#8203;="" style="border-collapse:collapse;border:1px solid #000; font-size:10px;" width="100%" cellspacing="0">
+		                 <tbody><tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("LOCATION");?></td>
+							<td><?php echo $tr->translate("AGENT_CODE");?></td>
+							<td><?php echo $tr->translate("AGENT_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("PHONE");?></td>
+							<td><?php echo $tr->translate("EMAIL");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ADDRESS");?></td>
+							<td><?php echo $tr->translate("POSITION");?></td>
+							<td>&nbsp;<?php echo $tr->translate("START_WORKING_DATE");?></td>
+							<td><?php echo $tr->translate("DESCRIPTION");?></td>
+							<td>&nbsp;<?php echo $tr->translate("STATUS");?></td>
+		                <?php $num=1; 
+			                
+		                if(!empty($this->rs))foreach ($this->rs AS $index => $rs){?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["branch_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["code"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["phone"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["email"];?></td>
+						   <td style="">&nbsp;<?php echo $rs["address"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["job_title"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["start_working_date"]));?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["description"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["status"];?></td>
+						</tr>
+						   <?php 
+							
+                    }?>
+		                </tbody>
+		           </table>
+			    </div>
+		   </div>
+					</div>
+		   </div>
+		</div>
+	</div>
+</div>

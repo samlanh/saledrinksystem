@@ -1,0 +1,225 @@
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+$brach_name =  $this->branch;
+?>
+<title>Invoice/Delivery Report</title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("InvoiceReport");?>
+				</div>
+					<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+								</ul>
+					</div>
+			</div>
+            <div class="portlet-body form frmfilter">
+				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 6px;">
+						<?php $formFilter = $this->form_purchase; ?>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('text_search');?></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('branch_id');?></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('customer_id');?></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('saleagent_id');?></label>
+					</div>
+					<div class="form-group" style="padding-top: 6px;">
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('start_date');?></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('end_date');?></label>
+						<label class="control-label col-md-2">
+							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+						</label>
+					</div>
+				<div style="clear:both;"></div>	
+				</form> 
+	<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+	<div id="divPrint" style="width: 100%;">
+		<style>
+			.style{
+				line-height: 20px;font-size: 9px !important;
+				font-family: 'Khmer OS Battambang';
+			}
+			ul{margin: 0;padding:0;}
+			table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+			th{padding: 5px;}
+			.hover:hover{background: #ccc;}
+		</style>
+		<table style="font-family: 'Khmer OS Content'; width:100%;">
+			<tbody>
+			<tr>
+		    	<td align="center">
+		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0">
+		            	<tbody><tr>
+		                	<td width="20%" valign="top"></td>
+		                	<td width="60%" valign="top">
+		                		<ul>
+		                			<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'">របាយការណ៏  ផ្នែកលក់តាមបុគ្គលិក</li>
+		                			<li style="text-align:center; font-size:13px;"><?php echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li>
+		                		</ul>
+		                	</td>
+		                    <td width="20%"></td>
+		                </tr> 
+		                <tr>
+		                	<td colspan="3" valign="top">
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody><tr>
+		                				<td style="font-size: 11px;">
+		                				    <span style="white-space: nowrap;"><?php //echo $tr->translate("ADDRESS_COMPANY");?></span>
+		                					<br><?php //echo $tr->translate("TEL_COMPANY");?> 
+		                				</td>
+		                				<td width="65%"></td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr>   
+		            </tbody></table>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td class="table2excel" id="exportExcel">
+		            <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:10px;" width="100%" cellspacing="0">
+		                 <tbody>
+						 <tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px !important; padding:5px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td style="width:220px !important;">&nbsp;<?php echo $tr->translate("Com.Name");?></td>
+							<td style="width:220px !important;">&nbsp;<?php echo $tr->translate("CON_NAME");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("INVOICE_NUMBER");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("INVOICE_DATE");?></td>
+							<td><?php echo $tr->translate("SALE_DATE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("SALES_AMOUNT");?></td>
+							<td>&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
+							<td width="12%">&nbsp;<?php echo $tr->translate("PAID");?></td>
+							<td>&nbsp;<?php echo $tr->translate("BALANCE");?></td>
+		                </tr>
+		                <?php $num=1; 
+			                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+			                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
+			                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
+			                
+			                $dd_netotal = 0;$dd_paid = 0; $dd_balance = 0;$dd_discount=0;
+			                
+			                $db = new report_Model_DbQuery();
+			                $staff_id=''; $d_discount=0;$b_discount=0;$r_discount=0;
+			                $invoice = 0;
+		                if(!empty($this->repurchase))foreach ($this->repurchase AS $index => $rs){
+		                	$invoice = $invoice+1;
+		                if($rs['saleagent_id']!=$staff_id){
+		                	
+		                	if($index>0){
+		                		$invoice=1;
+						?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+							<td colspan="6" style="font-size: 13px;text-align: center;border-bottom: 1px solid #fff;border-left: 1px solid #fff;"></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_netotal;?></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_discount;?></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_paid;?></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_balance;?></td>
+						</tr>
+						<?php 
+						$dd_netotal=0;$dd_paid=0;$dd_balance=0;$dd_discount=0;
+		                	}?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;border-left: 1px solid #fff;border-right: 1px solid #fff;">
+							<td colspan="11" style="font-size: 18px;text-align: center;"><?php echo $rs["agent_name"];?></td>
+						</tr>
+						<?php }
+						$staff_id= $rs['saleagent_id'];
+						?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $invoice?></td>
+						   <td valign="middle" style="width:180px;" ><span style="line-height:15px;width:180px;!important; display: block;padding-left: 1px;">&nbsp;<?php echo $rs["customer_name"];?></span></td>
+						    <td style="white-space: nowrap;">&nbsp;<?php echo $rs["contact_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["invoice_no"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["invoice_date"]));?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_sold"]));?></td>
+						   <td style="white-space: nowrap;background: #ffc0c0;font-weight:bold;font-size: 12px;font-family:'Open Sans', sans-serif">&nbsp;<?php echo number_format($rs["sub_total"],2);?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo number_format($rs["discount"],2);?></td>
+						   <td style="white-space: nowrap;background: #b9b9fd;font-weight:bold;font-size: 12px;font-family:'Open Sans', sans-serif">&nbsp;<?php echo number_format($rs['paid_amount'],2);?></td>
+						   <td style="background: #ffc0c0;font-weight:bold;font-size: 12px;font-family:'Open Sans', sans-serif">&nbsp;<?php echo number_format($rs["sub_total"]-$rs["discount"]-$rs['paid_amount'],2);?></td>
+						</tr>
+						   <?php 
+							if($rs['currency_id']==1){
+								$d_netotal = $d_netotal+$rs["sub_total"]-$rs["discount"];
+								$d_paid = $d_paid+$rs['paid_amount'];
+								$d_balance = $d_balance+($rs["sub_total"]-$rs['paid_amount']-$rs["discount"]);
+								$d_discount = $d_discount+$rs["discount"];
+								
+								$dd_netotal= $dd_netotal+$rs["sub_total"]-$rs["discount"];
+								$dd_paid = $dd_paid+$rs['paid_amount'];
+								$dd_balance = $dd_balance+($rs["sub_total"]-$rs['paid_amount']-$rs["discount"]);
+								$dd_discount = $dd_discount+$rs["discount"];
+							}else if($rs['currency_id']==2){
+								$r_netotal = $r_netotal+$rs["sub_total"]-$rs["discount"];
+								$r_paid = $r_paid+$rs["paid_amount"];
+								$r_balance = $r_balance+($rs["sub_total"]-$rs['paid_amount']-$rs["discount"]);
+								$r_discount = $r_discount+$rs["discount"];
+							}else{
+								$b_netotal = $b_netotal+$rs["sub_total"]-$rs["discount"];
+								$b_paid = $b_paid+$rs["paid_amount"];
+								$b_balance = $b_balance+($rs["sub_total"]-$rs['paid_amount']-$rs["discount"]);
+								$b_discount = $b_discount+$rs["discount"];
+							}
+                    }?>
+                   		 <tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+							<td colspan="6" style="font-size: 13px;text-align: center;border-bottom: 1px solid #fff;border-left: 1px solid #fff;"></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_netotal;?></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_discount;?></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_paid;?></td>
+							<td style="font-weight:bold;font-size: 13px;text-align: center;border-bottom: 1px solid #000;"><?php echo $dd_balance;?></td>
+						</tr>
+		                </tbody>
+		           </table>
+		            <br>
+		             <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+		                <tbody><tr height="30px;" bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:2px 0px; ">
+		                    <td>ប្រភេទប្រាក់</td>
+		                    <td>សរុបវិក័យបត្រ</td>
+		                    <td><strong><?php echo $tr->translate("ប្រាក់លក់បានសរុប");?></strong></td>
+		                    <td><strong><?php echo $tr->translate("ប្រាក់បានបង់សរុប");?></strong></td>
+		                    <td><strong><?php echo $tr->translate("ប្រាក់នៅជំពាក់សរុប");?></strong></td>
+		                </tr>
+		                 <tr class="style" style=" line-height: 24px; font-size:11px;">
+		                    <td>&nbsp;<?php echo $tr->translate("DOLLAR");?></td>
+		                    <td>&nbsp;<?php echo count($this->repurchase);?>&nbsp;</td>
+		                    <td>&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
+		                    <td>&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>
+		                    <td>&nbsp;<?php echo number_format($d_balance,2);?>&nbsp;</td>
+		                 </tr>
+		               </tbody>
+		             </table>
+		              <br>
+		              <table align="center" width="100%">
+						   <tbody><tr style="font-size: 11px;">
+						        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'">យល់ព្រមដោយ</th>
+						        <th></th>
+						        <th style="width:20%;text-align:center; font-family:'Khmer MEF2'">ត្រួតពិនិត្យដោយ</th>
+						        <th></th>
+						        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'">រៀបចំដោយ</th>
+						   </tr>
+						</tbody>
+					</table>	
+		    		</td>
+		    	</tr>
+			</tbody>
+		</table>
+		</div>
+	  </div>		
+	</div>
+	 </div>
+   </div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script>
+function doPrint() {var divToPrint = document.getElementById('divPrint');var htmlToPrint = '' +'<style type="text/css">' +'</style>';htmlToPrint += divToPrint.outerHTML;window.document.write(htmlToPrint);window.print();window.close();}
+</script>

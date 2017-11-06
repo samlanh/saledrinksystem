@@ -1,0 +1,73 @@
+<?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$url_save=$this->url(array("module"=>"sales","controller"=>"saleagent","action"=>"add"));
+$frm_agent = $this->form_agent;
+?>
+<title><?php echo $tr->translate("PRICE_LEVEL");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("PRICE_LEVEL");?>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="form_sample_2" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+						<div class="form-group">
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("LEVEL_NAME");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-6">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("price_name");?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+						<label class="control-label col-md-2"><?php echo $tr->translate("REMARK");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-6">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("price_decs");?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+						<label class="control-label col-md-2"><?php echo $tr->translate("STATUS");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-6">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $frm_agent->getElement("status");?>
+								</div>
+							</div>
+						</div>
+						
+							
+					<div class="form-group">
+						<label  class="col-md-12 col-md-offset-4 col-md-8">
+							<a href="<?php echo $this->baseUrl();?>/product/pricelevel"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("EXIT")?></button></a>
+							<button type="submit" name="saveclose" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i> <?php echo $tr->translate("SAVE_CLOSE")?></button>
+							<button type="submit" name="btnsavenew" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+							
+						</label>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+
+
+</script>

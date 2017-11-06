@@ -1,0 +1,96 @@
+<?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+  $rpt_user_list=$this->url(array('module'=>'report','controller'=>'user','action'=>'userlist'), null, true);
+  $rpt_sale_agent=$this->url(array('module'=>'report','controller'=>'user','action'=>'saleagent'), null, true);
+  $rpt_user_type=$this->url(array('module'=>'report','controller'=>'user','action'=>'usertype'), null, true);
+  $rpt_location=$this->url(array('module'=>'report','controller'=>'user','action'=>'location'), null, true);
+   $user_info = new Application_Model_DbTable_DbGetUserInfo();
+	$result = $user_info->getUserInfo();
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage(); 
+	$session_user=new Zend_Session_Namespace('auth');
+	$request=Zend_Controller_Front::getInstance()->getRequest();
+	 $level = $result["level"];
+	// echo $level;
+  
+  ?>
+<div class="row">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat blue-madison">
+						<a class="more" href="<?php echo $rpt_user_list;?>">
+						<div class="visual">
+							<i class="fa fa-comments"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+							</div>
+							<div class="desc">
+								 User List Report
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat red-intense">
+						<a class="more" href="<?php echo $rpt_user_type;?>">
+						<div class="visual">
+							<i class="fa fa-bar-chart-o"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+							</div>
+							<div class="desc">
+								 User Type Report
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat purple-plum">
+						<a class="more" href="<?php echo $rpt_sale_agent;?>">
+						<div class="visual">
+							<i class="fa fa-globe"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 
+							</div>
+							<div class="desc">
+								 Sale Agent Report
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+				
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="dashboard-stat purple-plum">
+						<a class="more" href="<?php echo $rpt_location;?>">
+						<div class="visual">
+							<i class="fa fa-globe"></i>
+						</div>
+						<div class="details">
+							<div class="number">
+								 
+							</div>
+							<div class="desc">
+								 Location Report
+							</div>
+						</div>
+						</a>
+						<a class="more" href="javascript:;">
+						View more <i class="m-icon-swapright m-icon-white"></i>
+						</a>
+					</div>
+				</div>
+
+	</div>	

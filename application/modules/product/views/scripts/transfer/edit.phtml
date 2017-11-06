@@ -1,0 +1,292 @@
+<?php
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$url_submit =  $this->url(array('module'=>'product','controller'=>'adjust','action'=>'add'));
+$url_cancel =  $this->url(array('module'=>'product','controller'=>'transfer','action'=>'index'));
+
+$url_getcurrentitem =  $this->url(array('module'=>'product','controller'=>'adjust-stock','action'=>'get-current-quantity'));
+$url_getProduct =  $this->url(array('module'=>'product','controller'=>'adjust','action'=>'get-product'));
+$formFilter = $this->formFilter;
+print_r($this->rs_detail);
+?>
+<title><?php echo $tr->translate("ADJUST_STOCK");?></title>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+<br/>
+<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("EDIT_TRANSFER");?>
+			</div>
+			<div class="tools">
+				<a href="<?php echo $url_cancel;?>"><button type="button" name="calcel" class="btn red"><?php echo $tr->translate("GO_BACK");?></button></a>
+			</div>
+		</div>
+		<div class="portlet-body form">
+			<form class="form-horizontal" method="post" action="" >
+				<div class="form-body">	
+					<div class="form-group">
+						<label class="col-md-2 control-label"><?php echo $tr->translate("TRANSFER_NUM");?></label>
+						<div class="col-md-4">
+							<?php echo $formFilter->getElement('tran_num');?>
+						</div>
+														
+						<label class="col-md-2 control-label"><?php echo $tr->translate("TRANSFER_DATE");?></label>
+						<div class="col-md-4">
+							<?php echo $formFilter->getElement('tran_date');?>
+						</div>	
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label"><?php echo $tr->translate("TRANSFER_TYPE");?></label>
+						<div class="col-md-4">
+							<?php echo $formFilter->getElement('type');?>
+						</div>
+						
+						<label class="col-md-2 control-label"><span id="lb_br"></span><?php echo $tr->translate("BRANCH");?></label>
+						<div class="col-md-4">
+							<?php echo $formFilter->getElement('to_loc');?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label"><?php echo $tr->translate("REMARK");?></label>
+						<div class="col-md-4">
+							<?php echo $formFilter->getElement('remark');?>
+						</div>	
+						
+						<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+						<div class="col-md-4">
+							<?php echo $formFilter->getElement('status');?>
+						</div>
+					</div>
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption" style="width:100%">
+								<?php echo $formFilter->getElement('pro_name');?>
+							</div>
+						</div>
+					</div>
+													
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-cogs"></i><?php echo $tr->translate("PRODUCT_LIST");?>
+							</div>
+						</div>	
+							<div class="portlet-body">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th><?php echo $tr->translate("PRODUCT_NAME");?></th>
+												<th><?php echo $tr->translate("QTY_TRANSFER");?></th>
+												<th><?php echo $tr->translate("REMARK");?></th>
+												<th><?php echo $tr->translate("ACTION");?></th>
+											</tr>
+										</thead>
+										<tbody id="tr_location" style="font-size:12px;">
+										</tbody>
+									</table>
+								</div>
+								<input type="hidden" name="identity" id="identity" value="<?php //echo $identity;?>" >
+								<a href="<?php echo $this->baseUrl();?>/product/transfer"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("EXIT")?></button></a>
+								<button type="submit" name="save_new" class="btn btn-primary"><?php echo $tr->translate("SAVE_NEW");?></button>
+								<button type="submit" name="save_close" class="btn btn-primary"><?php echo $tr->translate("SAVE_CLOSE");?></button>
+							</div>
+					</div>
+				</div>
+			</form>
+		</div>
+</div>
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+	oldRow();
+});
+var index=0;
+function oldRow(){
+	<?php if(!empty($this->rs_detail)){
+			foreach( $this->rs_detail as $rs){
+				
+	?>
+			index++;
+			template='<tr id="row_location_'+index+'">';
+			template+='<td>'+index+'</td>';
+			template+='<td style="white-space: nowrap;"><?php echo $rs["item_name"];?><input type="hidden" id="pro_id_'+index+'" name="pro_id_'+index+'" value="<?php echo $rs["pro_id"]?>" </td>';
+			template+='<td><input type="text" id="qty_tran_'+index+'" onKeyup="checkQTY('+index+')" name="qty_tran_'+index+'" value="<?php echo $rs['qty']?>" class="form-control"><input type="hidden" name="qty_'+index+'" id="qty_'+index+'" value="<?php echo $rs['qty_loc']?>" /></td>'; 
+			template+='<td><input type="text" id="remark_'+index+'" name="remark_'+index+'" class="form-control"></td>';
+			template+='<td><button type="button" onClick="deleteRecord('+index+',1)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_location').append(template);
+			if($('#identity').val()!="") {
+				var identity = $('#identity').val();
+				$('#identity').val(identity+','+index);
+			} else {$('#identity').val(index);}
+	<?php }}?>
+}
+
+function addNew(){
+	id = $("#pro_name").val();
+	index++;
+	$.ajax({
+        url: "<?php echo $url_getProduct;?>",
+        type: "post",
+        data: {'id':id},
+        success: function(val){
+            //alert(data);
+			for(i=1; i<index; i++){
+				new_item=parseInt(id);
+				items = parseInt($("#pro_id_"+i).val());
+				if(new_item==items){		
+					newqty = parseInt($("#qty_tran_"+i).val());
+					newqty = newqty+1;
+					$("#qty_tran_"+i).val(newqty);
+					checkQTY(i);
+					return false;
+					
+				}
+			}
+			 data = $.parseJSON(val);
+			template='<tr id="row_location_'+index+'">';
+			template+='<td>'+index+'</td>';
+			template+='<td style="white-space: nowrap;">'+data.item_name+" "+data.brand+" "+data.size+" "+data.color+'<input type="hidden" id="pro_id_'+index+'" name="pro_id_'+index+'" value="'+data.id+'" </td>';
+			template+='<td><input type="text" id="qty_tran_'+index+'" onKeyup="checkQTY('+index+')" name="qty_tran_'+index+'" value="1" class="form-control"><input type="hidden" name="qty_'+index+'" id="qty_'+index+'" value="'+data.qty+'" /></td>'; 
+			template+='<td><input type="text" id="remark_'+index+'" name="remark_'+index+'" class="form-control"></td>';
+			template+='<td><button type="button" onClick="deleteRecord('+index+',1)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_location').append(template);
+			if($('#identity').val()!="") {
+				var identity = $('#identity').val();
+				$('#identity').val(identity+','+index);
+			} else {$('#identity').val(index);}
+        },
+        error:function(){
+           // alert("Please Product Name And Location");
+            $("#result").html('There is error while submit');
+        }
+    });
+}
+	
+	function checkQTY(index){
+		qty = parseFloat($('#qty_'+index).val());
+		qty_tran = parseFloat($('#qty_tran_'+index).val());
+		translate = "This Product is remain "+qty+" Only";
+		if(qty_tran>qty){
+			alert("This Product is remain "+qty+" Only");
+			$('#qty_tran_'+index).val(qty)
+		}
+	}
+	function transferType(){
+		var type= $('#type').val();
+		if(type==1){
+			document.getElementById('lb_br').innerHTML = "From ";
+		}else if(type==2){
+			document.getElementById('lb_br').innerHTML = "To ";
+		}
+	}
+
+function deleteRecord(index,type) {
+		if(type==1){
+			var identity = $('#identity').val();
+			var arrays = identity.split(',');
+		}else{
+			var identity = $('#identity_price').val();
+			var arrays = identity.split(',');
+		}
+		
+		for(var i=0;i<arrays.length;i++) {
+			if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		
+		if(type==1){
+			$('#identity').val(strings);
+			$("#row_location_"+index).remove();
+		}else{
+			$('#identity_price').val(strings);
+			$("#row_price_"+index).remove();
+		}
+	}
+
+
+function ShowPopupProduct(index){
+	item_id = $("#item_id_"+ index).val();
+	record_id = index;
+	if(item_id==-1){
+		ShowDialog(true);
+	}
+}
+
+function AddLocation(index){
+	var location_id= $("#location_id_"+index).val();
+	var item_id = $("#item_id_"+ index).val();
+	if(location_id==-1){
+		     record_id = index;
+		     AddNewLocation(true);
+	  }	
+	else{
+		$.ajax({
+		        url: "<?php echo $url_getcurrentitem;?>",
+		        type: "post",
+		        data: {'item_id':item_id, 'location_id':location_id},
+		        success: function(data){
+		            //alert(data);
+		            val = $.parseJSON(data);
+		            $("#qty_before_"+ index).val(val.qty);
+		        },
+		        error:function(){
+		           // alert("Please Product Name And Location");
+		            $("#result").html('There is error while submit');
+		        }
+		    });
+		}
+}
+<?php $url_add_new =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new')); ?>
+function addProduct(){
+	var pro_name = $("#txt_name").val();
+	var pro_code = $("#item_code").val();
+	var category_id = $("#category_id").val();
+	var brand_id = $("#brand_id").val();
+	var remark = $("#remark_order").val();
+	validate_text('#txt_name');
+	validate_text('#item_code');
+		$.ajax({
+	        url: "<?php echo $url_add_new;?>",
+	        type: "post",
+	        data: {'pro_name':pro_name,'pro_code':pro_code,'category_id':category_id,'brand_id':brand_id,'remark':remark},
+	        success: function(data){
+	           val = $.parseJSON(data);
+	           $('#item_id_'+record_id).append($('<option></option>').attr('value',val['pid']).attr("selected",true).text(pro_name)); 
+	           $('#item_id_'+record_id).trigger("liszt:updated");
+	            document.getElementById("frm1").reset();
+	            HideDialog();
+	        },
+	        error:function(){
+	            $("#result").html('There is error while submit');
+	        }
+	    });	
+}
+<?php $url_add_location =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new-location')); ?>
+function addNewLocation(){
+	var location_name = $("#StockName").val();
+	var ContactName   = $("#ContactName").val();
+	var ContactNumber = $("#ContactNumber").val();
+	var location_add  = $("#location_add").val();
+	var remark_add    = $("#description").val();
+	validate_text('#StockName');
+	$.ajax({
+        url: "<?php echo $url_add_location;?>",
+        type: "post",
+        data: {'location_name':location_name,'ContactName':ContactName,'ContactNumber':ContactNumber,'location_add':location_add,'remark_add':remark_add},
+        success: function(data){
+           val = $.parseJSON(data);
+            $('#location_id_'+record_id).append($("<option></option>").attr("value",val['LocationId']).attr("selected",true).text(location_name)); 
+            $('#location_id_'+record_id).trigger("liszt:updated");
+            document.getElementById("frm-location").reset();
+            HideDialoglocation();
+        },
+        error:function(){
+            alert("faile insert");
+            $("#result").html('There is error while submit');
+        }
+    });
+}
+</script>

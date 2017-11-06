@@ -1,0 +1,303 @@
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+$brach_name =  $this->branch;
+$formFilter = $this->formFilter;
+?>
+<title>Product List Report</title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("MENU_REPORT_PRODUCT");?>
+				</div>
+						<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+									
+								</ul>
+					</div>
+			</div>
+            <div class="portlet-body form frmfilter">
+				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+					<div class="form-body">
+							<div class="form-group">
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('ad_search');?>
+								</label>
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('branch');?>
+								</label>
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('brand');?>
+								</label>
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('category');?>
+								</label>
+								
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('model');?>
+								</label>
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('size');?>
+								</label>
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('color');?>
+								</label>
+								<label class="control-label col-md-3">
+									<?php echo $formFilter->getElement('status');?>
+								</label>
+							</div>	
+							<div class="form-group">
+								<label class="control-label col-md-9">
+									<?php //echo $formFilter->getElement('model');?>
+								</label>
+								<label class="control-label col-md-3">
+									<button type="submit" class="btn btn-primary col-md-12"><?php echo $tr->translate("SEARCH");?></button>
+								</label>
+							</div>
+							
+						
+				</div><div style="clear:both;"></div>	
+				</form> 
+	<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+	<div id="divPrint" style="width: 100%;">
+	<style>
+		.style{
+			line-height: 25px;font-size: 12x !important;
+			font-family: 'Khmer OS Battambang';
+		}
+		ul{margin: 0;padding:0;}
+		table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+		th{padding: 5px;}
+		.hover:hover{background: #ccc;}
+	</style>
+		<table style="font-family: 'Khmer OS Content'; width:100%;">
+			<tbody>
+			<tr>
+		    	<td align="center">
+		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0">
+		            	<tbody><tr>
+		                	<td width="20%" valign="top"><img src="<?php echo $this->baseUrl();?>/images/logo.jpg" height="55px"></td>
+		                	<td width="60%" valign="top">
+		                		<ul>
+		                			<li style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("COMPANY_CUSTOMER");?></li>
+		                			<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'">របាយការណ៏ បញ្ជីចំនួនផលិតផលក្នុងស្តុក</li>
+									<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php if($this->search!=""){echo $this->search;}else{echo "";}?></li>
+		                			<!-- <li style="text-align:center; font-size:13px;"><?php //echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php //echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li> -->
+		                		</ul>
+		                	</td>
+		                    <td width="20%"></td>
+		                </tr> 
+		                <tr>
+		                	<td colspan="3" valign="top">
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody><tr>
+		                				<td style="font-size: 11px;">
+		                				    <span style="white-space: nowrap;"><?php echo $tr->translate("ADDRESS_COMPANY");?></span>
+		                					<br><?php echo $tr->translate("TEL_COMPANY");?> 
+		                				</td>
+		                				<td width="65%"></td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr>   
+		            </tbody></table>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td id="exportExcel">
+		            <table class="table2excel" border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+		                 <tbody><tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 25px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+								<td><?php echo $tr->translate("ITEM_CODE");?></ts>
+									<td><?php echo $tr->translate("ITEM_NAME");?></td>
+									<td><?php echo $tr->translate("PRODUCT_CATEGORY");?></td>
+									<td><?php echo $tr->translate("BRAND_NAME");?></td>
+									<td><?php echo $tr->translate("MODEL");?></td>
+									<td><?php echo $tr->translate("MEASURE");?></td>
+									<td><?php echo $tr->translate("QTY");?></td>
+									<td><?php echo $tr->translate("PRODUCT_PRICE_INFO");?></td>
+									<td><?php echo $tr->translate("COST_PRICE");?></td>
+									<td><?php echo $tr->translate("BARCODE");?></td>
+		                </tr>
+		                <?php $num=1; 
+		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
+		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
+						$i=0;
+		                if(!empty($this->product))foreach ($this->product AS $index => $row){
+		                	$i++;
+							$raw_qty = $row["qty"];
+							$array = explode(".",$row["qty"]);
+							$qty = $array[0];
+							$qty_unit = ($raw_qty*$row["qty_perunit"]) - ($row["qty_perunit"]*$array[0]);
+							$l_qty = 0;
+							if(abs($raw_qty)>0){
+								if(abs($qty)>0 and abs($qty_unit)>0){
+									$l_qty = $qty." ".$row["measure"]." & ".round($qty_unit)." ".$row["unit_label"];
+								}elseif(abs($qty)==0 and abs($qty_unit)>0){
+									$l_qty = round($qty_unit)." ".$row["unit_label"];
+								}elseif(abs($qty)>0 and abs($qty_unit)==0){
+									$l_qty =  $qty." ".$row["measure"];
+								}
+							}else{
+								$l_qty = 0;
+							}
+						?>
+							<tr class='row-format<?php echo $num; ?>' id="item_<?php echo $index; ?>">
+								<td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1; ?></td>
+								<td style="white-space: nowrap;">&nbsp;<?php echo $row["item_code"]?></td>
+								<td style="">&nbsp;<?php echo $row["item_name"]?></td>
+								<!--<td style="width:5% !important"><?php //echo $row["barcode"]?></td>-->
+								<!--<td style="width:8% !important"><?php //echo $row["serial_number"]?> </td>-->
+								<td style="width:10% !important" class="center"><?php echo $row["cat"]?></td>
+								<td style="white-space: nowrap;">&nbsp;<?php echo $row["brand"]?></td>
+								<td style="width:8% !important" class="center"><?php echo $row["model"]?></td>
+								<td style="width:5% !important" class="center"><?php echo $row["measure"]?></td>
+								<td style="width:8% !important" class="center"><?php echo $l_qty;?></td>
+								<td style="width:8% !important" class="center"><?php echo $row["master_price"]?></td>
+								<td style="width:8% !important" class="center"><?php echo $row["price"]?></td>
+								<td style="width:8% !important" class="center">
+									<input style="height: 15px;margin-top: 5px;" type="checkBox" onClick="checked_id(<?php echo $i?>)" name="check_box<?php echo $i?>" id="check_box<?php echo $i?>" />
+									<input type="hidden" name="pro_id<?php echo $i;?>" id="pro_id<?php echo $i;?>" value="<?php echo $row['id'];?>" dojoType="dijit.form.TextBox" />
+								</td>
+							</tr>
+						  <?php }?> 
+		                </tbody>
+		           </table>
+		            <br>
+		             
+		              <br>
+		              <table align="center" width="100%">
+						   <tbody>
+						   <tr style="font-size: 11px;">
+						        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'">យល់ព្រមដោយ</th>
+						        <th></th>
+						        <th style="width:20%;text-align:center; font-family:'Khmer MEF2'">ត្រួតពិនិត្យដោយ</th>
+						        <th></th>
+						        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'">រៀបចំដោយ</th>
+						   </tr>
+						   <tr style="font-size: 11px;">
+						        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'"><input type="text" name="id_selected" id="id_selected" dojoType="dijit.form.TextBox" /></th>
+						        <th></th>
+						        <th style="width:20%;text-align:center; font-family:'Khmer MEF2'"><button dojoType="dijit.form.Button" id="printselected" iconClass="dijitEditorIcon dijitEditorIconPrint"
+					type="button" onclick="printSelected();">Print Selected</button></th>
+						        <th></th>
+						        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'"></th>
+						   </tr>
+						</tbody>
+					</table>	
+		    		</td>
+		    	</tr>
+			</tbody>
+		</table>
+		</div>
+	  </div>		
+	</div>
+	 </div>
+   </div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script>
+function printSelected(){
+	<?php 
+		defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+		$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+		$url =$this->url(array('module'=>'report','controller'=>'product','action'=>'showbarcode'));
+	?>
+
+	 id_selected = $('#id_selected').val();
+	 if(id_selected!=''){
+		window.location.href = '<?php echo $url;?>'+'/id/'+id_selected;
+	 }else{
+		alert('Please select record you want to print');
+		return false;
+	 }
+	
+}
+function checked_id(index){
+	stu_id = $('#pro_id'+index).val();
+	if($('#check_box'+index).is(':checked')){
+		if($("#id_selected").val()!="") {
+			var identity = $("#id_selected").val();
+			$("#id_selected").val(identity+','+stu_id);
+		}else{
+			$("#id_selected").val(stu_id);
+		}
+		
+	}else{
+		alert("else");
+		var identity = $('#id_selected').val();
+		var arrays = identity.split(',');
+		for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == stu_id) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		$('#id_selected').val(strings);
+	}
+}
+function doPrint() {var divToPrint = document.getElementById('divPrint');var htmlToPrint = '' +'<style type="text/css">' +'</style>';htmlToPrint += divToPrint.outerHTML;window.document.write(htmlToPrint);window.print();window.close();}
+
+/*var currentTime = new Date();
+var month = currentTime.getMonth() + 1;
+var day = currentTime.getDate();
+var year = currentTime.getFullYear();
+	var date =(year + "-" + month + "-" + day );
+
+var start_date = $('#start_date').val();
+var end_date =$('#end_date').val();
+
+if(end_date!="" | start_date!=""){
+    start_date = $('#start_date').val();
+	end_date =$('#end_date').val();
+	
+}else{
+	start_date = $('#start_date').val(date);
+	end_date = $('#end_date').val(date);
+}*/
+
+<?php //$url_item_filter =  $this->url(array('module'=>'report','controller'=>'index','action'=>'get-item-filter')); ?>
+/*function getProductFilter(){
+	var location_id=$("#LocationId").val();
+	var branch_id = $('#branch_id').val();
+	var category_id = $('#category_id').val();
+		$.ajax({
+			url:"<?php //echo $url_item_filter;?>",
+			type:"post",
+			data:{'category_id':category_id,'branch_id':branch_id,'location_id':location_id},
+			success: function(data){
+				items = $.parseJSON(data);
+				if(items){
+					 $('#item').empty();
+					 $('#item').val('').trigger("liszt:updated");
+					 $('#item').append($("<option></option>").attr("value","").text("Please Select Item"));
+					 for (var index = 1 ; index <= items.length; index++) {
+							$('#item').append($("<option></option>").attr("value",items[index-1]['pro_id']).text(items[index-1]['item_code'] + items[index-1]['item_name'])); 
+							$("select#item").find("option#items[index-1]['pro_id']").attr("selected", true);
+					 }           
+					$('#item').val('').trigger("liszt:updated");
+				}else{
+					 $('#item').empty();
+					 $('#item').val('').trigger("liszt:updated");
+						 $('#item').append($("<option></option>").attr("value","").text("No Items Result!"));
+						 $('#item').val('').trigger("liszt:updated");
+				}
+			},
+			error:function(){
+			}
+		});
+	}*/
+</script>

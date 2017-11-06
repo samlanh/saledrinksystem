@@ -1,0 +1,74 @@
+<?php 
+	$frm_transfer = $this->form_transfer;
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$this->headTitle( $tr->translate('MENU_REPORT_INDEX_POCHART')); 
+	echo $this->headTitle();
+?>
+<style>
+.chartTitle{ margin-bottom:20px;  padding:2px 20px; background:#eeeeee;
+				color:#0F772D ; text-align:center;}
+</style>
+<html>
+  <head>
+  	<script type="text/javascript" src="<?php echo BASE_URL;?>/js/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Quantity per month'],
+          <?php echo $this->top_product;?>
+        ]);
+
+        var options = {
+          title: 'Top Product SO(During a Month)'
+              
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+  
+ 	<div class="right">
+	<div class="wrapper">
+		<div class="view-table shadow">
+			<form id="frm" method="post">
+			<br /><br />
+				<table class="height" width="100%">
+					<tr class="height">
+						<td><?php echo $tr->translate("ITEM");?></td>
+						<td><?php echo $frm_transfer->getElement("item");?></td>
+						<td><?php echo $tr->translate("LOCATION_NAME");?></td>
+						<td><?php echo $frm_transfer->getElement("LocationId");?></td>
+					</tr>
+					<tr class="height">
+						<td><?php echo $tr->translate("BRANCH_NAME");?></td>
+						<td><?php echo $frm_transfer->getElement('branch_id');?></td>
+						<td><?php echo $tr->translate("SELECT_CATE");?></td>
+						<td width="30%"><?php echo $frm_transfer->getElement('category_id');?></td>
+					</tr>
+					<tr class="height">
+						<td><?php echo $tr->translate("FROM_DATE");?></td>
+						<td width="40%"><?php echo $frm_transfer->getElement("start_date");?></td>
+						<td><?php echo $tr->translate("END_DATE");?></td>
+						<td  width="30%"><?php echo $frm_transfer->getElement("end_date");?></td>
+					</tr>
+					<tr class="height">
+						<td></td><!-- <a href="javascript:Clickheretoprint()"> Click To test Print</a> -->
+						<td></td>
+						<td></td>
+						<td><input type="submit" value="<?php echo $tr->translate("SEARCH")?>" class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /></td>
+					</tr>
+				</table>
+			</form>
+	</div>
+	</div>
+	</div>
+  
+  
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

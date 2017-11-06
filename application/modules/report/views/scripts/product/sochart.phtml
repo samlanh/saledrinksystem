@@ -1,0 +1,35 @@
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$this->headTitle( $tr->translate('MENU_REPORT_INDEX_POCHART')); 
+	echo $this->headTitle();
+?>
+<style>
+.chartTitle{ margin-bottom:20px;  padding:2px 20px; background:#eeeeee;
+				color:#0F772D ; text-align:center;}
+</style>
+<html>
+  <head>
+  	<script type="text/javascript" src="<?php echo BASE_URL;?>/js/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Quantity per month'],
+          <?php echo $this->top_product;?>
+        ]);
+
+        var options = {
+          title: 'Top Product SO(During a Month)'
+              
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

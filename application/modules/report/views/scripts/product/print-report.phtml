@@ -1,0 +1,181 @@
+<?php 
+$url_print=$this->url(array('module'=>'report','controller'=>'index','action'=>'veiw-report'));
+define("COM_ADD","<h2>RSMK GROUP CO.,LTD</h2>No.  BB1E1,  Sangkat Kakab,  Khan Dongkon,  Phnom Penh.<br>
+		Tel: (855) 23 956 789, (855) 23-222-266 <br>
+		info@resolvocam.com, www.rsmkgroup.com ");
+define("HEADER","INVOICE");
+define("NOTE","3. The price is for door to door delivery.<br>4. The valid date of this quotation is for 15 days after issued<br>5. One year warrenty on equipment");
+define("EQUIP","Equipment");
+define("SERV","Service, Installation and other material");
+?>
+<script language="javascript">
+function Clickheretoprint()
+{ 
+  var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,"; 
+      disp_setting+="scrollbars=yes,width=600, height=300, left=100, top=25"; 
+  var content_vlue = document.getElementById("print_content").innerHTML; 
+  
+  var docprint=window.open("","",disp_setting); 
+   docprint.document.open(); 
+   docprint.document.write('<html><head><title>Stock inventory System</title>'); 
+   docprint.document.write('</head><body onLoad="self.print()" style=" margin:0px; font-family:Verdana; font-size:8px;"><center>');          
+   docprint.document.write(content_vlue);          
+   docprint.document.write('</center></body></html>'); 
+   docprint.document.close(); 
+   docprint.focus(); 
+}
+</script>
+<a href="javascript:Clickheretoprint()"> Click here to print</a>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>.</title>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<div id="print_content">
+<table width="870px" cellpadding="0" cellspacing="0" align="center" border="0" class="log_info">
+<tr>
+	<td valign="top">
+    	<table width="850" cellpadding="3" cellspacing="0" align="center" border="0">
+        <tr>
+        	<td colspan="2"><?php echo COM_ADD; ?></td>
+            <td align="right" valign="middle" colspan="2"><div><img src="../../images/logo.png" /></div></td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="center"><?php echo '<h3>'.HEADER.'</h3>'; ?></td>
+        </tr>
+        <tr>
+        	    <td align="right" width="50">To :</td>
+                <td width="500">
+					<? ?>
+                </td>
+                <td align="right" width="100">Order No :</td>
+                <td width="150">
+                
+                	<? ?>
+                </td>
+        </tr>
+        <tr>
+        	     <td align="right" width="50" valign="top">Add :</td>
+                <td width="500">
+                	
+					<? ?>
+                </td>
+                <td align="right" width="100">Date :</td>
+                <td width="150">
+					<? ?>
+                </td>
+        </tr>
+        <tr>
+        		<td align="right" width="50">Tel :</td>
+                <td width="500">
+                
+					<?php ?> 
+                </td>
+                <td align="right" width="100">Prepared by :</td>
+                <td width="150">
+                	
+					<? ?>
+                </td>
+        </tr>
+        <tr>
+        	    <td align="right" width="50">&nbsp;</td>
+                <td width="500">&nbsp;
+				<? ?>
+                </td>
+                <td align="right" width="100">Position :</td>
+                <td width="150">
+				<? ?>
+                </td>
+        </tr>
+            
+        <tr>
+        	<td colspan="4" align="center"><? ?></td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="center">
+            	<table width="850" cellpadding="5" cellspacing="5" align="center" border="1" style="border-collapse:collapse; border-color:#bcd6db">
+				<tr height="25" bgcolor="#dcf3f3"><td align="center" width="30"><b>No</b></td><td align="center" width="90"><b>Model</b></td><td align="center" width="460"><b>Description</b></td><td align="center" width="90"><b>Qty Unit</b></td><td align="center" width="100"><b>Unit Price($)</b></td><td align="center" width="70"><b>Total($)</b></td></tr>
+    				<tr><td colspan="6">
+            			<table>
+                        	<tr>
+                            	<td width="30" align="center"><b>A.</b></td>
+								
+                            	<td><? ?></td>
+                            </tr>
+                        </table>
+                    </td></tr>		
+					<tr>
+							<td align='center'>1.</td>
+							<td align='center'>camera CCD</td>
+							<td>camera</td>
+							<td> CCD</td>		
+							<td align='right'>meter camera</td>
+							<td align='right'>camera</td></tr>		
+                     <tr><td colspan="6">   
+                        <table>
+                        	<tr>
+                            	<TD width="30" align="center"><b>B.</b></TD>
+								
+                            	<td><? ?></td>
+                            </tr>
+                        </table>		
+					</td></tr>
+						
+  						
+
+                    </td></tr>
+                    <tr>
+                    	<td width="780" colspan="5" align="right"><b>Total :</b></td>
+                        <td width="70" align="right"> <? ?></td>
+                    </tr>
+                    <?//php
+						
+					?>
+                    
+                    <tr>
+                    	<td width="780" colspan="5" align="right"><b>Grand Total :</b></td>
+                        <td width="70" align="right"> <? ?></td>
+                    </tr>
+    			</table>
+            </td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="center">&nbsp;</td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="center">&nbsp;</td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="left"><?php
+			//echo '<b>Note:</b><br>';
+			//echo '1. Term of payment : '.$r[11].'<br>'; 
+			//echo '2. '.$r[14].'<br>'; 
+			//echo NOTE.'<br>'; 
+			//echo '6. '.$vatnote;
+			?></td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="center">&nbsp;</td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="center"><div id="show_quote"></div></td>
+        </tr>
+        <tr>
+        	<td colspan="2" width="550"><b>Quote approved by:</b><br /><br /><br /><br /><br /><br /><br /><br /><b>Date:</b></td>
+            <td colspan="2"><b>Customer confirmed & stamp:</b><br /><br /><br /><br /><br /><br /><br /><br /><b>Date:</b></td>
+        </tr>
+        <tr>
+        	<td colspan="4" align="center">&nbsp;</td>
+        </tr>
+        </table>
+    </td>
+</tr>
+</table>
+</div>
+</body>
+</html>

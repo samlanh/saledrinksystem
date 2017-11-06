@@ -1,0 +1,46 @@
+<?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<title><?php echo $tr->translate("ADJUST_LIST");?></title>
+<?php 
+	$url_new = $this->url(array('module'=>'product','controller'=>'adjust','action'=>'add',));
+	$url_delete = $this->url(array('module'=>'product','controller'=>'index','action'=>'delete-product',));
+	$formFilter = $this->formFilter;
+?>
+<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("ADJUST_LIST");?>
+			</div>
+			<div class="caption" style="float:right">
+					<?php $formList = new Application_Form_Frmlist(); echo $formList->showAddBuntton($url_new);?>
+			</div>
+		</div>
+		
+		<div class="portlet-body form">
+			<form class="form-horizontal" method="post" action="" >
+				<div class="form-body">
+							<div class="form-group">
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('ad_search');?>
+								</div>
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('start_date');?>
+								</div>
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('end_date');?>
+								</div>
+								<div class="col-md-3">
+									<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+								</div>
+							</div>		
+				</div>
+			</form>
+			
+		</div>
+	<div style="position: relative; clear: both;">
+		<div class="contain_form">
+			<?php echo $this->list; ?>
+		</div>
+	</div>
+</div><!-- end .right -->

@@ -1,0 +1,226 @@
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<title><?php echo $tr->translate("SALEDETAIL_REPORT");?></title>
+<marquee style="margin-top:-20px;" behavior="scroll" direction="left" onmouseout="this.start()" onmouseover="this.stop()" scrollamount="5">យើងត្រូវការ ការយល់ព្រមពី ផ្នែកគណនេយ្យ /ហិរញ្ញវត្ថុ ឫអ្នកដែលមានសិទ្ធ ដើម្បី <span style="color:red;">បង្កើតជាវិក័យបត្រ</span> / We need approval from  or person who have permission to <span style="color:red;">issue invoice</span> ! </marquee>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("SALEORDER_APPROVED");?>
+				</div>
+						<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+									
+								</ul>
+					</div>
+			</div>
+            <div class="portlet-body form frmfilter">
+					<div style="clear:both;"></div>	
+	<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+	<div id="divPrint" style="width: 100%;">
+	<style>
+		.style{
+			line-height: 20px;font-size: 9px !important;
+			font-family: 'Khmer OS Battambang';
+		}
+		ul{margin: 0;padding:0;}
+		table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+		th{padding: 5px;}
+		ul.pur_info li{line-height:18px; 
+				font-weight: normal !important;}
+		ul.pur_info li strong{font-weight: bold;}
+       .hover:hover{background: #ccc;}
+	</style>
+		<table style="font-family: 'Khmer OS Content'; width:100%;">
+			<tbody>
+			<tr>
+		    	<td align="center">
+		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0">
+		            	<tbody><tr>
+		                	<td width="20%" valign="top"><img src="<?php echo $this->baseUrl();?>/images/logo.jpg" height="55px"></td>
+		                	<td width="60%" valign="top">
+		                		<ul>
+		                			<li style="text-align:center; font-size:16px; font-family:'Khmer MEF2'">សូរ៉ា ហាងលក់សម្ភារៈអគ្គិសនី</li>
+		                			<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("SALEORDER_APPROVED");?></li>
+		                		</ul>
+		                	</td>
+		                    <td width="20%"></td>
+		                </tr> 
+		                <tr>
+		                	<td colspan="3" valign="top">
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody>
+		                			<tr>
+		                				<td style="font-size: 11px;">
+		                				    <span style="white-space: nowrap;"><?php echo $tr->translate("ADDRESS_COMPANY");?></span>
+		                					<br><?php echo $tr->translate("TEL_COMPANY");?> 
+		                				</td>
+		                				<td ></td>
+		                				<td width="65%"></td>
+		                			</tr>
+		                			<tr>
+		                				<td style="font-size: 11px;" valign="top" width="25%;">
+		                				<div style="width:100%; background: #244456;display: block;color:#fff;margin-top: 10px;">&nbsp;&nbsp;Customer Info</div>
+		                				   <ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>Customer Name : </strong><?php echo $this->product[0]['customer_name'];?></li>
+			                					<li style="text-align: left;"><strong>Contact Person : </strong><?php echo $this->product[0]['contact_name'];?></li>
+			                					<li style="text-align: left;"><strong>Contact Number : </strong><?php echo $this->product[0]['phone'];?></li>
+			                					<li style="text-align: left;"><strong>E-mail: </strong><?php echo $this->product[0]['email'];?></li>
+			                					<li style="text-align: left;"><strong>Address : </strong><?php echo $this->product[0]['add_name'];?></li>
+		                					</ul>
+		                				</td>
+		                				<td width="50%"></td>
+		                				<td width="25%" style="text-align: left;font-size: 11px;">
+		                					<div style="padding-left: 10px;width:100%; background: #244456;display: block;color:#fff;margin-top: 10px;">&nbsp;&nbsp;Official Invoice</div>
+		                					<ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>Branch Name : </strong><?php echo $this->product[0]['branch_name'];?></li>
+			                					<li style="text-align: left;"><strong>No.: </strong><?php echo $this->product[0]['sale_no'];?></li>
+			                					<li style="text-align: left;"><strong>Order Date : </strong><?php echo date("d/m/Y",strtotime($this->product[0]['date_sold']));?></li>
+		                						<li style="text-align: left;"><strong>Sale Person : </strong><?php echo $this->product[0]['staff_name'];?></li>
+		                					</ul>
+		                				</td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr>   
+		            </tbody></table>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td id="exportExcel"><br />
+		            <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:10px;" width="100%" cellspacing="0">
+		                 <tbody>
+		                 <tr align="center" style="font-weight:bold; line-height: 20px;  padding:1px 0px; white-space: nowrap;border:1px solid #fff;border-bottom: 1px solid #000 !important; ">
+		                    <td colspan="7" align="center" style="font-size: 13px;">ទំនិញដែលបានទិញហើយក្រុមហ៊ុនយើងខ្ញុំ មិនទទួលដូរយកវិញទេ ។សូមអរគុណ
+		                    <br />Goods Sold Can Not Be Returned, Thank you !</td>
+		                </tr>
+		                 <tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td><?php echo $tr->translate("ITEM_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ITEM_CODE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("QTY");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("OLD_PRICE");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("ITEM_PRICE");?></td>
+							<td><?php echo $tr->translate("AMOUNT");?></td>
+		                </tr>
+		                <?php $num=1; 
+		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
+		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
+		                if(!empty($this->product))foreach ($this->product AS $index => $rs){?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_code"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo number_format($rs["qty_order"],2);?></td>
+						   <td <?php if($rs["price"]!=$rs["old_price"]){echo"style='background:red;'";}?>>&nbsp;<?php echo $rs["curr_name"]."&nbsp;";echo number_format($rs["old_price"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["curr_name"]."&nbsp;";echo number_format($rs["price"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["curr_name"]."&nbsp;".number_format($rs["sub_total"],2);?></td>
+						</tr>
+						   <?php 
+                    }?>
+                    <tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("TOTAL");?></td>
+						<td >&nbsp;&nbsp;<?php echo number_format($this->product[0]['net_total'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
+						<td >&nbsp;&nbsp;<?php echo number_format($this->product[0]['discount_real'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("TOTAL_AMOUNT");?>​</td>
+						<td >&nbsp;&nbsp;<?php echo number_format($this->product[0]['paid'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan="7" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;">
+						<strong  style="font-size: 13px;"><u>ខសន្យា និងលក្ខណ៏ទូទៅ / General Term & Conditions</u></strong>
+							<style>
+								ul.termcodition li{ line-height: 20px;list-style-type: none; font-size: 12px;}
+							</style>
+							<ul class="termcodition">
+							<?php if(!empty($this->rscondition))foreach ($this->rscondition as $key =>$rst){ ?>
+								<li style="text-align: left;"><?php echo $key+1;echo "-".$rst['con_khmer'];?></li>
+								<li style="text-align: left;"><?php echo $rst['con_english'];?></li>
+							<?php }?>
+							</ul>
+						</td>
+					</tr>
+		            </tbody>
+		           </table>
+		              <br>
+		              <?php $url_submit = $this->url(array('module'=>'sales','controller'=>'salesapprove','action'=>'approved'));?>
+		              <form id="form_sample_2" action="<?php echo $url_submit; ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+			              <table align="center" width="100%">
+							   <tbody>
+							   <tr style="font-size: 11px;">
+							        <td style="text-align:center;  font-family:'Khmer MEF2'; white-space: nowrap;"></td>
+							        <td></td>
+							        <td style="width:20%;font-family:'Khmer MEF2';white-space: nowrap;">
+							        <select name="approved_name" id="approved_name" class="form-control select2me">
+							        	<option value="1">Approved</option>
+							        	<option value="2">Not Approved</option>
+							        </select>
+							        </td>
+							        <td><input type="hidden" name="id" id="id" value="<?php echo $this->product[0]['id'];?>" /></td>
+							        <td style="width:20%;text-align:center;font-family:'Khmer MEF2';white-space: nowrap;"></td>
+							   </tr>
+							   <tr style="font-size: 11px; height: 75px;">
+							        <td valign="bottom" style="width:30%;text-align:center;  font-family:'Khmer MEF2'; white-space: nowrap;"></td>
+							        <td></td>
+							        <td valign="bottom" style="width:40%;text-align:center; font-family:'Khmer MEF2';white-space: nowrap;"><textarea name="app_remark" id="app_remark" class="form-control" rows="3" cols="80" placeHolder="Approval Comment Here"><?php echo $this->product[0]['approved_note'];?></textarea></td>
+							        <td></td>
+							        <td valign="bottom" style="text-align:center;font-family:'Khmer MEF2';white-space: nowrap;"></td>
+							   </tr>
+							   <tr style="font-size: 11px;">
+							        <td style="text-align:center;white-space: nowrap;"></td>
+							        <td></td>
+							        <td style="text-align:center;white-space: nowrap;"><strong>ថ្ងៃខែយល់ព្រម /Approved Date</strong><input name="app_date" id="app_date" value="<?php echo date("m/d/Y");?>" class="form-control form-control-inline date-picker" /></td>
+							        <td></td>
+							        <td style="text-align:center;white-space: nowrap;"></td>
+							   </tr>
+							  
+							</tbody>
+						</table>
+					</form>	
+		    		</td>
+		    	</tr>
+			</tbody>
+		</table>
+		</div>
+		<div class="form-group">
+				<label class="col-md-2 control-label"></label>
+				<div class="col-md-2"></div>
+				<label class="col-md-4 control-label"><a href="<?php echo $this->baseUrl();?>/sales/salesapprove/" ><button style="width:90%;" type="button" class="btn blue btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a></label>
+				<div class="col-md-4"><button type="submit" class="btn blue btn-block btn-lg" ><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_MAKEINVOICE")?></button></div>
+		</div>
+	  </div>		
+	</div>
+	 </div>
+   </div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script>
+function doPrint() {
+	window.frames["print_frame"].document.body.innerHTML=document.getElementById('divPrint').innerHTML;
+    window.frames["print_frame"].window.focus();
+    window.frames["print_frame"].window.print();
+    //hideDialog();
+}
+
+</script>

@@ -1,0 +1,81 @@
+<?php 
+	$url_new = $this->url(array('module'=>'brand','controller'=>'index','action'=>'add',));
+	$url_edit = $this->url(array('module'=>'brand','controller'=>'index','action'=>'edit',));
+	$url_delete = $this->url(array('module'=>'brand','controller'=>'index','action'=>'delete',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+	
+	$rs = $this->resulr;
+?>
+<title><?php echo $tr->translate("BRAND_LIST");?></title>
+<div class="col-md-12">
+	<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("MENU_BRAND_ADVANCE_INDEX");?>
+			</div>
+			<div class="caption" style="float:right">
+					<?php $formList = new Application_Form_Frmlist(); echo $formList->showAddBuntton($url_new);?>
+			</div>
+		</div>
+		<div class="portlet-body form">
+			<form class="form-horizontal" method="post" action="" >
+				<div class="form-body">
+							<div class="form-group">
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('name');?>
+								</div>
+												
+								<label class="col-md-1 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-3">
+									<?php echo $formFilter->getElement('status');?>
+								</div>
+								<div class="col-md-2">
+									<button type="submit" class="btn green"><?php echo $tr->translate("SEARCH");?></button>
+								</div>
+							</div>
+				</div>
+			</form>
+		</div>
+		<!-- Result List -->
+					<!-- BEGIN EXAMPLE TABLE PORTLET-->
+						
+						<div class="portlet-body">
+							<div class="table-toolbar">
+								
+							</div>
+							<table class="table table-striped table-bordered table-hover" id="sample_2">
+							<thead>
+								<tr>
+									<th><?php echo $tr->translate("NO");?></th>
+									<th><?php echo $tr->translate("BRAND_NAME");?></th>
+									<th><?php echo $tr->translate("STATUS");?></th>
+									<th><?php echo $tr->translate("REMRK");?></th>
+									<th><?php echo $tr->translate("ACTION");?></th>
+								</tr>
+							</thead>
+							<tbody style="font-size: 12px;">
+								<?php if(!empty($rs)){ foreach ($rs as $key => $row){?>
+								<tr class="odd gradeX">
+									<td><?php echo $key+1;?></td>
+									<td><?php echo $row["name"]?></td>
+									<td>
+										<?php if($row["status"] == 1){?>
+										<span class="label label-sm label-success"><?php echo $tr->translate("ACTIVE");?> </span>
+										<?php }else{?>
+										<span class="label label-sm label-danger"><?php echo $tr->translate("DEACTIVE");?> </span>
+										<?php }?>
+									</td>
+									<td class="center"><?php echo $row["remark"]?></td>
+									<td>
+										<a href="<?php echo $url_edit;?>/id/<?php echo $row["id"]?>"><?php echo $tr->translate("EDIT");?></a> 
+									</td>
+								</tr>
+								<?php }}?>
+							</tbody>
+							</table>
+						</div>
+					<!-- END EXAMPLE TABLE PORTLET-->
+			<!-- End Result list -->
+	</div>
+</div>

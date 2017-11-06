@@ -1,0 +1,188 @@
+<?php
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$url_submit =  $this->url(array('module'=>'product','controller'=>'index','action'=>'update-itemalert'));
+$row_alert = $this->rowalert;
+?>
+<title><?php echo $tr->translate("MENU_PRODUCT_INDEX_UPDATE_ITEMALERT");?></title>
+<div class="wrapper">
+	<div class="right">
+	<br/>
+		<div class="view-table">
+			<div class="head_form">
+				<?php echo $tr->translate("MENU_PRODUCT_INDEX_UPDATE_ITEMALERT");?>
+			</div>
+			<div class="contain_form">
+				<form id="orderFrm" action"<?php echo $url_submit;?>" method="post">.
+				   <div class="btn" align="right">
+				   </div>
+						<table>
+							  <tr>
+								<td valign="top" colspan="2">
+									<table class="collape" id="table_order">
+										<tr class="row-table1">
+											<td class="sub-tdheader"><?php echo $tr->translate("DEL");?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("NUM"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("ITEM_NAME"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("MIN_QTY_ALERT"));?></td>
+											<td class="sub-tdheader" width='30%'><?php echo strtoupper($tr->translate("MSM_ALERT"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("REMARK_CAP"));?></td>
+										</tr>
+						          </table>
+									<input type="hidden" id="identity" name="identity" />
+								</td>
+								</tr>
+								<tr class="height">
+									<td colspan="2" align="center">
+									<br /><br />
+										<input class="btn_submit" type="submit" name="update" value="<?php echo $tr->translate("UPDATE_CLOSE");?>"></input>
+										<input class="btn_submit" type="button" value="Cancel" name="payment" onclick="Cancel()"></input>
+									</td>
+								</tr>
+							
+						</table>
+					</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+//action when click on add/delete of followup
+jQuery(document).ready(function(){
+	$("#pro_id").chosen();
+	var index5 = '<?php echo count($row_alert);?>';
+	initList();
+	$('#orderFrm').validationEngine();
+	//$('#mysearch').val('new result').trigger("liszt:updated");
+	//$("#item_1").chosen();
+});
+
+//show row of order item
+function initList() {
+	var template;
+	var optionItem = '<?php echo $this->items;?>';
+	<?php if(!empty($row_alert)) {
+		foreach($row_alert AS $i=>$r){
+			$inx = $i +1;?>
+			template='<tr id="row_order_<?php echo $inx;?>" style="height:33px;">';
+			if(<?php echo $inx;?> == 1) {
+			template+='<td class="quater-input center"></td>';
+			} else {
+			template+='<td class="quater-input" width="2%"><img onClick="deleteRecord(<?php echo $inx;?>)" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+			}
+			template+='<td class="quater-input" width="3%"><?php echo $inx;?></td>';
+			template+='<td class="quater-input" width="30%"><select disabled="disabled" id="item_<?php echo $inx;?>">'+optionItem+'</select></td>';
+			template+='<td class="quater-input"><input type="text" class="validate[required,custom[number]]" id="min_qty_<?php echo $inx;?>" name="min_qty_<?php echo $inx;?>" /></td>'; 
+			template+='<td class="quater-input"  width="30%"><input type="text"  class="validate[required]" id="sms_<?php echo $inx;?>" name="sms_<?php echo $inx;?>"/></td>';
+			template+='<td class="quater-input"><input type="text" type="text" id="remark_<?php echo $inx;?>" name="remark_<?php echo $inx;?>"/></td>';
+			template+='</tr>';
+			$('#table_order').append(template);
+
+			$('#item_<?php echo $inx;?>').val('<?php echo $r['pro_id'];?>');
+			$('#min_qty_<?php echo $inx;?>').val('<?php echo $r['min_qty'];?>');
+			$('#sms_<?php echo $inx;?>').val('<?php echo $r['message'];?>');
+			$('#remark_<?php echo $inx;?>').val('<?php echo $r['remark']; ?>');
+			if(<?php echo $inx;?>!=1) {
+				var identity = $('#identity').val();
+				$('#identity').val(identity+','+<?php echo $inx;?>);
+			} else {$('#identity').val(<?php echo $inx;?>);}
+		<?php } }?>
+}
+
+function deleteRecord(index) {
+	var identity = $('#identity').val();
+	var arrays = identity.split(',');
+	for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+	}
+	var strings = arrays.join(',');
+	$('#identity').val(strings);
+	$("#row_order_"+index).remove();	
+}
+
+<?php $url_getcurrent_price =  $this->url(array('module'=>'sales','controller'=>'sales-order','action'=>'get-current-price')); ?>
+var record_index= 1;
+function getCurrentPrice(index){
+	item_id = $("#type_price_"+ index).val();
+	if(item_id==-1){
+		     record_index = index;
+			 ShowDialog(true);
+	}
+	else{
+		/*$.ajax({
+	        url: "<?php //echo $url_getcurrent_price;?>",
+	        type: "post",
+	        data: {'item_id':item_id},
+	        success: function(data){
+	            val = $.parseJSON(data);
+	            $("#old_price_"+index).val(val.price);
+	            $("#new_price_"+inex).val(val.price);
+	        },
+	        error:function(){
+	            $("#result").html('There is error while submit');
+	        }
+	    });*/
+	}
+}
+<?php $url_add_price =  $this->url(array('module'=>'product','controller'=>'adjust-stock','action'=>'add-new-price-type')); ?>
+function addPriceType(index){
+	var price_name = $("#price_name").val();
+	var price_decs = $("#price_decs").val();
+	var status = $("#status").val();
+	validate_text('#price_name');
+	$.ajax({
+        url: "<?php echo $url_add_price;?>",
+        type: "post",
+        data: {'price_name':price_name,'price_decs':price_decs,'status':status},
+        success: function(data){
+            val = $.parseJSON(data);
+            alert(data);
+            $('#type_price_'+record_index).append($('<option></option>').attr('value',val['type_id']).attr("selected",true).text(price_name)); 
+            $('#type_price_'+record_index).trigger("liszt:updated");
+
+            document.getElementById("frm1").reset();
+            HideDialog();
+        },
+        error:function(){
+            alert("Insert Failed!");
+            $("#result").html('There is error while submit');
+        }
+    });	
+    
+	
+}
+<?php $url_add_new =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new')); ?>
+/*function addProduct(){
+	var pro_name = $("#product_name").val();
+	var pro_code = $("#item_code").val();
+	var price = $("#item_price").val();
+	var remark = $("#remark_order").val();
+	validate_text('#product_name');
+		$.ajax({
+	        url: "<?php //echo $url_add_new;?>",
+	        type: "post",
+	        data: {'pro_name':pro_name,'pro_code':pro_code,'price':price,'remark':remark},
+	        success: function(data){
+	            val = $.parseJSON(data);
+	            $('#item_id_'+record_index).append($('<option></option>').attr('value',val['pid']).attr("selected",true).text(pro_name)); 
+	            $('#item_id_'+record_index).trigger("liszt:updated");
+	            $("#old_price_"+record_index).val(price);
+	            $("#new_price_"+record_index).val(price);
+
+	        	//$('#item_id_'+record_index).next().val(pro_name);
+	            document.getElementById("frm1").reset();
+	            HideDialog();
+	        },
+	        error:function(){
+	            alert("Insert Failed!");
+	            $("#result").html('There is error while submit');
+	        }
+	    });	
+}*/
+function Cancel(){
+	var comfir= confirm("តើលោកអ្នកពិតជាចង់ចាកចេញរឺ ?");
+	if(comfir==true){
+		window.open("<?php echo BASE_URL;?>/product/index/itemalert","_parent");
+	}
+	
+}
+</script>

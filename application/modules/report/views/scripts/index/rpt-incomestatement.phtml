@@ -1,0 +1,188 @@
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+// 	$frm = $this->frm_search;
+	$month = array("01"=>"មករា","02"=>"កុម្ភៈ","03"=>"មីនា","04"=>"មេសា","05"=>"ឧសភា","06"=>"មិថុនា","07"=>"កក្កដា","08"=>"សីហា","09"=>"កញ្ញា","10"=>"តុលា","11"=>"វិច្ឆិកា","12"=>"ធ្នូ",);
+// 	$db  = new Report_Model_DbTable_DbParamater();
+?>
+<script>
+dojo.require("dijit.form.DateTextBox");
+</script>
+<meta charset="utf-8">
+<title><?php echo $tr->translate("របាយការណ៍ចំណូលចំណាយ");?></title>
+<div class="portlet-body form frmfilter">
+				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 6px;">
+						<?php $formFilter = $this->formFilter; ?>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('text_search');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('branch_id');?></label>
+						<label class="control-label col-md-2"><div class="input-icon right"><i class="icon-calendar"></i><?php echo $formFilter->getElement('start_date');?></div></label>
+						<label class="control-label col-md-2"><div class="input-icon right"><i class="icon-calendar"></i><?php echo $formFilter->getElement('end_date');?></div></label>
+						<label class="control-label col-md-2">
+							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+						</label>
+					</div><div style="clear:both;"></div>	
+				</form> 
+			</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php //echo $tr->translate("Expense Report");?>
+				</div>
+					<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+								</ul>
+					</div>
+			</div>
+			
+<div style=" width:29cm;min-height:22cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.5cm">
+<table style="font-family: 'Khmer OS Content'; width:100%;"  >
+	<tr>
+    	<td align="center">
+    	 <div id="divPrint">
+    	 	<style>
+					tr td.border_bottom{border-bottom: solid 1px #000;}
+					tr td.border_double{border-bottom: double #000;}
+					.border{border:1px solid #000;}
+					.style{
+						line-height: 20px;font-size: 14px !important;
+						font-family: 'Khmer OS Battambang';
+						}
+						th{padding: 5px;}
+					</style>
+        	<table width="100%" style="font-family:'Khmer OS Battambang';" style="margin:0; padding:0;border:none;">
+        	<tr>
+                <td width="18%"></td>
+                <td width="60%" valign="top">
+                <ul style="list-style: none;">
+	                <li style="line-height:25px;text-align:center; font-size:18px; font-family:'Khmer MEF2'"><?php //echo $tr->translate("BRAND_TITLE");?></li>
+	                <li style="line-height:20px;text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("របាយការណ៍ចំណូលចំណាយ");?></li>
+	                <li style="line-height:20px;text-align:center; font-size:16px; font-family:'Khmer MEF2'">(គិតជាដុល្លាអាមេរិក)</li>
+	                <li style="line-height:25px;text-align:center; font-size:14px; font-family:'Khmer MEF2'"><?php echo $tr->translate("ប្រចាំខែ ");?> <?php if (!empty($this->list_end_date['end_date'])) echo  $month[date("m",strtotime($this->list_end_date['end_date']))]." ".date("Y",strtotime($this->list_end_date['end_date']));?></li>
+                </ul>
+                </td>
+                <td width="20%"></td>
+             </tr> 
+             	<?php $total_income = 0; $total_expense = 0; $net_income =0;?>
+             <tr>
+             	<td colspan="3">
+             		<table  width="100%" style="border-collapse:collapse; font-size: 14px; line-height: 25px;" >  
+             			<tr>
+             				<td colspan="2" style=" font-size:16px; font-family:'Khmer MEF2'"> <?php echo $tr->translate("ចំណូលពីការលក់");?> </td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td class="" align="right" style="">&nbsp;<strong style="font-family: Helvetica;"><?php 
+	             				$total_sold = $this->rssale['sale_amount'];//-$this->rssale['discount_amount'];
+	             				echo number_format($total_sold,2);?>&nbsp;</strong></td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td >&nbsp;</td>
+             			</tr>
+             			<?php 
+             				$total_income = $this->rssale['sale_amount']-$this->rssale['discount_amount'];
+             			?>
+             			<tr height="21px">
+             				<td colspan="2" style=" font-size:16px; font-family:'Khmer MEF2'"> <?php echo $tr->translate("ថ្ងៃដើមផលិតផល");?> </td>
+             				<td align="right">&nbsp;<?php 
+	             				$cost_price = $this->rscost['total_cost'];
+	             				echo number_format($cost_price,2);?>&nbsp;</td>
+             				<td >&nbsp;&nbsp;</td>
+             				<td class="" align="right">&nbsp;&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td>&nbsp;</td>
+             			</tr>
+             			<?php ?>
+             			<tr>
+             				<td >&nbsp;</td>
+             				<td style=" font-size:16px; font-family:'Khmer MEF2';text-align: right;"><br />ប្រាក់ចំណេញដុល(Gross Profit)</td>
+             				<td style="text-align:right ;font-size:16px; font-family:'Khmer MEF2'"> <?php //echo $tr->translate("ចំណូលសរុប");?>  </td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td class="border_bottom" style="text-align:right;font-family: Helvetica;font-weight: bold;" valign="bottom">&nbsp;<?php 
+             				$net_sold = $total_sold-$cost_price;
+             				if ($net_sold<0){echo "(".number_format(abs($net_sold),2).")";}else{ echo number_format($net_sold,2);}?>&nbsp;</td>
+             				<td class="" align="right">&nbsp;<strong style="font-family: Helvetica;font-weight: bold;"><?php //echo number_format($total_income,2);;?></strong>&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             			</tr>
+             			<tr>
+             				<td colspan="3" style=" font-size:16px; font-family:'Khmer MEF2'"> <?php echo $tr->translate("ចំណាយផ្សេងៗ");?> </td>
+             				<td align="right">&nbsp;&nbsp;</td>
+             			</tr>
+             			<?php 
+								$total_income_kh=0;
+								$total_income_dollar=0;
+								$total =0;
+								$total_paid =0;
+								$total_expense_kh=0;
+							?>
+							<?php $i=0;
+							  if(!empty($this->expense))foreach($this->expense as $row){ $i++;?>
+             				<?php
+             					$total_expense = $total_expense + $row['total_amount'];
+             				?>
+             			<tr height="21px">
+             				<td>&nbsp;</td>
+             				<td >&nbsp;<?php echo $row['title'];//.'/'.$row['title_en'];?>&nbsp;</td>
+             				<td class="" align="right">&nbsp;<?php echo number_format($row['total_amount'],2);?>&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td>&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td >&nbsp;</td>
+             			</tr>
+             			<?php }?>
+             			<tr height="22px">
+             				<td>&nbsp;</td>
+             				
+             				<td style="text-align:right;font-size:16px; font-family:'Khmer MEF2'"> <?php echo $tr->translate("ចំណាយសរុប");?> </td>
+             				<td class="border_bottom" align="right">&nbsp;<strong style="font-family: Helvetica;font-weight: bold;"><?php echo number_format($total_expense,2);?>&nbsp;</strong></td>
+             				<td >&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td >&nbsp;</td>
+             			</tr>
+             			<?php $net_income = $net_sold-$total_expense;
+             			?>
+             			<tr style="padding-top: 100px;">
+             				<td>&nbsp;</td>
+             				<td style="text-align:right ;font-size:16px; font-family:'Khmer MEF2'" width="150px"><?php echo $tr->translate("ប្រាក់ចំណេញសរុប");?> </td>
+             				<td >&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td >&nbsp;</td>
+             				<td style="width:10px;">&nbsp;</td>
+             				<td class="border_double" align="right" ><strong style="font-family: Helvetica;font-weight: bold;">&nbsp;<?php if ($net_income<0){echo "(".number_format(abs($net_income),2).")";}else{ echo number_format($net_income,2);}?>&nbsp;</strong></td>
+             			</tr>
+             		</table>
+             	</td>
+             </tr>
+            </table>
+    	</td>
+    </tr>
+</table>
+		<br />
+		   <table align="center" width="100%">
+				   <tr style="font-size: 14px;">
+				        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'"><?php echo $tr->translate('APPROVED BY');?></th>
+				        <th></th>
+				        <th style="width:20%;text-align:center; font-family:'Khmer MEF2'"><?php echo $tr->translate('VERIFYED BY');?></th>
+				        <th></th>
+				        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'"><?php echo $tr->translate('PREPARE BY');?></th>
+				   </tr>
+			</table>
+</div>
+</div>
+</div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script type="text/javascript">
+function doPrint() {var divToPrint = document.getElementById('divPrint');var htmlToPrint = '' +'<style type="text/css">' +'</style>';htmlToPrint += divToPrint.outerHTML;window.document.write(htmlToPrint);window.print();window.close();}
+</script>

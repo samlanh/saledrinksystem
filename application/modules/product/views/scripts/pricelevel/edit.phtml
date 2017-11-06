@@ -1,0 +1,86 @@
+<?php
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$form=$this->form;
+//$baseurl = Zend_Controller_Front::getInstance()->getBaseUrl();//new
+$url_submit =  $this->url(array('module'=>'product','controller'=>'AdjustStock','action'=>'update-item-price'));
+$url_cancel =  $this->url(array('module'=>'product','controller'=>'AdjustStock','action'=>'index'));
+$add_price = $this->frm_addprice;
+$row_price = $this->pricetype_option;
+
+?>
+<title><?php echo $tr->translate("PRICE_LEVEL");?></title>
+<div class="wrapper">
+	<div class="right">
+	<br/>
+		<div class="view-table">
+			<div class="head_form">
+				<?php echo $tr->translate("PRICE_LEVEL");?>
+			</div>
+			<div class="contain_form">
+				<form id="orderFrm" action"<?php echo $url_submit;?>" method="post">.
+					<table style="background:#eeeeee; border:1px solid #ccc;">
+						<tr>
+					 		<td colspan="4" height="40px;"></td>
+					 	</tr>
+						<tr>
+							<td width="10%"></td>
+							<td width="20%"><?php echo $tr->translate("ITEM_NAME");?></td>
+							<td width="35%"><?php echo $add_price->getElement("pro_id");?></td>
+							<td><?php echo $add_price->getElement("id");?></td>
+					 	</tr>
+					 	<tr>
+							<td></td>
+							<td><?php echo $tr->translate("DESC");?></td>
+							<td><br /><?php echo $add_price->getElement("price_desc");?></td>
+							<td></td>
+					 	</tr>
+					 	<tr>
+					 		<td colspan="4" height="40px;"></td>
+					 	</tr>
+					</table>
+				   <div class="btn" align="right">
+				   </div>
+						<table>
+							  <tr>
+								<td valign="top" colspan="2">
+									<table class="collape" id="table_order">
+										<tr class="row-table1">
+											<td class="sub-tdheader"><?php echo $tr->translate("DEL");?></td>
+											<td class="sub-tdheader"><?php echo $tr->translate("NUM");?></td>
+											<td class="sub-tdheader" width='25%'><?php echo $tr->translate("TYPE_PRICE");?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("PRICE"));?></td>
+											<td class="sub-tdheader" width='25%'><?php echo strtoupper($tr->translate("REMARK_CAP"));?></td>
+										</tr>
+						          </table>
+									<input type="hidden" id="identity" name="identity" />
+									<table>
+										<tr>
+											<td class="new-row">
+												<div class="btn">
+													<button class="positive" type="button" id="new_item"  name= "new_followup" value="New">
+														&nbsp;<img src="<?php echo BASE_URL?>/images/icon/new-row.png" alt=""/><?php echo $tr->translate("ADD");?>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</td>
+								</tr>
+								<tr>
+									<td colspan="2" align="center">
+										<a href="<?php echo $this->baseUrl();?>/product/pricelevel"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("EXIT")?></button></a>
+										<input class="btn_submit" type="submit" name="update" value="<?php echo $tr->translate("GO_EDIT");?>"></input>
+									</td>
+								</tr>
+							
+						</table>
+					</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+//action when click on add/delete of followup
+
+</script>

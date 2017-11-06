@@ -1,0 +1,208 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$this->headTitle('របាយការណ៍៍ប្រវត្តិបង់ប្រាក់អតិថិជនលម្អិត'); 
+	echo $this->headTitle();
+	
+	$session_user=new Zend_Session_Namespace('auth');
+	$user_id=$session_user->user_id;
+	$originalDate = "2012-10-31";
+	$newDate = date("m/d/Y", strtotime($originalDate));
+	$row = $this->rsreceitp;
+	//print_r($row);
+?>
+<form  id='foundation_class' action=""  method="post" enctype="application/x-www-form-urlencoded">
+</form>
+<style>
+.hover:hover{ background: #ddd;}
+	line-height: 20px;font-size: 12px !important;
+			font-family: 'Khmer OS Battambang';
+		}
+		ul{margin: 0;padding:0;}
+		table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+		th{padding: 5px;}
+		ul.pur_info li{line-height:18px; 
+				font-weight: normal !important;}
+		ul.pur_info li strong{font-weight: bold;}
+       .hover:hover{background: #ccc;}
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("របាយការណ៍៍ប្រវត្តិបង់ប្រាក់អតិថិជនលម្អិត");?>
+				</div>
+					<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+								</ul>
+					</div>
+			</div>
+			 <div class="portlet-body form frmfilter">
+				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+					
+				<div style="clear:both;"></div>
+				</form> 
+			</div>
+<div style="border: 1px dotted #000;background: #fff; margin: 0 auto;min-height: 27cm;">
+		<div id="divPrint"  >
+			<table class="table2excel" style="background:#fff; margin: 0 auto; width: 100%; padding: 0px 2px 1cm 2px;font-family: 'Hanuman';">
+							<tr style="font-size: 13px;">
+								<td colspan="3" align="center">
+									<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៍៍ប្រវត្តិបង់ប្រាក់អតិថិជនលម្អិត</strong><br />
+								</td>
+							</tr>
+							<tr>
+								<td width="20%" align="left">
+								</td>
+								<td align="center">
+									<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 13px;font-family:'Khmer MEF2';"></strong>
+								</td>
+								<td align="right" width="20%">&nbsp;</td>
+							</tr>
+							<?php 
+								$total_income_kh=0;
+								$total_income_dollar=0;
+								$total =0;
+								$total_paid =0;
+								$total_expense_kh=0;
+								$total_paid=0;
+							?>
+							 <tr>
+		                	<td colspan="3" valign="top" style="padding-top: 25px;"><br />
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody>
+		                			<tr>
+		                				<td style="font-size: 12px;" valign="top" width="40%;">
+		                				<div style="width:100%;display: block;font-size:16px; font-family:'Khmer MEF2';white-space: nowrap;"><u>ពត៌មានអតិថិជន / CUSTOMER INFORMATION</u></div>
+		                				    <ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>ឈ្មោះក្រុមហ៊ុន / Company Name : </strong><?php echo $this->rsreceitp[0]['customer_name'];?></li>
+			                					<li style="text-align: left;"><strong>ឈ្មោះអ្នកទំនាក់ទំនង / Contact Person : </strong><?php echo $this->rsreceitp[0]['contact_name'];?></li>
+			                					<li style="text-align: left;"><strong>លេខទូរសព្ទ / Contact Number : </strong><?php echo $this->rsreceitp[0]['contact_phone'];?></li>
+			                					<li style="text-align: left;"><strong>សារអេឡិចត្រូនិច / Email : </strong><?php echo $this->rsreceitp[0]['email'];?></li>
+			                					<li style="text-align: left;"><strong>អាសយដ្ឋាន /  Address: </strong><?php echo $this->rsreceitp[0]['add_name']."&nbsp;".$this->rsreceitp[0]['province'];?></li>
+		                					</ul>
+		                				</td>
+		                				<td width="25"></td>
+		                				<td width="35%" style="text-align: left;font-size: 12px;">
+		                					<div style="width:100%;display: block;font-size:16px; font-family:'Khmer MEF2';"><u>វិក័យបត្រ </u></div>
+		                					<ul class='pur_info'>
+			                					<!--<li style="text-align: left;"><strong>សាខា​ / Location : </strong><?php echo $this->rsreceitp[0]['prefix'];?></li>-->
+			                					<li style="text-align: left;"><strong>លេខវិក័យបត្រ / Invoice No. : </strong><?php echo $this->rsreceitp[0]['invoice_no'];?></li>
+		                					    <li style="text-align: left;"><strong>កាលបរិច្ឋេទ / Date : </strong><?php echo date("d/m/Y",strtotime($this->rsreceitp[0]['invoice_date']));?></li>
+		                						<li style="text-align: left;"><strong>លក់ដោយ / Sale Person : </strong><?php echo $this->rsreceitp[0]['staff_name'];?></li>
+		                					    <li style="text-align: left;"><strong>ចេញដោយ / Bill Issuer : </strong><?php echo $this->rsreceitp[0]['biller'];?></li>
+			                			    </ul>
+		                				</td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr> 
+							<tr>
+									<td colspan="3">
+									<table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+		            					<tr style="font-size:12px; height: 20px;border: 1px solid #000;white-space: nowrap;background-color: #336699;color:#fff;line-height:30px;font-weight: bold;" align="center" >
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('NUM')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('ITEM_NAME')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('QTY')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('PRICE')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('AMOUNT')?></td>
+										</tr>
+										 <style> td{padding:0 3px; }</style>
+									<?php $i=0;if(!empty($this->rsreceitp))foreach($this->rsreceitp as $row){ $i++;
+									?>
+										<tr class="hover" style="font-size:12px; height: 20px;border: 1px solid #000; white-space: nowrap;" >
+											<td style="border: 1px solid #000;"><?php echo $i;?></td>
+											<td style="border: 1px solid #000; text-align: left;"><?php echo $row['item_name'];?></td>
+											<td style="border: 1px solid #000;background:#c6e2fb"><?php echo number_format($row['qty_order'],2);?></td>
+											<td style="border: 1px solid #000;background:#c6e2fb">&nbsp;$<span style="float:right"><?php echo number_format($row['price'],2);?></span></td>
+											<td style="border: 1px solid #000;background:#c6e2fb">&nbsp;$<span style="float:right"><?php echo number_format($row['sub_total'],2);?></span></td>
+										</tr>
+											<?php 
+												//$total_paid = $total_paid + $row['paid'];
+											?> 
+									<?php } ?>
+										 <tr class="hover" style="font-size:14px; height:20px;border: 1px solid #000;"  >
+											<td style="border: 1px solid #fff;border-right: 1px solid #000;" colspan="3"></td>
+											<td style="border: 1px solid #000; white-space: nowrap;text-align:right;width: 14%;">សរុប/ Total</td>
+											<td style="border: 1px solid #000;background-color: #336699;color:#fff;">&nbsp;$<span style="float:right"><?php echo number_format($this->rsreceitp[0]["net_total"],2);?></span></td>
+										</tr>
+										 <tr class="hover" style="font-size:14px; height:20px;border: 1px solid #000;"  >
+											<td style="border: 1px solid #fff;border-right: 1px solid #000;" colspan="3"></td>
+											<td style="border: 1px solid #000; white-space: nowrap;text-align:right;">បញ្ចុះតម្លៃ/Discount</td>
+											<td style="border: 1px solid #000;background-color: #336699;color:#fff;">&nbsp;$<span style="float:right"><?php echo number_format($this->rsreceitp[0]["discount_real"],2);?></span></td>
+										</tr>
+										 <tr class="hover" style="font-size:14px; height:20px;border: 1px solid #000;"  >
+											<td style="border: 1px solid #fff;border-right: 1px solid #000;" colspan="3"></td>
+											<td style="border: 1px solid #000; white-space: nowrap;text-align:right;">ប្រាក់បានបង់/Paided</td>
+											<td style="border: 1px solid #000;background-color: #336699;color:#fff;">&nbsp;$<span style="float:right"><?php echo number_format($this->rsreceitp[0]["paid_amount"],2);?></span></td>
+										</tr>
+										 <tr class="hover" style="font-size:14px; height:20px;border: 1px solid #000;" >
+											<td style="border: 1px solid #fff;border-right: 1px solid #000;" colspan="3"></td>
+											<td style="border: 1px solid #000; white-space: nowrap; text-align:right;">ប្រាក់នៅសល់/Balance</td>
+											<td style="border: 1px solid #000;background-color: #336699;color:#fff;">&nbsp;$<span style="float:right"><?php echo number_format($this->rsreceitp[0]["balance_after"],2);?></span></td>
+										</tr>
+										</table>
+									</td>
+								</tr>
+								
+							
+			</table>
+			<table style="margin-top:10px;" width="100%">
+				<tr>
+					<td colspan="6"> <u><b>Payment History</b></u></td>
+				</tr>
+				<tr>
+					<td width="50%">
+						<table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+							<?php if($this->invoicepayment){ $i=0;?>
+							<tr style="font-size:12px; height: 20px;border: 1px solid #000;white-space: nowrap;background-color: #336699;color:#fff;line-height:30px;font-weight: bold;text-align:center;">
+								<th><?php echo $tr->translate('NUM')?></th>
+								<th><?php echo $tr->translate('DATE')?></th>
+								<th><?php echo $tr->translate('RECIEPT_NO')?></th>
+								<th><?php echo $tr->translate('AMOUNT')?></th>
+								<th><?php echo $tr->translate('Receive By')?></th>
+								<th><?php echo $tr->translate('NOTE')?></th>
+							</tr>
+							
+							<?php foreach($this->invoicepayment AS $rs){ $i++;?>
+							<tr>
+								<td><?php echo $i;?></td>
+								<td><?php echo date("d-M-Y",strtotime($rs["receipt_date"]));?></td>
+								<td><?php echo $rs["receipt_no"]?></td>
+								<td>&nbsp;$<span style="float:right"><?php echo $rs["paid"]?></span></td>
+								<td><?php echo $rs["user_name"]?></td>
+								<td><?php echo $rs["remark"]?></td>
+							</tr>
+							<?php }?>
+							<?php }?>
+
+						</table>
+					</td>
+				</tr>
+			</table>
+	</div>	
+	</div>
+	</div>
+	</div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script type="text/javascript">
+function doPrint() {
+	var divToPrint = document.getElementById('divPrint');
+var htmlToPrint = '' +'<style type="text/css">' +'</style>';
+htmlToPrint += divToPrint.outerHTML;
+window.document.write(htmlToPrint);
+window.print();
+//window.close();}
+</script>

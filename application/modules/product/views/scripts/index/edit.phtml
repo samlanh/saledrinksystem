@@ -1,0 +1,810 @@
+<?php 
+defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+$form=$this->form;
+
+
+	$url_submit =  $this->url(array('module'=>'product','controller'=>'index','action'=>'edit'));
+    $url_cencel =  $this->url(array('module'=>'product','controller'=>'index','action'=>'index'),null, true);
+    $url_check =  $this->url(array('module'=>'product','controller'=>'index','action'=>'check'));
+    $url_new = $this->url(array('module'=>'product','controller'=>'index','action'=>'add'));
+	
+	$user_info = new Application_Model_DbTable_DbGetUserInfo();
+	$result = $user_info->getUserInfo();
+	$session_user=new Zend_Session_Namespace('auth');
+	$request=Zend_Controller_Front::getInstance()->getRequest();
+	 $level = $result["level"];
+	 if($level==1 OR  $level==2){
+		$disable = "";
+	}else{
+		$disable = "pointer-events: none;cursor: default;color: #ccc;";
+	}
+?>						 
+<title><?php echo $tr->translate("EDIT_PRODUCT");?></title>
+<body>
+
+		<form class="form-horizontal" id="product_id" method="post" action="<?php //echo $url_submit;?>" >				
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-gift"></i><?php echo $tr->translate("EDIT_PRODUCT");?>
+							</div>
+							<div class="tools">
+									<label><a href="<?php echo $url_cencel;?>"><button type="button" name="calcel" class="btn red"><i class="fa fa-times"></i><?php echo $tr->translate("GO_BACK");?></button></a></label>
+							</div>
+						</div>
+						<div style="<?php echo $disable;?>">
+						<div class="portlet-body">
+							<div class="tabbable-custom ">
+								<ul class="nav nav-tabs ">
+									<li class="active">
+										<a href="#tab_5_1" data-toggle="tab">
+										<?php echo $tr->translate("PRODUCT_INFO");?> </a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab_5_1">
+									<!--<div class="portlet box blue">
+								<div class="portlet-title">
+									<div class="caption">
+											<i class="fa fa-globe"></i><?php echo $tr->translate("PRODUCT_INFO");?>
+									</div>
+									
+								</div>-->
+								<div class="portlet-body form">
+									 
+										<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("PRODUCT_NAME");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('name');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("PRODUCT_CODE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('pro_code');?>
+														</div>	
+													</div>
+														
+													<div class="form-group">
+																		
+														<label class="col-md-2 control-label"><?php echo $tr->translate("BARCODE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('barcode');?>
+														</div>
+														<label class="col-md-2 control-label"><?php echo $tr->translate("BRAND_NAME");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('brand');?>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("PRODUCT_CATEGORY");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('category');?>
+														</div>
+														<label class="col-md-2 control-label"><?php echo $tr->translate("COLOR");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('color');?>
+														</div>
+													</div>
+													
+													
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("MEASURE");?></label>
+														<div class="col-md-2">
+															<?php echo $form->getElement('measure');?>
+														</div>
+														
+														<div class="col-md-2">
+															<?php echo $form->getElement('unit');?>
+														</div>
+														<label class="col-md-1 control-label" id="lb_measure" style="text-align: center;"></label>
+														
+														<label class="col-md-1 control-label" style="text-align: center;">=</label>
+														<div class="col-md-2">
+															<?php echo $form->getElement('qty_unit');?>
+														</div>
+														
+														<div class="col-md-2">
+															<?php echo $form->getElement('label');?>
+														</div>
+														
+													</div>
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("NOTE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('description');?>
+														</div>
+														
+														<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('status');?>
+														</div>
+													</div>
+													<?php if($level==1 OR $level==2){?>
+													<div class="form-group">
+														<label class="col-md-2 control-label"><?php echo $tr->translate("COST_PRICE");?></label>
+														<div class="col-md-4">
+															<?php echo $form->getElement('price');?>
+														</div>
+														<label class="col-md-2 control-label"></label>
+														<div class="col-md-4"></div>
+													</div>
+													<?php }?>
+													<h3 class="form-section"></h3>
+													<div class="portlet box blue">
+														<div class="portlet-title">
+															<div class="caption" style="width:100%">
+															<?php echo $form->getElement('branch');?>
+															</div>
+														</div>
+													</div>
+													
+													<div class="portlet box blue">
+														<div class="portlet-title">
+															<div class="caption">
+																<i class="fa fa-cogs"></i><?php echo $tr->translate("PRODUCT_LOCATION");?>
+															</div>
+														</div>
+														<div class="portlet-body">
+															<div class="table-responsive">
+																<table class="table table-bordered" style="font-size:12px !important;">
+																<thead>
+																<tr>
+																	<th>#</th>
+																	<th><?php echo $tr->translate("LOCATION_NAME");?></th>
+																	<th><?php echo $tr->translate("UNIT_QTY");?></th>
+																	<th><?php echo $tr->translate("QTY_PER_UNIT");?></th>
+																	<th><?php echo $tr->translate("TOTAL_QTY");?></th>
+																	<th><?php echo $tr->translate("QTY_WARNING");?></th>
+																	<th><?php echo $tr->translate("ACTION");?></th>
+																</tr>
+																</thead>
+																<tbody id="tr_location">
+																
+																</tbody>
+																</table>
+															</div>
+															<input type="hidden" name="identity" id="identity" value="<?php //echo $identity;?>" >
+														</div>
+													</div>
+											</div>
+										</div>
+										<?php if($level==1 OR  $level==2){?>
+										<h3 class="form-section"><?php echo $tr->translate("PRODUCT_PRICE_INFO");?></h3>
+										<div class="portlet box blue">
+											<div class="portlet-title">
+												<div class="caption" style="width:100%">
+															<?php echo $form->getElement('price_type');?>
+												</div>
+											</div>
+										</div>
+										
+										<div class="portlet-body">
+											<div class="table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th><?php echo $tr->translate("TYPE_NAME");?></th>
+															<th><?php echo $tr->translate("PRICE");?></th>
+															<!--<th><?php //echo $tr->translate("COST_PRICE");?></th>-->
+															<th><?php echo $tr->translate("REMARK");?></th>
+															<th><?php echo $tr->translate("ACTION");?></th>
+														</tr>
+													</thead>
+													<tbody id="tr_price_type">
+													</tbody>
+												</table>
+											</div>
+												<input type="hidden" name="identity_price" id="identity_price" value="<?php //echo $identity;?>" >
+										</div>
+										<?php }?>
+										<div class="form-group">
+											<div class="col-md-3">
+											</div>
+											<div class="col-md-3">
+												<a href="<?php echo $this->baseUrl();?>/product/index"><button type="button" class="btn red btn-block btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+											</div>
+											<div class="col-md-3">
+												<div class="input-icon right">
+													<button type="submit" name="save_close" class="btn blue btn-block btn-lg" ><i class="fa fa-close"></i> <?php echo $tr->translate("SAVE_CLOSE")?></button>
+												</div>
+											</div>
+											<div class="col-md-3">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						
+						</div>
+					</div>
+							
+			</form>		
+<!--Popup Form Brand-->
+<?php $formBrand = $this->frmBrand; ?>
+<div id="brandpopup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-home"></i><?php echo $tr->translate("ADD_NEW_BRAND");?>
+					</div>
+					<div class="caption pull-right">
+						<a href="<?php echo $url_new;?>" >
+							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						</a>
+					</div>
+				</div>
+				<div class="portlet-body form">
+					<form id="frmbrand" name="frmcustomer" class="form-horizontal" enctype="multipart/form-data" method="post">
+					<div class="form-body">
+						<div class="form-group">
+									<label class="col-md-2 control-label"><?php echo $tr->translate("PARENT");?></label>
+									<div class="col-md-4">
+										<?php echo $formBrand->getElement('parent');?>
+									</div>
+									<label class="col-md-2 control-label"><?php echo $tr->translate("BRAND_NAME");?></label>
+									<div class="col-md-4">
+										<?php echo $formBrand->getElement('brand_name');?>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+									<div class="col-md-4">
+										<?php echo $formBrand->getElement('status');?>
+									</div>
+									<label class="col-md-2 control-label"><?php echo $tr->translate("REMARK");?></label>
+									<div class="col-md-4">
+										<?php echo $formBrand->getElement('remark');?>
+									</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-md-12 col-md-offset-4 col-md-8">
+								<button type="button" name="btnsavenew" onclick="addNewBrand();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+							</label>
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+				</div>
+			</div>
+          </div>
+        </div>
+    </div>
+ </div>
+<!-- CATEGORY Popup -->
+<?php $formcat = $this->frmCat; ?>
+<div id="categorypopup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_PRODUCT_CATEGORY");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php echo $url_new;?>" >
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frmCat" name="frmcustomer" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("PARENT");?></label>
+								<div class="col-md-4">
+									<?php echo $formcat->getElement('parent');?>
+								</div>
+								<label class="col-md-2 control-label"><?php echo $tr->translate("CATEGORY_NAME");?></label>
+								<div class="col-md-4">
+									<?php echo $formcat->getElement('cat_name');?>
+								</div>
+												
+							</div>
+							<div class="form-group">
+												
+								<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-4">
+									<?php echo $formcat->getElement('status');?>
+								</div>
+								<label class="col-md-2 control-label"><?php echo $tr->translate("REMARK");?></label>
+								<div class="col-md-4">
+									<?php echo $formcat->getElement('remark');?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label  class="col-md-12 col-md-offset-4 col-md-8">
+									<button type="button" name="btnsavenew" onclick="addNewCategory();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+								</label>
+							</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+          </div>
+        </div>
+    </div>
+ </div>	
+
+<!-- MEASURE Popup-->
+<?php $frmMesure = $this->frmMesure; ?>
+<div id="measurepopup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_MEASURE_NAME");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php echo $url_new;?>" >
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frmMesure" name="frmcustomer" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					<div class="form-group">
+								<label class="col-md-4 control-label"><?php echo $tr->translate("MESUER_NAME");?></label>
+								<div class="col-md-6">
+									<?php echo $frmMesure->getElement('measure_name');?>
+								</div>
+												
+							</div>
+							<div class="form-group">
+												
+								<label class="col-md-4 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-6">
+									<?php echo $frmMesure->getElement('status');?>
+								</div>
+							</div>
+							<div class="form-group">
+												
+								<label class="col-md-4 control-label"><?php echo $tr->translate("REMARK");?></label>
+								<div class="col-md-6">
+									<?php echo $frmMesure->getElement('remark');?>
+								</div>
+							</div>
+					
+					<div class="form-group">
+						<label  class="col-md-12 col-md-offset-4 col-md-8">
+							<button type="button" name="btnsavenew" onclick="addNewMeasure();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+						</label>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+          </div>
+        </div>
+    </div>
+ </div>	
+
+<!-- Color Model Size Popup -->
+<?php $frmOther = $this->frmOther; ?>
+<div id="otherpopup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_NEW_COLOR");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php echo $url_new;?>" >
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frmOther" name="frmOther" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					<div class="form-group">
+									<label class="col-md-4 control-label"><?php echo $tr->translate("TITLE");?></label>
+									<div class="col-md-6">
+										<?php echo $frmOther->getElement('title_en');?>
+									</div>
+													
+								</div>
+								<div class="form-group">
+									<label class="col-md-4 control-label"><?php echo $tr->translate("TYPE");?></label>
+									<div class="col-md-6">
+										<?php echo $frmOther->getElement('type');?>
+									</div>
+													
+								</div>
+								<div class="form-group">
+													
+									<label class="col-md-4 control-label"><?php echo $tr->translate("STATUS");?></label>
+									<div class="col-md-6">
+										<?php echo $frmOther->getElement('status');?>
+									</div>
+								</div>
+					
+					<div class="form-group">
+						<label  class="col-md-12 col-md-offset-4 col-md-8">
+							<button type="button" id="savecolor"name="btnsavenew" onclick="addNewColor();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+							<button type="button" id="savemodel" name="btnsavenew" onclick="addNewModel();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+							<button type="button"id="savesize" name="btnsavenew" onclick="addNewSize();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+						</label>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+          </div>
+        </div>
+    </div>
+ </div>	
+<script>
+$( document ).ready(function() {
+	addProLocation();
+	addPriceType();
+	$('#product_id').on('keyup keypress', function(e) {
+		var keyCode = e.keyCode || e.which;
+	  if (keyCode === 13) { 
+		e.preventDefault();
+		return false;
+	  }
+	});
+});
+
+	function getMeasureLabel(){
+		var sel = $("#measure");
+		var text = $("option:selected",sel).text();
+		document.getElementById('lb_measure').innerHTML = text; 
+	}
+	index = 0;
+	function addProLocation(){
+		<?php if(!empty($this->rs_location)){foreach ($this->rs_location as $key=> $rs){?>
+		index++;
+		o_measure = $('#qty_unit').val();
+		raw_qty = '<?php echo $rs['qty'];?>';
+		var arrays = raw_qty.split('.');
+		unit_qty=parseFloat(arrays[0]);
+		other_qty=Math.round((parseFloat(raw_qty)*parseFloat(o_measure))-(parseFloat(arrays[0])*o_measure));
+		
+		id = '<?php echo $rs["location_id"];?>';
+		inx = '<?php echo $key+1;?>';
+			template='<tr id="row_location_<?php echo $key+1;?>">';
+			template+='<td><?php echo $key+1;?></td>';
+			template+='<td><?php echo $rs["name"];?><input type="hidden" id="branch_id_<?php echo $key+1;?>" name="branch_id_<?php echo $key+1;?>" value="'+id+'"</td>';
+			template+='<td><input type="text" id="current_qty_<?php echo $key+1;?>" onKeyup="totalQty(<?php echo $key+1;?>)" name="current_qty_<?php echo $key+1;?>"  value="'+unit_qty+'" class="form-control"></td>'; 
+			template+='<td><input type="text" id="other_qty_<?php echo $key+1;?>" onKeyup="totalQty(<?php echo $key+1;?>)" name="other_qty_<?php echo $key+1;?>" value="'+other_qty+'" class="form-control"></td>'; 
+			template+='<td><input type="text" id="total_qty_<?php echo $key+1;?>" name="total_qty_<?php echo $key+1;?>" value="<?php echo $rs['qty'];?>" class="form-control"></td>'; 
+			template+='<td><input type="text" id="qty_warning_<?php echo $key+1;?>" name="qty_warnning_<?php echo $key+1;?>" value="<?php echo $rs['qty_warning'];?>" class="form-control"></td>';
+			template+='<td><button type="button" onClick="deleteRecord(<?php echo $key+1;?>,1)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_location').append(template);
+			if($('#identity').val()!="") {
+				var identity = $('#identity').val();
+				$('#identity').val(identity+','+inx);
+			} else {$('#identity').val(inx);}
+		<?php }}?>
+	}
+	
+		function addNewProLocation(){
+			index++;
+			var branch_text = $("#branch");
+			var txt_br = $("option:selected",branch_text).text();
+			var branch_id = $("#branch").val();
+			template='<tr id="row_location_'+index+'">';
+			template+='<td>'+index+'</td>';
+			template+='<td>'+txt_br+'<input type="hidden" id="branch_id_'+index+'" name="branch_id_'+index+'" value="'+branch_id+'" </td>';
+			template+='<td><input type="text" id="current_qty_'+index+'" onKeyup="totalQty('+index+')" name="current_qty_'+index+'" value="0" class="form-control"></td>'; 
+			template+='<td><input type="text" id="other_qty_'+index+'" onKeyup="totalQty('+index+')" name="other_qty_'+index+'" value="0" class="form-control"></td>'; 
+			template+='<td><input type="text" id="total_qty_'+index+'" name="total_qty_'+index+'" value="0" class="form-control"></td>'; 
+			template+='<td><input type="text" id="qty_warning_'+index+'" name="qty_warnning_'+index+'" value="0" class="form-control"></td>';
+			template+='<td><button type="button" onClick="deleteRecord('+index+',1)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_location').append(template);
+			if($('#identity').val()!="") {
+				var identity = $('#identity').val();
+				$('#identity').val(identity+','+index);
+			} else {$('#identity').val(index);}
+			
+	}
+	
+	function totalQty(index){
+		o_measure = $('#qty_unit').val();
+		unit_qty = $('#current_qty_'+index).val();
+		other_qty = $('#other_qty_'+index).val();
+		total_other_qty = parseFloat(other_qty)/parseFloat(o_measure);
+		total_qty = parseFloat(unit_qty)+ total_other_qty;
+		$('#total_qty_'+index).val(total_qty);
+	}
+	
+	function doTotalQty(){
+		o_measure = $('#qty_unit').val();
+		if(o_measure=="" || o_measure==0){
+			$('#qty_unit').val(1);
+		}
+		var identity = $('#identity').val();
+		if(identity!=""){
+			var arrays = identity.split(',');
+			for(var index=0;index<arrays.length;index++) {
+				o_measure = $('#qty_unit').val();
+				unit_qty = $('#current_qty_'+index).val();
+				other_qty = $('#other_qty_'+index).val();
+				total_other_qty = parseFloat(other_qty)/parseFloat(o_measure);
+				total_qty = parseFloat(unit_qty)+ total_other_qty;
+				$('#total_qty_'+index).val(total_qty);
+			}
+		}
+		var strings = arrays.join(',');
+	}
+	function addPriceType(){
+		<?php if(!empty($this->rs_price)){foreach ($this->rs_price as $key=> $rs){?>
+		indexs++;
+		id_price = '<?php echo $rs["type_id"];?>';
+		inx_price = '<?php echo $key+1;?>';
+			template='<tr id="row_price_<?php echo $key+1;?>">';
+			template+='<td><?php echo $key+1;?></td>';
+			template+='<td><?php echo $rs["name"];?><input type="hidden" id="price_type_<?php echo $key+1;?>" name="price_type_<?php echo $key+1;?>" value="'+id_price+'"</td>';
+			template+='<td><input type="text" id="price_<?php echo $key+1;?>" name="price_<?php echo $key+1;?>" value="<?php echo $rs["price"];?>" class="form-control"></td>'; 
+			//template+='<td><input type="text" id="cost_price_<?php echo $key+1;?>" name="cost_price_<?php echo $key+1;?>" value="<?php echo $rs["cost_price"];?>" class="form-control"></td>'; 
+			template+='<td><input type="text" id="price_remark_<?php echo $key+1;?>" name="price_remark_<?php echo $key+1;?>" value="<?php echo $rs["remark"];?>" class="form-control"></td>'; 
+			template+='<td><button type="button" onClick="deleteRecord(<?php echo $key+1;?>,2)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_price_type').append(template);
+			if($('#identity_price').val()!="") {
+				var identity_price = $('#identity_price').val();
+				$('#identity_price').val(identity_price+','+inx_price);
+			} else {$('#identity_price').val(inx_price);}
+		<?php }}?>
+	}
+	
+	indexs=0;
+	function addNewPriceType(){
+			indexs++;
+			var price_text = $("#price_type");
+			var txt_pr = $("option:selected",price_text).text();
+			var price_id = $("#price_type").val();
+			template='<tr id="row_price_'+indexs+'">';
+			template+='<td>'+indexs+'</td>';
+			template+='<td>'+txt_pr+'<input type="hidden" id="price_type_'+indexs+'" name="price_type_'+indexs+'" value="'+price_id+'" </td>';
+			template+='<td><input type="text" id="price_'+indexs+'" name="price_'+indexs+'" class="form-control"></td>'; 
+			//template+='<td><input type="text" id="cost_price_'+indexs+'" name="cost_price_'+indexs+'" value="0" class="form-control"></td>'; 
+			template+='<td><input type="text" id="price_remark_'+indexs+'" name="price_remark_'+indexs+'" class="form-control"></td>'; 
+			template+='<td><button type="button" onClick="deleteRecord('+indexs+',2)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+			template+='</tr>';
+			$('#tr_price_type').append(template);
+			if($('#identity_price').val()!="") {
+				var identity_price = $('#identity_price').val();
+				$('#identity_price').val(identity_price+','+indexs);
+			} else {$('#identity_price').val(indexs);}
+			
+	}
+	function deleteRecord(index,type) {
+		if(type==1){
+			var identity = $('#identity').val();
+			var arrays = identity.split(',');
+		}else{
+			var identity = $('#identity_price').val();
+			var arrays = identity.split(',');
+		}
+		
+		for(var i=0;i<arrays.length;i++) {
+			if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		
+		if(type==1){
+			$('#identity').val(strings);
+			$("#row_location_"+index).remove();
+		}else{
+			$('#identity_price').val(strings);
+			$("#row_price_"+index).remove();
+		}
+		
+
+		// total price
+	}
+	
+	function getPopupBrand(){
+		val = $('#brand').val();
+		//alert(1);
+		if(val==-1){
+			$('#brandpopup').modal('show');
+		}
+	}
+	
+	function getPopupCategory(){
+		val = $('#category').val();
+		if(val==-1){
+			$('#categorypopup').modal('show');
+		}
+	}
+	
+	function getPopupMeasure(){
+		val = $('#measure').val();
+		if(val==-1){
+			$('#measurepopup').modal('show');
+		}
+	}
+	
+	function getPopupColor(){
+		val = $('#color').val();
+		if(val==-1){
+			$('#otherpopup').modal('show');
+			$('#type').val(4);
+			$('#type').attr('readOnly',true);
+			$('#savemodel').hide();
+			$('#savesize').hide();
+			$('#savecolor').show();
+		}
+	}
+	
+	function getPopupModel(){
+		val = $('#model').val();
+		if(val==-1){
+			$('#otherpopup').modal('show');
+			$('#type').val(2);
+			$('#type').attr('readOnly',true);
+			$('#savecolor').hide();
+			$('#savesize').hide();
+			$('#savemodel').show();
+		}
+	}
+	
+	function getPopupSize(){
+		val = $('#size').val();
+		if(val==-1){
+			$('#otherpopup').modal('show');
+			$('#type').val(3);
+			$('#type').attr('readOnly',true);
+			$('#savemodel').hide();
+			$('#savecolor').hide();
+			$('#savesize').show();
+		}
+	}
+	
+	<?php $url_add_brand =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-brand')); ?>
+	function addNewBrand(){
+		//alert(1);
+		var brand_name  = $("#brand_name").val();
+		$.ajax({
+			url: "<?php echo $url_add_brand;?>",
+			type: "post",
+			data: $('#frmbrand').serialize(),
+			success: function(data){
+				rs = $.parseJSON(data);
+				 $('#brand').append($("<option></option>").attr("value",rs['brand_id']).attr("selected",true).text(brand_name));                       
+				 $("#brand").select2();
+				$('#brandpopup').modal('hide');
+			},
+			error:function(err){
+				alert("faile insert");
+			   
+			}
+		});
+	}
+	
+	<?php $url_add_category =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-category')); ?>
+	function addNewCategory(){
+		//alert(1);
+		var cat_name  = $("#cat_name").val();
+		$.ajax({
+			url: "<?php echo $url_add_category;?>",
+			type: "post",
+			data: $('#frmCat').serialize(),
+			success: function(data){
+				rs = $.parseJSON(data);
+				 $('#category').append($("<option></option>").attr("value",rs['cat_id']).attr("selected",true).text(cat_name));                       
+				 $("#category").select2();
+				$('#categorypopup').modal('hide');
+			},
+			error:function(err){
+				alert("faile insert");
+			   
+			}
+		});
+	}
+	
+	<?php $url_add_measure =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-measure')); ?>
+	function addNewMeasure(){
+		//alert(1);
+		var measure_name  = $("#measure_name").val();
+		$.ajax({
+			url: "<?php echo $url_add_measure;?>",
+			type: "post",
+			data: $('#frmMesure').serialize(),
+			success: function(data){
+				rs = $.parseJSON(data);
+				 $('#measure').append($("<option></option>").attr("value",rs['measure_id']).attr("selected",true).text(measure_name));                       
+				 $("#measure").select2();
+				$('#measurepopup').modal('hide');
+			},
+			error:function(err){
+				alert("faile insert");
+			   
+			}
+		});
+	}
+	
+	<?php $url_add_color =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-other')); ?>
+	function addNewColor(){
+		//alert(1);
+		var title  = $("#title_en").val();
+		$.ajax({
+			url: "<?php echo $url_add_color;?>",
+			type: "post",
+			data: $('#frmOther').serialize(),
+			success: function(data){
+				rs = $.parseJSON(data);
+				 $('#color').append($("<option></option>").attr("value",rs['other_id']).attr("selected",true).text(title));                       
+				 $("#color").select2();
+				$('#otherpopup').modal('hide');
+			},
+			error:function(err){
+				alert("faile insert");
+			   
+			}
+		});
+	}
+	
+	function addNewModel(){
+		//alert(1);
+		var title  = $("#title_en").val();
+		$.ajax({
+			url: "<?php echo $url_add_color;?>",
+			type: "post",
+			data: $('#frmOther').serialize(),
+			success: function(data){
+				rs = $.parseJSON(data);
+				 $('#model').append($("<option></option>").attr("value",rs['other_id']).attr("selected",true).text(title));                       
+				 $("#model").select2();
+				$('#otherpopup').modal('hide');
+			},
+			error:function(err){
+				alert("faile insert");
+			   
+			}
+		});
+	}
+	
+	function addNewSize(){
+		//alert(1);
+		var title  = $("#title_en").val();
+		$.ajax({
+			url: "<?php echo $url_add_color;?>",
+			type: "post",
+			data: $('#frmOther').serialize(),
+			success: function(data){
+				rs = $.parseJSON(data);
+				 $('#size').append($("<option></option>").attr("value",rs['other_id']).attr("selected",true).text(title));                       
+				 $("#size").select2();
+				$('#otherpopup').modal('hide');
+			},
+			error:function(err){
+				alert("faile insert");
+			   
+			}
+		});
+	}
+</script>		
+</body>
+</html>

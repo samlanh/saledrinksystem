@@ -1,0 +1,365 @@
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+//print_r($this->sale_term_defual);
+?>
+<title><?php echo $tr->translate("QUOTATION_APPROVED");?></title>
+<marquee style="margin-top:-20px;" behavior="scroll" direction="left" onmouseout="this.start()" onmouseover="this.stop()" scrollamount="5">យើងត្រូវការ ការយល់ព្រមពី ប្រធានផ្នែកលក់ ឫអ្នកដែលមានសិទ្ធ ដើម្បី <span style="color:red;">បង្កើតជាតារាងតម្លៃលក់(Sale Quotation)</span> / We need approval from sale manager or person who have permission to <span style="color:red;">issue Sale Quotation</span> ! </marquee>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("QUOTATION_APPROVED");?>
+				</div>
+						<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									
+								</ul>
+					</div>
+			</div>
+            <div class="portlet-body form frmfilter">
+					<div style="clear:both;"></div>	
+	<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+	 <?php $url_submit = $this->url(array('module'=>'sales','controller'=>'quoteapprove','action'=>'approved'));?>
+		<form id="form_sample_2" action="<?php echo $url_submit; ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+		
+	<div id="divPrint" style="width: 100%;">
+	<style>
+		.style{
+			line-height: 20px;font-size: 9px !important;
+			font-family: 'Khmer OS Battambang';
+		}
+		ul{margin: 0;padding:0;}
+		table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+		th{padding: 5px;}
+		ul.pur_info li{line-height:18px; 
+				font-weight: normal !important;}
+		ul.pur_info li strong{font-weight: bold;}
+       .hover:hover{background: #ccc;}
+	</style>
+	
+		<table style="font-family: 'Khmer OS Content'; width:100%;">
+			<tbody>
+			<tr>
+		    	<td align="center">
+		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0">
+		            	<tbody><tr>
+		                	<td width="20%" valign="top"><!--<img src="<?php //echo $this->baseUrl();?>/images/logo.jpg" height="55px"> --></td>
+		                	<td width="60%" valign="top">
+		                		<ul>
+		                			<li style="text-align:center; font-size:18px; font-family:'Khmer MEF2'"><?php echo $this->product[0]['branch_code'];?></li>
+		                			<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("QUOTATION_APPROVED");?></li>
+		                		</ul>
+		                	</td>
+		                    <td width="20%"></td>
+		                </tr> 
+		                <tr>
+		                	<td colspan="3" valign="top">
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody>
+		                			<tr>
+		                				<td style="font-size: 11px;">
+		                				    <span style="white-space: nowrap;"><?php //echo $tr->translate("ADDRESS_COMPANY");?></span>
+		                					<br><?php //echo $tr->translate("TEL_COMPANY");?> 
+		                				</td>
+		                				<td ></td>
+		                				<td width="65%"></td>
+		                			</tr>
+		                			<tr>
+		                				<td style="font-size: 11px;" valign="top" width="25%;">
+		                				<div style="width:100%; background: #244456;display: block;color:#fff;margin-top: 10px;">&nbsp;&nbsp;Customer Info</div>
+		                				   <ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>Customer Name : </strong><?php echo $this->product[0]['customer_name'];?></li>
+			                					<li style="text-align: left;"><strong>Contact Person : </strong><?php echo $this->product[0]['contact_name'];?></li>
+			                					<li style="text-align: left;"><strong>Contact Number : </strong><?php echo $this->product[0]['phone'];?></li>
+			                					<li style="text-align: left;"><strong>E-mail: </strong><?php echo $this->product[0]['email'];?></li>
+			                					<li style="text-align: left;"><strong>Address : </strong><?php echo $this->product[0]['add_name'];?></li>
+		                					</ul>
+		                				</td>
+		                				<td width="50%"></td>
+		                				<td width="25%" style="text-align: left;font-size: 11px;">
+		                					<div style="padding-left: 10px;width:100%; background: #244456;display: block;color:#fff;margin-top: 10px;">&nbsp;&nbsp;Official Quotation</div>
+		                					<ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>Branch Name : </strong><?php echo $this->product[0]['branch_name'];?></li>
+			                					<li style="text-align: left;"><strong>No.: </strong><?php echo $this->product[0]['quoat_number'];?></li>
+			                					<li style="text-align: left;"><strong><?php echo $tr->translate("QUOATATION_DATE");?> : </strong><?php echo date("d/m/Y",strtotime($this->product[0]['date_order']));?></li>
+		                						<li style="text-align: left;"><strong>Sale Person : </strong><?php echo $this->product[0]['staff_name'];?></li>
+		                					</ul>
+		                				</td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr>   
+		            </tbody></table>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td id="exportExcel"><br />
+		            <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:10px;" width="100%" cellspacing="0">
+		                 <tbody>
+		                
+		                 <tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td><?php echo $tr->translate("PRODUCT_DISCRIPTION");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ITEM_CODE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("MODEL");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("SERIAL_NUM");?></td>
+							<td>&nbsp;<?php echo $tr->translate("QTY");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("OLD_PRICE");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("ITEM_PRICE");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
+							<td><?php echo $tr->translate("AMOUNT");?></td>
+		                </tr>
+		                <?php $num=1; 
+		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
+		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
+		                if(!empty($this->product))foreach ($this->product AS $index => $rs){?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_code"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["model_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["serial_number"];?></td>
+						   <?php 
+							   $sing="";
+							   if($rs['qty_unit']>0 AND $rs['qty_detail']>0){
+							   	$sing=" + ";
+							   }
+							   $unitqty = floatval($rs['qty_unit']);
+							   $qty_detail = floatval($rs['qty_detail']);
+							   if($rs['qty_unit']>0){$unitqty=number_format($unitqty,0)." ".$rs["measue_name"];}else{$unitqty="";}
+							   if($rs['qty_detail']>0){
+							   	$qty_detail=number_format($qty_detail,0)." ".$rs["unit_label"];}else{$qty_detail="";}
+						   ?>
+						   <td style="white-space: nowrap; text-align:center;">&nbsp;<?php echo $unitqty.$sing.$qty_detail; //$rs["qty_order"];?></td>
+						   <td <?php if($rs["price"]!=$rs["old_price"]){echo"style='background:red;'";}?>>&nbsp;<?php echo number_format($rs["old_price"],2);?></td>
+						   <td>&nbsp;<?php echo number_format($rs["price"],2);?></td>
+						   <td>&nbsp;<?php echo number_format($rs["disc_detailvalue"],2);echo ($rs["disc_type"]==1)?'%':'';?><?php //echo number_format($rs["disc_detailvalue"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["curr_name"]."&nbsp;".number_format($rs["sub_total"],2);?></td>
+						</tr>
+						   <?php 
+                    }?>
+                    <tr>
+						<td colspan="7" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("TOTAL");?></td>
+						<td >&nbsp;&nbsp;<?php echo number_format($this->product[0]['all_total'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan="7" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
+						<td>&nbsp;&nbsp;<?php echo number_format($this->product[0]['discount_value'],2);echo ($rs["discount_type"]==1)?'%':'';?></td>
+					</tr>
+					<tr>
+						<td colspan="7" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;border-bottom:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("TOTAL_AMOUNT");?>​</td>
+						<td style="border-bottom:1px solid #000;">&nbsp;&nbsp;<?php echo number_format($this->product[0]['net_total'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan=5" style="border:1px solid #fff;border-top:1px solid #000;">
+						<strong  style="font-size: 13px;"><u>ខសន្យា និងលក្ខខណ្ឌទូទៅ / General Term & Conditions</u></strong>
+						
+							<!--<style>
+								ul.termcodition li{ line-height: 20px;list-style-type: none; font-size: 12px;}
+							</style>
+							<ul class="termcodition">-->
+							<?php //if(!empty($this->rscondition))foreach ($this->rscondition as $key =>$rst){ ?>
+								<!--<li style="text-align: left;"><?php echo $key+1;echo "-".$rst['con_khmer'];?></li>
+								<li style="text-align: left;"><?php echo $rst['con_english'];?></li>-->
+							<?php //}?>
+							</ul>
+						</td>
+						<td width="50%" colspan="5" valign="top" style="border-bottom: 1px solid #fff;;border-right: 1px solid #fff;">
+							
+						</td>
+					</tr>
+		            </tbody>
+		           </table>
+		            
+		    		</td>
+		    	</tr>
+				<tr>
+					<td>
+					 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="hidden" id="identity_term" name="identity_term" />
+		<div class="form-group">
+			<div class="col-md-2">
+				<button type="button" class="btn delete" style="width:100%; background:#65879A;">
+					<strong style="color:#fff;"><?php echo $tr->translate("TERM_CONDITION");?></strong>
+				</button>
+			</div>
+			<div class="col-md-10">
+				<select data-placeholder="Select..." class="form-control select2me" id="term_item" name="term_item" Onchange="getTermItem();"  style="margin:0 auto; ">
+					<?php echo $this->sale_term; ?>
+				</select>
+			</div>
+		</div>	
+		<div class="form-group">
+		
+			<div class="col-md-12">
+				<table  class="table table-striped table-bordered table-hover" id="table_termcondition" style="font-size:12px; width:100%;">
+					<tr>
+						<td width="2%;" align="center"><?php echo $tr->translate("DEL");?></td>
+						<td width="3%" align="center"><?php echo $tr->translate("NUM");?></td>
+						<td style=""><?php echo $tr->translate("TERM_CONDITION");?></td>
+					</tr>	
+				</table>
+			</div>
+		</div>
+		
+		
+		<table align="center" width="100%" >
+							   <tbody>
+							   <tr style="font-size: 11px;">
+							        <td width="50%" colspan="4" rowspan="2" valign="top" style="padding:5px;font-size: 14px;background:#ddecff;">
+										<h4><b>សម្គាល់ពី បុគ្គលិកផ្នែកលក់</b></h4>
+									<?php echo ($this->product[0]['remark']);?>
+									</td>
+							        <td style="width:20%;font-family:'Khmer MEF2';white-space: nowrap;">
+									<input type="hidden" name="id" id="id" value="<?php echo $this->product[0]['id'];?>" />
+							        <select name="approved_name" id="approved_name" class="form-control select2me">
+							        	<option value="1" <?php if($this->product[0]['is_approved']==1)echo"selected"; ?>>Approved</option>
+							        	<option value="2" <?php if($this->product[0]['is_approved']==2)echo"selected"; ?>>Not Approved</option>
+							        </select>
+							        </td>
+							   </tr>
+							   <tr style="font-size: 11px; height: 75px;">
+							       
+							        <td valign="bottom" style="width:50%;text-align:center; font-family:'Khmer MEF2';white-space: nowrap;"><textarea name="app_remark" id="app_remark" class="form-control" rows="3" cols="80" placeHolder="Approval Comment Here"><?php echo $this->product[0]['approval_note'];?></textarea></td>
+							       
+							   </tr>
+							   <tr style="font-size: 11px;">
+							        <td style="text-align:center;white-space: nowrap;"></td>
+							        <td></td>
+							        <td></td>
+									<td style="text-align:center;white-space: nowrap;"><strong>ថ្ងៃខែយល់ព្រម /Approved Date</strong>
+							        <td style="text-align:center;white-space: nowrap;"><div class="input-icon right"><i class="fa fa-calendar"></i><input name="app_date" id="app_date" value="<?php echo date("m/d/Y");?>" class="form-control form-control-inline date-picker" /></div></td>
+							        </td>
+							   </tr>
+							   <tr style="font-size: 11px; height: 60px">
+							        <td style="text-align:center;white-space: nowrap;"><a style="width:100%;" href="<?php echo $this->baseUrl();?>/sales/quoteapprove/"><button style="width:100%;" type="button" class="btn blue btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a></td>
+							        <td></td>
+							        <td style="text-align:center;white-space: nowrap;"><button type="submit" name="quotationapp" class="btn blue btn-block btn-lg" ><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_APPROVED")?></button></td>
+							        <td></td>
+							        <td style="text-align:center;white-space: nowrap;"><button type="submit" name="makeso" value="makeso" class="btn blue btn-block btn-lg" ><i class="fa fa-save"></i> <?php echo $tr->translate("APPROV_MAKESO")?></button></td>
+							   </tr>
+							</tbody>
+						</table>
+		</form>	
+	  </div>		
+	</div>
+	 </div>
+   </div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script>
+function doPrint() {
+	window.frames["print_frame"].document.body.innerHTML=document.getElementById('divPrint').innerHTML;
+    window.frames["print_frame"].window.focus();
+    window.frames["print_frame"].window.print();
+    //hideDialog();
+}
+$(document).ready(function() {
+	//alert(22);
+	//initList();
+	saleTermDefual();
+	initListTermcondition();
+});
+index1=0;
+function saleTermDefual(){
+	
+	term_option = '<?php echo $this->term_opt; ?>';
+	<?php if(!empty($this->sale_term_defual)) {
+		foreach($this->sale_term_defual AS $i=>$rt){?>
+		index1++; 
+		is_defual = '<?php echo $rt["is_default"]?>';
+		template='<tr id="row_term_'+index1+'" style="height:33px;">';
+		if(is_defual==1){
+			template+='<td width="" ></td>';
+		}else{
+			template+='<td width="" ><img onClick="deleteTermRecord('+index1+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+		}
+	    
+		template+='<td  width="">'+index1+'</td>';
+		template+='<td><select class="form-control select2me" id="termid_'+index1+'" name="termid_'+index1+'" >'+term_option+'<option></option></select></td>';
+		template+="</tr>";
+		$('#table_termcondition').append(template);
+		if($('#identity_term').val()!="") {
+			var identity = $('#identity_term').val();
+			$('#identity_term').val(identity+','+index1);
+		} else {$('#identity_term').val(index1);}
+		$("#termid_"+index1).val("<?php echo $rt['condition_id'];?>");
+		$("#row_term_0").remove();	
+	<?php } }?>
+}
+function initListTermcondition() {
+	//index1=0;
+	term_option = '<?php echo $this->term_opt; ?>';
+	<?php if(!empty($this->rscondition)) {
+		foreach($this->rscondition AS $i=>$rt){?>
+		index1++; 
+		template='<tr id="row_term_'+index1+'" style="height:33px;">';
+	    template+='<td width="" ><img onClick="deleteTermRecord('+index1+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+		template+='<td  width="">'+index1+'</td>';
+		template+='<td><select class="form-control select2me" id="termid_'+index1+'" name="termid_'+index1+'" >'+term_option+'<option></option></select></td>';
+		template+="</tr>";
+		$('#table_termcondition').append(template);
+		if($('#identity_term').val()!="") {
+			var identity = $('#identity_term').val();
+			$('#identity_term').val(identity+','+index1);
+		} else {$('#identity_term').val(index1);}
+		$("#termid_"+index1).val("<?php echo $rt['condition_id'];?>");
+		$("#row_term_0").remove();	
+	<?php } }?>
+}
+
+term_option = '<?php echo $this->term_opt; ?>';
+//index1 = 0;
+function addtermcondition(t_id){
+	index1++; 
+	template='<tr id="row_term_'+index1+'" style="height:33px;">';
+    template+='<td width="20px" ><img onClick="deleteTermRecord('+index1+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+	template+='<td  width="2%">'+index1+'</td>';
+	template+='<td><select class="form-control select2me" id="termid_'+index1+'" name="termid_'+index1+'" >'+term_option+'<option></option></select></td>';
+	template+="</tr>";
+	$('#table_termcondition').append(template);
+	if($('#identity_term').val()!="") {
+		var identity = $('#identity_term').val();
+		$('#identity_term').val(identity+','+index1);
+	} else {$('#identity_term').val(index1);}
+	$("#termid_"+index1).val(t_id);
+	$("#row_term_0").remove();	
+}
+
+function getTermItem(){
+	termid=$("#term_item").val();
+	$('#term_item').val('').trigger("liszt:updated");
+	if(termid==-1){
+		return false;
+	}
+	addtermcondition(termid);
+	$("#term_item").val("");
+}
+function deleteTermRecord(termid){
+	var identity = $('#identity_term').val();
+	var arrays = identity.split(',');
+	for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == termid) arrays.splice(i,1);
+	}
+	var strings = arrays.join(',');
+	$('#identity_term').val(strings);
+	$("#row_term_"+termid).remove();
+}
+</script>

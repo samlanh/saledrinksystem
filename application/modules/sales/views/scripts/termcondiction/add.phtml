@@ -1,0 +1,61 @@
+<?php 
+	$url_new = $this->url(array('module'=>'sales','controller'=>'termcondiction','action'=>'index',));
+	$url_delete = $this->url(array('module'=>'category','controller'=>'index','action'=>'delete',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->frmAdd;
+?>
+<title><?php echo $tr->translate("ADD_TERMCONDICTION");?></title>
+<div class="col-md-12">
+	<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("ADD_TERMCONDICTION");?>
+			</div>
+			<div class="caption pull-right">
+				<a href="<?php echo $url_new;?>" class="btn btn-sm green  pull-right">
+						<i class="fa fa-undo"></i>&nbsp;<?php echo $tr->translate("GO_BACK");?>
+				</a>
+			</div>
+			
+		</div>
+		<div class="portlet-body form">
+			<form class="form-horizontal" method="post" >
+				<div class="form-body ">
+					<div style="margin: 0 auto;" >
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("NAME_EN");?></label>
+								<div class="col-md-8">
+									<?php echo $formFilter->getElement('name_en');?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("NAME_KH");?></label>
+								<div class="col-md-8">
+									<?php echo $formFilter->getElement('name_kh');?>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("TYPE");?></label>
+								<div class="col-md-8">
+									<?php echo $formFilter->getElement('type');?>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-8">
+									<?php echo $formFilter->getElement('status');?>
+								</div>
+							</div>
+					<div class="form-group">
+						<label  class="col-md-12 col-md-offset-4 col-md-8">
+						<a href="<?php echo $this->baseUrl();?>/sales/termcondiction"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+							<button type="submit" name="save_close" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i> <?php echo $tr->translate("SAVE_CLOSE")?></button>
+					</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

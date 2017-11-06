@@ -1,0 +1,196 @@
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<title><?php echo $tr->translate("SALEDETAIL_REPORT");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("VIEW_SALE_STATUS");?>
+				</div>
+			</div>
+            <div class="portlet-body form frmfilter">
+					<div style="clear:both;"></div>	
+	<div style=" min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+	<div id="divPrint" style="width: 100%;">
+	<style>
+		.style{
+			line-height: 20px;font-size: 12px !important;
+			font-family: 'Khmer OS Battambang';
+		}
+		ul{margin: 0;padding:0;}
+		table tr td ul li{text-align: center;list-style: none;line-height: 25px; font-weight: bold;}
+		th{padding: 5px;}
+		ul.pur_info li{line-height:18px; 
+				font-weight: normal !important;}
+		ul.pur_info li strong{font-weight: bold;}
+       .hover:hover{background: #ccc;}
+	</style>
+		<table style="font-family: 'Khmer OS Content'; width:100%;">
+			<tbody>
+			<tr>
+		    	<td align="center">
+		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0">
+		            	<tbody>
+		                <tr>
+		                	<td colspan="3" valign="top">
+		                		<table width="100%" cellpadding="0" cellspacing="0">
+		                			<tbody>
+		                			<tr>
+		                				<td style="font-size: 12px;" valign="top" width="25%;">
+		                				<div style="width:100%; background: #244456;display: block;color:#fff;margin-top: 10px;">&nbsp;&nbsp;Customer Info</div>
+		                				   <ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>Customer Name : </strong><?php echo $this->product[0]['customer_name'];?></li>
+			                					<li style="text-align: left;"><strong>Contact Person : </strong><?php echo $this->product[0]['contact_name'];?></li>
+			                					<li style="text-align: left;"><strong>Contact Number : </strong><?php echo $this->product[0]['phone'];?></li>
+			                					<li style="text-align: left;"><strong>E-mail: </strong><?php echo $this->product[0]['email'];?></li>
+			                					<li style="text-align: left;"><strong>Address : </strong><?php echo $this->product[0]['add_name'];?></li>
+		                					</ul>
+		                				</td>
+		                				<td width="50%"></td>
+		                				<td width="25%" style="text-align: left;font-size: 12px;">
+		                					<div style="padding-left: 10px;width:100%; background: #244456;display: block;color:#fff;margin-top: 10px;">&nbsp;&nbsp;Sale Information</div>
+		                					<ul class='pur_info'>
+			                					<li style="text-align: left;"><strong>Branch Name : </strong><?php echo $this->product[0]['branch_name'];?></li>
+			                					<li style="text-align: left;"><strong>No.: </strong><?php echo $this->product[0]['sale_no'];?></li>
+			                					<li style="text-align: left;"><strong>Order Date : </strong><?php echo date("d/m/Y",strtotime($this->product[0]['date_sold']));?></li>
+		                						<li style="text-align: left;"><strong>Sale Person : </strong><?php echo $this->product[0]['staff_name'];?></li>
+		                					</ul>
+		                				</td>
+		                			</tr>
+				                </tbody></table>
+				              </td>
+				           </tr>   
+		            </tbody></table>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td id="exportExcel"><br />
+		            <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+		                 <tbody>
+		                 <tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
+		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td><?php echo $tr->translate("ITEM_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ITEM_CODE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("QTY");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("OLD_PRICE");?></td>
+							<td width="10%">&nbsp;<?php echo $tr->translate("ITEM_PRICE");?></td>
+							<td><?php echo $tr->translate("AMOUNT");?></td>
+		                </tr>
+		                <?php $num=1; 
+		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
+		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
+		                if(!empty($this->product))foreach ($this->product AS $index => $rs){?>
+						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
+						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_code"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo number_format($rs["qty_order"],2);?></td>
+						   <td <?php if($rs["price"]!=$rs["old_price"]){echo"style='background:red;'";}?>>&nbsp;<?php echo $rs["curr_name"]."&nbsp;";echo number_format($rs["old_price"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["curr_name"]."&nbsp;";echo number_format($rs["price"],2);?></td>
+						   <td>&nbsp;<?php echo $rs["curr_name"]."&nbsp;".number_format($rs["sub_total"],2);?></td>
+						</tr>
+						   <?php 
+                    }?>
+                    <tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("TOTAL");?></td>
+						<td >&nbsp;&nbsp;<?php echo number_format($this->product[0]['all_total'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
+						<td >&nbsp;&nbsp;<?php echo number_format($this->product[0]['discount_real'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan="4" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;"></td>
+						<td colspan="2" style="border-left:1px solid #000;">&nbsp;&nbsp;<?php echo $tr->translate("TOTAL_AMOUNT");?>​</td>
+						<td >&nbsp;&nbsp;<?php echo number_format($this->product[0]['net_total'],2);?></td>
+					</tr>
+					<tr>
+						<td colspan="7" style="border:1px solid #fff;border-top:1px solid #000;border-right:1px solid #000;">
+							
+						</td>
+					</tr>
+		            </tbody>
+		           </table>
+		              <br>
+		              <?php $url_submit = $this->url(array('module'=>'sales','controller'=>'index','action'=>'viewapp'));?>
+		              <form id="frm" action="<?php echo $url_submit; ?>"  enctype="multipart/form-data" method="post">
+			              <table align="center" width="100%" >
+							   <tbody>
+							   <tr style="font-size: 11px;">
+							        <td style="width:20%;font-family:'Khmer MEF2';white-space: nowrap;text-align: center;">
+							       		<strong style="text-align: center;"><?php echo $tr->translate("APPROVED_STATUS");?> : <?php echo $this->product[0]['approval_status'];?> / <?php echo $tr->translate("APPROVED_BY");?> : <?php echo $this->product[0]['approved_by'];?></strong>
+							        </td>
+							        <td><input type="hidden" name="id" id="id" value="<?php echo $this->product[0]['id'];?>" />
+							        	<input type="hidden" name="quote_id" id="quote_id" value="<?php echo $this->product[0]['quote_id'];?>" />
+							        </td>
+							        <td  valign="top" style="text-align:center;font-family:'Khmer MEF2';white-space: nowrap;" rowspan="2">
+								        <div class="form-group">
+											<label class="control-label col-md-6">
+											        <select name="approved_name" id="approved_name" class="form-control select2me">
+											        	<option value="2" <?php //if($this->product[0]['is_approved']==1)echo"selected"; ?>>Rejected</option>
+											        	<option value="1" <?php //if($this->product[0]['is_approved']==2)echo"selected"; ?>>Cancel Sale</option>
+											        </select>
+								         </label>
+								         <label class="control-label col-md-6">
+								        	<input name="app_date" id="app_date" value="<?php echo date("m/d/Y");?>" class="form-control form-control-inline date-picker" />
+								        </label>
+								        </div>
+							        		<textarea name="app_remark" id="app_remark" class="form-control" rows="3" cols="80" placeHolder="Comment Here"><?php 
+							        		if($this->product[0]['is_cancel']==1){
+							        			echo $this->product[0]['cancel_comment'];
+							        		}else{
+							        			echo $this->product[0]['approved_note'];
+												//print_r($this->product[0]);
+							        		}
+							        			?>
+							        		</textarea>
+							        </td>
+							        
+							   </tr>
+							   <tr style="font-size: 11px; height: 75px;">
+							        <td valign="bottom" style="width:40%;text-align:center; font-family:'Khmer MEF2';white-space: nowrap;"><span  class="form-control" style="border: 2px dotted #ddd; height: 100px;"><?php echo $this->product[0]['approved_note'];?></span></td>
+							        <td></td>
+							   </tr>
+							   <tr style="font-size: 11px; height: 75px;">
+							        <td valign="top" style="width:50%;text-align:center; font-family:'Khmer MEF2';white-space: nowrap;">
+							        <strong style="font-family'Khmer OS Content'">ថ្ងៃខែយល់ព្រម /Approved Date</strong><span name="app_date" id="app_date" class="form-control form-control-inline" ><?php echo empty($this->product[0]['approved_date'])?"":date("d/m/Y",strtotime($this->product[0]['approved_date']));?></span></td>
+							        <td></td>
+							        <td valign="top" style="text-align:center;white-space: nowrap;">
+								        <div class="form-group">
+												<label class="control-label col-md-6">
+													<a style="width:100%;" href="<?php echo $this->baseUrl();?>/sales/index/"><button style="width:100%;" type="button" class="btn blue btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+												</label>
+												<label class="control-label col-md-6">
+												<button type="submit" name="quotationapp" class="btn blue btn-block btn-lg" ><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE")?></button>
+												</label>
+										</div>
+							        </td>
+							   </tr>
+							</tbody>
+						</table>
+					</form>	
+		    		</td>
+		    	</tr>
+			</tbody>
+		</table>
+		</div>
+	  </div>		
+	</div>
+	 </div>
+   </div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script>
+function doPrint() {
+	window.frames["print_frame"].document.body.innerHTML=document.getElementById('divPrint').innerHTML;
+    window.frames["print_frame"].window.focus();
+    window.frames["print_frame"].window.print();
+    //hideDialog();
+}
+
+</script>

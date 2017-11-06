@@ -1,0 +1,158 @@
+<?php 
+$frm_transfer = $this->form_transfer;
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+$url_print=$this->url(array('module'=>'report','controller'=>'index','action'=>'print-report'));
+define("COM_ADD","<h3>RSMK GROUP CO.,LTD</h3>No.  BA7,  Sangkat Kakab,  Khan Dongkon,  Phnom Penh.<br>
+		Tel: (855) 23 956 789, (855) 23-222-266 <br>
+		Website : www.rsmkgroup.com ");
+define("HEADER","INVOICE");
+defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+
+$brach_name =  $this->branch;
+?>
+
+<script language="javascript">
+function Clickheretoprint()
+{ 
+  var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,"; 
+      disp_setting+="scrollbars=yes,width=1100, height=300, left=100, top=25"; 
+  var content_vlue = document.getElementById("print_content").innerHTML; 
+  
+  var docprint=window.open("","",disp_setting); 
+   docprint.document.open(); 
+   docprint.document.write('<html><head><title>Stock inventory System</title>'); 
+   docprint.document.write('</head><body onLoad="self.print()" style="margin:0px; font-size: 9px;"><center>');          
+   docprint.document.write(content_vlue);          
+   docprint.document.write('</center></body></html>'); 
+   docprint.document.close(); 
+   docprint.focus(); 
+}
+</script>
+<style>
+
+</style>
+<title><?php echo $tr->translate("MENU_REPORT_INDEX_RPT_POCHARTDATE")?></title>
+<div class="right">
+	<div class="wrapper">
+		<div class="view-table shadow">
+			<form id="frm" method="post">
+			<br /><br />
+				<table class="height" width="100%">
+					<tr class="height">
+						<td><?php echo $tr->translate("ITEM");?></td>
+						<td><?php echo $frm_transfer->getElement("item");?></td>
+						<td><?php echo $tr->translate("LOCATION_NAME");?></td>
+						<td><?php echo $frm_transfer->getElement("LocationId");?></td>
+					</tr>
+					<tr class="height">
+						<td><?php echo $tr->translate("BRANCH_NAME");?></td>
+						<td><?php echo $frm_transfer->getElement('branch_id');?></td>
+						<td><?php echo $tr->translate("SELECT_CATE");?></td>
+						<td width="30%"><?php echo $frm_transfer->getElement('category_id');?></td>
+					</tr>
+					<tr class="height">
+						<td><?php echo $tr->translate("FROM_DATE");?></td>
+						<td width="40%"><?php echo $frm_transfer->getElement("start_date");?></td>
+						<td><?php echo $tr->translate("END_DATE");?></td>
+						<td  width="30%"><?php echo $frm_transfer->getElement("end_date");?></td>
+					</tr>
+					<tr class="height">
+						<td></td><!-- <a href="javascript:Clickheretoprint()"> Click To test Print</a> -->
+						<td></td>
+						<td></td>
+						<td><input type="submit" value="<?php echo $tr->translate("SEARCH")?>" class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /></td>
+					</tr>
+				</table>
+			</form>
+			<?php $sales_item = $this->getsales_item;
+			if($sales_item!=""):
+			?>
+			<input type="button" value="" class="print" onClick="Clickheretoprint()" />
+			<!-- <input type="button" value="" class="print" onClick="window.open('<?php echo $url_print;?>','mywindow','width=600,height=300,scrollbars=yes')">-->
+			<div id="print_content"  style="overflow:scroll; overflow-x:hidden; max-height:400px;">
+				<div style="background:rgb(237, 247, 248); padding:10px 0px 15px 0px;">
+					<table cellspacing="0" class="" border="1" width="96%" style="margin:30px 2%;">
+						<thead>
+								<br /><br />
+							<tr style="background:#fff; padding:10px 5px; height:120px;">
+							
+									<td colspan="7" style="padding-left:5px;"><?php echo COM_ADD; ?><!-- <img src="<?php //echo BASE_URL;?>/images/logo.png" /> -->
+										<div style="float:right; padding-right:5px;">
+										<?php if(!empty($brach_name))
+										 	echo "<b>To Branch Name : </b>".$brach_name["Name"];
+										else{
+											echo "<b>To Branch Name : </b> All Branch ";
+										}?>
+										</div>
+									&nbsp;&nbsp;</td>
+						   </tr>
+					   </thead>
+							<tr height="35" class="height" style="background:#E4E4E4;">
+								<th><?php echo $tr->translate("NUM");?></th>
+								<th><?php echo $tr->translate("ITEM_NAME");?></th>
+								<th><?php echo $tr->translate("ITEM_CODE");?></th>
+								<th><?php echo $tr->translate("BRANCH_NAME");?></th>
+								<th><?php echo $tr->translate("CATEGORY");?></th>
+								<th colspan="2"><?php echo $tr->translate("QTY_TRANSFER");?></th>
+							</tr>
+					 <?php $num=1; foreach ($sales_item AS $index => $item):?>
+							<tr height="30" class='row-format<?php echo $num; $num=1-$num;?> font'>
+								<td align="center"><?php echo $index+1?></td>
+								<td>&nbsp;<?php echo $item["item_name"]?></td>
+								<td>&nbsp;<?php echo $item["p_code"]?></td>
+								<td>&nbsp;<?php echo $item["Brand"]?></td>
+								<td>&nbsp;<?php echo $item["cate_name"]?></td>
+								<td colspan="2">&nbsp;<?php echo $item["qty"]?></td>
+							</tr>
+					<?php endforeach; ?>
+						<tr height="35" class='row-format<?php echo $num; $num=1-$num;?>'>
+								<td align="right" colspan="2">&nbsp;<?php echo $tr->translate("REPORT_ON_DATE");?>&nbsp;&nbsp;</td>
+								<td colspan="5">&nbsp;&nbsp;<?php echo"  ". $this->start_date." To ".$this->end_date;?></td>
+						</tr>
+				</table>
+			</div>
+		</div><!-- print content -->
+		<?php endif;?>
+		</div>
+	</div>
+</div>
+<script>
+	$("#item").chosen();
+	$("#LocationId").chosen();
+</script>
+
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$this->headTitle( $tr->translate('MENU_REPORT_INDEX_POCHART')); 
+	echo $this->headTitle();
+?>
+<style>
+.chartTitle{ margin-bottom:20px;  padding:2px 20px; background:#eeeeee;
+				color:#0F772D ; text-align:center;}
+</style>
+<html>
+  <head>
+  	<script type="text/javascript" src="<?php echo BASE_URL;?>/js/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Quantity per Date'],
+          <?php echo $this->top_product;?>
+        ]);
+
+        var options = {
+          title: 'Top Product PO(During a Date)'
+              
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$this->headTitle('បង្កាន់ដៃបង់ប្រាក់'); 
+	echo $this->headTitle();
+	
+	$session_user=new Zend_Session_Namespace('auth');
+	$user_id=$session_user->user_id;
+	$originalDate = "2012-10-31";
+	$newDate = date("m/d/Y", strtotime($originalDate));
+?>
+<form  id='foundation_class' action=""  method="post" enctype="application/x-www-form-urlencoded">
+</form>
+<style>
+.hover:hover{ background: #ddd;}
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("របាយការណ៍៍ប្រមូលប្រាក់ពីអតិថិជន");?>
+				</div>
+					<div class="btn-group pull-right">
+							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+							   Actions <i class="fa fa-angle-down"></i>
+							 </button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" onclick="doPrint();">
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+										</a>
+									</li>
+									<li>
+										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
+									</li>
+								</ul>
+					</div>
+			</div>
+			 <div class="portlet-body form frmfilter">
+				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 6px;">
+						<?php $formFilter = $this->form_purchase; ?>
+						<label class="control-label col-md-4"><?php echo $formFilter->getElement('text_search');?></label>
+						<label class="control-label col-md-4"><?php echo $formFilter->getElement('branch_id');?></label>
+						<label class="control-label col-md-4"><?php echo $formFilter->getElement('customer_id');?></label>
+					</div>
+					<div class="form-group" style="padding-top: 6px;">
+						<label class="control-label col-md-4"><?php echo $formFilter->getElement('start_date');?></label>
+						<label class="control-label col-md-4"><?php echo $formFilter->getElement('end_date');?></label>
+						<label class="control-label col-md-4">
+							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+						</label>
+					</div>
+				<div style="clear:both;"></div>
+				</form> 
+			</div>
+<div style="border: 1px dotted #000;background: #fff; margin: 0 auto;min-height: 27cm;">
+		<div id="divPrint"  >
+			<table class="table2excel" style="background:#fff; margin: 0 auto; width: 100%; padding: 0px 2px 1cm 2px;font-family: 'Hanuman';">
+							<tr style="font-size: 13px;">
+								<td colspan="3" align="center">
+									<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">របាយការណ៍៍ប្រមូលប្រាក់ពីអតិថិជន</strong><br />
+									<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 16px;font-family:'Khmer MEF2';">For Date <?php echo date("d-M-Y",strtotime($this->search["start_date"]))?> to <?php echo date("d-M-Y",strtotime($this->search["end_date"]));?></strong>
+								</td>
+							</tr>
+							<tr>
+								<td width="20%" align="left">
+								</td>
+								<td align="center">
+									<strong style="font-weight:bold;font-family: Arial Black;color:#000; font-size: 13px;font-family:'Khmer MEF2';"></strong>
+								</td>
+								<td align="right" width="20%">&nbsp;</td>
+							</tr>
+							<?php 
+								$total_income_kh=0;
+								$total_income_dollar=0;
+								$total =0;
+								$total_paid =0;
+								$total_expense_kh=0;
+								$total_paid=0;
+							?>
+							<tr>
+									<td colspan="3">
+									<table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
+		            					<tr style="font-size:12px; height: 20px;border: 1px solid #000;white-space: nowrap;background-color: #ccc;line-height:30px;font-weight: bold;" align="center" >
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('NUM')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('BRANCH_NAME')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('Customer Name')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('Receipt No.')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('Paid Date')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('Total')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('Paid')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('Balance')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('NOTE')?></td>
+											<td style="border: 1px solid #000;"><?php echo $tr->translate('USER')?></td>
+										</tr>
+										 <style> td{padding:0 3px; }</style>
+									<?php $i=0;if(!empty($this->rsreceitp))foreach($this->rsreceitp as $row){ $i++;?>
+										<tr class="hover" style="font-size:12px; height: 20px;border: 1px solid #000; white-space: nowrap;" align="center" >
+											<td style="border: 1px solid #000;"><?php echo $i;?></td>
+											<td style="border: 1px solid #000; text-align: left;"><?php echo $row['branch_name'];?></td>
+											<td style="border: 1px solid #000;text-align: left;"><span style="white-space:normal !important;font-family:'Khmer OS Content';line-height:17px;width:180px;!important; display: block;padding-left: 1px; padding: 2px 1px;"><?php echo $row['customer_name'];?></span></td>
+											<td align="canter" style="border: 1px solid #000;"><span style="white-space:normal !important;width:120px;!important;"><?php echo $row['receipt_no'];?></span></td>
+											<td style="border: 1px solid #000;"><?php echo date('d-M-Y',strtotime($row['receipt_date']));?></td>
+											<td style="border: 1px solid #000;background:#c6e2fb"><?php echo number_format($row['total'],2);?></td>
+											<td style="border: 1px solid #000;background:#c6e2fb"><?php echo number_format($row['paid'],2);?></td>
+											<td style="border: 1px solid #000;background:#c6e2fb"><?php echo number_format($row['balance'],2);?></td>
+											<td style="border: 1px solid #000; width:200px; white-space: normal; text-align: left;"><?php echo $row['remark'];?></td>
+											<td style="border: 1px solid #000; width:200px; white-space: normal; text-align: left;"><?php echo $row['user_name'];?></td>
+										</tr>
+											<?php 
+												$total_paid = $total_paid + $row['paid'];
+											?> 
+										 <?php } ?>
+										 <tr class="hover" style="font-size:14px; height:20px;border: 1px solid #000;" align="center" >
+											<td style="border: 1px solid #fff;border-right: 1px solid #000;" colspan="5"></td>
+											<td style="border: 1px solid #000; white-space: nowrap;">សរុបរួម/Grand Total</td>
+											<td style="border: 1px solid #000;"><?php echo number_format($total_paid,2);?></td>
+										</tr>
+										</table>
+									</td>
+								</tr>
+								<tr >
+									<td align="center" width="25%">
+										<span style=" font-size: 14px;"><?php echo $tr->translate("VERIFIED_BY"); ?></span>
+									</td>
+									<td  width="50%">
+										&nbsp;
+									</td>
+									<td align="center"  width="25%">
+										<span style=" font-size: 14px;text-align: right;"><?php echo $tr->translate("PREPARED_BY"); ?></span>
+									</td>
+								</tr>
+							
+			</table>
+	</div>	
+	</div>
+	</div>
+	</div>
+</div>
+<iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>
+<script type="text/javascript">
+function doPrint() {var divToPrint = document.getElementById('divPrint');var htmlToPrint = '' +'<style type="text/css">' +'</style>';htmlToPrint += divToPrint.outerHTML;window.document.write(htmlToPrint);window.print();window.close();}
+</script>

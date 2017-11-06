@@ -1,0 +1,56 @@
+<?php 
+	$url_new = $this->url(array('module'=>'measure','controller'=>'index','action'=>'add',));
+	$url_cancel = $this->url(array('module'=>'measure','controller'=>'index','action'=>'index'),null,true);
+	$url_delete = $this->url(array('module'=>'measure','controller'=>'index','action'=>'delete',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->frmAdd;
+?>
+<title><?php echo $tr->translate("MEASURE_LIST");?></title>
+<div class="col-md-12">
+	<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("ADD_MEASURE");?>
+			</div>
+			<div class="tools">
+				<a href="<?php echo $url_cancel;?>"><button type="button" name="calcel" class="btn red"><?php echo $tr->translate("GO_BACK");?></button></a>
+			</div>
+		</div>
+		<div class="portlet-body form">
+			<form class="form-horizontal" method="post" action="<?php echo $url_new;?>" >
+				<div class="form-body ">
+					<div style="margin: 0 auto;" >
+							
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("MEASURE_NAME");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('measure_name');?>
+								</div>
+												
+							</div>
+							<div class="form-group">
+												
+								<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('status');?>
+								</div>
+							</div>
+							<div class="form-group">
+												
+								<label class="col-md-2 control-label"><?php echo $tr->translate("REMARK");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('remark');?>
+								</div>
+							</div>
+						<div class="form-group">
+                            <div class="col-md-12 ">
+                                <button type="submit" name="save_new" class="btn green"><?php echo $tr->translate("SAVE_NEW");?></button>
+                                <button type="submit" name="save_close" class="btn default"><?php echo $tr->translate("SAVE_CLOSE");?></button>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

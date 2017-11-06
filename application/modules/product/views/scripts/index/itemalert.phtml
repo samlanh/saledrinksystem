@@ -1,0 +1,76 @@
+<?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();?>
+<?php 
+	$url_new = $this->url(array('module'=>'product','controller'=>'index','action'=>'product-alert',));
+	$url_sarch = $this->url(array('module'=>'product','controller'=>'index','action'=>'itemalert',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+?>
+<title><?php echo $tr->translate("MENU_PRODUCT_INDEX_ITEMALERT");?></title>
+<div class="view_tb_right">
+<div class="wrapper">
+    <div style="width:98%; margin:0 auto;">
+    	<table class="table" align="right" width="100%">
+			<tr>
+				<td>
+				<div class="view-table shadow">
+					<form method="post" action="<?php echo $url_sarch; ?>">
+								<table width="100%">
+										<tr height="40px">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td width="35%"></td>
+										</tr>
+										<tr>
+										    <td><?php echo $tr->translate("ITEM_NAME")." / ".$tr->translate("ITEM_CODE");?></td>
+										    <td width="35%"><?php echo $formFilter->getElement('pro_id');?></td>
+										    <td><?php echo $tr->translate("SELECT_CATE");?></td>
+											<td><?php echo $formFilter->getElement('category_id');?></td>
+											
+										</tr>
+										<tr><td colspan="4">&nbsp;</td></tr>
+										<tr class="height">
+											<td></td>
+											<td><?php echo $formFilter->getElement('customer_id');?></td>
+											<td></td>
+											<td class="btn"><input type="submit" value="<?php echo $tr->translate("REFRESH");?>"/></td>
+										</tr>
+									</table>
+					</form>
+			       </div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="btn" align="right">
+					</div>
+					<div class="btn" align="right">
+						<?php 
+							$formList = new Application_Form_Frmlist();
+							echo $formList->showAddBuntton($url_new);
+							//echo $formList->showDeleteBuntton($url_delete);
+						?>
+					</div>
+				</td>
+			</tr>
+		</table>
+	  <div style="position: relative; clear: both;">
+			<div class="head_form">
+				<?php echo $tr->translate("MENU_PRODUCT_INDEX_ITEMALERT");?>
+			</div>
+			<div class="contain_form">
+				<?php echo $this->list; ?>
+			</div>
+	  <div>
+    </div>
+</div><!-- end of wrapper -->
+</div><!-- end of .view_tb_right -->
+<script>
+	function addNewTypePrice(){
+		window.open("<?php echo BASE_URL?>/product/adjust-stock/type-price","_parent");
+		}
+	$("#pro_id").chosen();
+	$("#measure_id").chosen();
+	$("#size").chosen();
+	$("#category_id").chosen();
+</script>

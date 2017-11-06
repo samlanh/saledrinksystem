@@ -1,0 +1,77 @@
+<?php 
+	$url_new = $this->url(array('module'=>'product','controller'=>'index','action'=>'add',));
+	$url_delete = $this->url(array('module'=>'product','controller'=>'index','action'=>'delete-product',
+	));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+	$mylevel = $this->level;
+?>
+<title><?php echo $tr->translate("PRODUCT-LIST");?></title>
+<div class="right">
+<div class="wrapper"> 
+	    <div style="width:98%; margin:0 auto;">
+	      <form method="post" action="<?php echo $formFilter->getAction(); ?>">
+	    	<table class="view-table shadow" style="margin-top:15px; width:100%">
+				<tr>
+					<td>
+						
+						<div class="shadow">
+							<table width="100%">
+										<tr>
+										    <td><?php echo $tr->translate("ITEM_CODE");?></td>
+										    <td><?php echo $formFilter->getElement('p_code');?></td>
+											<td><?php echo $tr->translate("SELECT_CATE");?></td>
+											<td width="30%"><?php echo $formFilter->getElement('category_id');?></td>
+											
+										</tr>
+										<tr height="40px">
+											<td><?php echo $tr->translate("ITEM_NAME");?></td>
+											<td><?php echo $formFilter->getElement('p_name');?></td>
+											<td><?php echo $tr->translate("BRANCH_NAME");?></td>
+											<td><?php echo $formFilter->getElement('branch_id');?></td>
+										</tr>
+										<tr height="40px">
+											<td><?php echo $tr->translate("STATUS");?></td>
+											<td><?php echo $formFilter->getElement('status');?></td>
+											<td><?php //echo $tr->translate("ITEM_NAME");?></td>
+											<td><?php //echo $formFilter->getElement('status');?></td>
+										</tr>
+										<tr class="height" >
+											<td></td>
+											<td><?php echo $formFilter->getElement('customer_id');?></td>
+											<td></td>
+											<td class="btn"><input type="submit" value="<?php echo $tr->translate("REFRESH");?>"/></td>
+										</tr>
+									</table>
+							 </div>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="btn" align="right">
+							<?php 
+							if($mylevel==1 OR $mylevel==2){
+								$formList = new Application_Form_Frmlist();
+								echo $formList->showAddBuntton($url_new);
+								//echo $formList->showDeleteBuntton($url_delete);
+							}
+							?>
+						</div>
+					</td>
+				</tr>
+			</table>
+			</form>
+		  		<div class="">
+					<div class="head_form">
+						<?php echo $tr->translate("PRODUCT-LIST");?>
+					</div>
+					<div class="contain_form">
+					<!-- 	<div style="overflow:scroll; height: 350px; overflow-x:hidden;"> -->
+							<?php echo $this->list; ?>
+					<!-- </div> -->
+					</div>
+				</div>
+		</div>
+	</div><!-- end of right -->
+</div><!-- end of .view_tb_right -->

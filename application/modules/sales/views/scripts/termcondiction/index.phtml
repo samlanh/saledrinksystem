@@ -1,0 +1,28 @@
+<?php 					
+	$url_new = $this->url(array('module'=>'sales','controller'=>'termcondiction','action'=>'add',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+?>
+<title><?php echo $tr->translate("TERMCONDICTION_LIST");?></title>
+<meta charset="utf-8" />
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("TERMCONDICTION_LIST");?>
+				</div>
+				<div class="caption pull-right">
+				<a href="<?php echo $url_new;?>" class="btn btn-sm green  pull-right">
+					<i class="fa fa-plus"></i>&nbsp;<?php echo $tr->translate("ADD_NEW");?>
+				</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="contain_form" style="clear:both;">
+					<?php echo $this->list; ?>
+				</div>
+		   </div>
+		</div>
+	</div>
+</div>
