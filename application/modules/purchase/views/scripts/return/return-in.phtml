@@ -1,0 +1,61 @@
+<?php 					
+	$url_new = $this->url(array('module'=>'purchase','controller'=>'return','action'=>'return-item-in',));
+	$url_delete = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'delete-purchase-order',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+?>
+<title><?php echo $tr->translate("MENU_PURCHASE_RETURN_IN");?></title>
+<div class="right" style="padding:10px; width: 97%">
+<div class="wrapper">
+  <div style="width:98%; margin:0 auto;">
+	  
+				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
+					<div class="select view-table shadow" style="width: 100%;">
+							<table style="width: 100%;">
+								<tr class="height">
+									<td><?php echo $tr->translate("INVOICE_NUM")."(Out)";?></td>												
+									<td width="30%"><?php echo $formFilter->getElement('invoice_out');?></td>
+									<td><?php echo ($tr->translate("INVOICE_NUM")."(IN)");?></td>
+									<td width="30%"><?php echo $formFilter->getElement('invoice_in');?></td>			
+								</tr>
+								<tr class="height">
+									<td><?php echo $tr->translate("START_DATE");?></td>
+									<td class="add-edit"><?php echo $formFilter->getElement('search_start_date');?></td>
+									<td><?php echo $tr->translate("END_DATE");?></td>
+									<td class="add-edit"><?php echo $formFilter->getElement('search_end_date');?></td>
+									
+								</tr>
+								
+								<tr class="height">
+									<td colspan="2"></td>
+									<td class="btn"></td>
+									<td class="btn"><input type="submit" value="<?php echo $tr->translate("REFRESH");?>" />
+									</td>
+								</tr>
+								<tr class="height">
+									<td colspan="2"></td>
+									<td class="btn"></td>
+									<td class="btn" colspan="2">
+										<div class="btn" align="right">
+											<?php 
+												$formList = new Application_Form_Frmlist();
+												echo $formList->showAddBuntton($url_new);
+											?>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>	
+					<br/>
+				  	<div class="">
+						<div class="head_form">
+							<?php echo $tr->translate("RETURN_ITEM_LIST");?>
+						</div>
+						<div class="contain_form">
+							<?php echo $this->list; ?>
+						</div>
+					</div>
+				</form>
+	</div>
+</div><!-- end wrapper -->
+</div><!-- end of .right -->

@@ -1,0 +1,101 @@
+<?php 
+ $form=$this->form; 	
+Application_Model_Decorator::removeAllDecorator($form);
+	$cancel_url=$this->url(array(
+		'module'=>'rsvacl',
+		'controller'=>'acl',
+		'action'=>'index',
+	));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+
+<title><?php echo $tr->translate("MENU_RSVACL_ACL_ADD_ACL");?></title>
+<script type="text/javascript">
+	jQuery(Document).ready(function(){
+		//binds form submission and fields to the validation engine
+		jQuery('#frm').validationEngine('attach', {promptPosition : "centerRight"});
+		
+	});
+</script>
+
+<style>
+fieldset.fifthy {	
+	border-right: 0px;
+	width: 50%;	
+}
+table.user td{
+	vertical-align: top;
+	padding-left: 5px;	   
+}
+</style>       
+<script language="javascript">
+    var temp=-1;
+	function validateUser(field)
+	{
+		if(temp==1) return '* User type already exist!';
+		else temp==-1;
+	}
+</script>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_USER")?>
+				</div>
+				<div class="tools" >
+					<a href="<?php echo $cancel_url;?>" class="btn btn-sm pull-right" style="color:white;">
+					<i class="fa fa-undo"></i>	&nbsp;<?php echo $tr->translate("GO_BACK");?>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<!-- BEGIN FORM-->
+				<form id="frm" action="<?php //echo $url_submit; ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+					<div class="form-body">
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate('MODULE')." ".$tr->translate('NAME');?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-2">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('module');?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate('CONTROLLER')." ".$tr->translate('NAME');?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-2">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('controller');?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate('ACTION')." ".$tr->translate('NAME');?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-2">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('action');?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-4">
+								<div class="input-icon right">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<button type="submit" name="btnsavenew" class="btn blue btn-block btn-lg"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+							</div>
+							<div class="col-md-4">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

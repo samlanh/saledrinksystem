@@ -1,0 +1,63 @@
+<title>Edit Acess Control - RSMK</title>
+<script type="text/javascript">
+	jQuery(Document).ready(function(){
+		//binds form submission and fields to the validation engine
+		jQuery('#frm').validationEngine('attach', {promptPosition : "centerRight"});
+		
+	});
+</script>
+<?php $form=$this->form;?>
+<style>
+fieldset.fifthy {	
+	border-right: 0px;
+	width: 50%;
+}
+table.user td{
+	vertical-align: top;
+   
+}
+</style> 
+<?php 
+Application_Model_Decorator::removeAllDecorator($form);
+$cancel_url=$this->url(array(
+		'module'=>'rsvAcl',
+		'controller'=>'acl',
+		'action'=>'index',
+	));
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<div class="right" style="width: 97%; padding: 10px;">
+	<form id="frm" action="<?php echo $form->getAction(); ?>" method="post" enctype="application/x-www-form-urlencoded" >
+		<div class="btn" align="right">
+				    <button name="save" class="positive" type="submit">
+				        <img alt="" src="<?php echo BASE_URL?>/images/icon/apply2.png">
+				        <?php echo $tr->translate('SAVE');?>
+				    </button>												   						
+				    <a class="negative" href="<?php echo $cancel_url;?>">
+				        <img alt="" src="<?php echo BASE_URL?>/images/icon/cross.png">
+				        <?php echo $tr->translate('CANCEL');?>
+				    </a>
+		</div>
+		<div class="view-table">
+		<div class="head_form">
+			<?php echo $tr->translate('MODULE')."/".$tr->translate('CONTROLLER')."/".$tr->translate('ACTION');?>
+		</div>
+		<div class="contain_form shadow">
+			<table class="margin">
+				<tr class="height">
+					<td><?php echo $tr->translate('MODULE')." ".$tr->translate('NAME');?></td>
+					<td><?php echo $form->getElement('module');?></td>				
+				</tr>
+				<tr class="height">
+					<td><?php echo $tr->translate('CONTROLLER')." ".$tr->translate('NAME');?></td>
+					<td><?php echo $form->getElement('controller');?></td>				
+				</tr>
+				<tr class="height">
+					<td><?php echo $tr->translate('ACTION')." ".$tr->translate('NAME');?></td>
+					<td><?php echo $form->getElement('action');?></td>				
+				</tr>							
+			</table>
+		</div>
+		</div>	
+	</form>
+</div>

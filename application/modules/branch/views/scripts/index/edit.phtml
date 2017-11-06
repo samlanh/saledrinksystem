@@ -1,0 +1,99 @@
+<?php 
+	$url_new = $this->url(array('module'=>'branch','controller'=>'index','action'=>'add',));
+	$url_edit = $this->url(array('module'=>'branch','controller'=>'index','action'=>'edit',));
+	$url_close = $this->url(array('module'=>'branch','controller'=>'index','action'=>'index',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->frmAdd;
+?>
+<title><?php echo $tr->translate("LOCATION_LIST");?></title>
+<div class="col-md-12">
+	<div class="portlet box blue">
+		<div class="portlet-title">
+			<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("ADD_LOCATION");?>
+			</div>
+			<div class="tools">
+				<a href="<?php echo $url_close;?>"><button type="button" name="calcel" class="btn red"><?php echo $tr->translate("GO_BACK");?></button></a>
+			</div>
+		</div>
+		<div class="portlet-body form">
+			<form class="form-horizontal" method="post" action="<?php echo $url_edit;?>" >
+				<div class="form-body">
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("BRANCH_NAME");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('branch_name');?>
+								</div>
+												
+								<label class="col-md-2 control-label"><?php echo $tr->translate("CON_NAME");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('contact');?>
+								</div>
+							</div>
+											
+							<div class="form-group">
+								
+												
+								<label class="col-md-2 control-label"><?php echo $tr->translate("PHONE_NUM");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('contact_num');?>
+								</div>
+								
+								<label class="col-md-2 control-label"><?php echo $tr->translate("Office Phone");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('office_num');?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo $tr->translate("EMAIL");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('email');?>
+								</div>
+												
+								<label class="col-md-2 control-label"><?php echo $tr->translate("FAX");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('fax');?>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								
+								<label class="col-md-2 control-label"><?php echo $tr->translate("ADD_LOCATION");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('address');?>
+								</div>
+								
+								<label class="col-md-2 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('status');?>
+								</div>
+												
+								
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php //echo $tr->translate("FAX");?></label>
+								<div class="col-md-4">
+									<div class="input-group">
+									<?php //echo $formFilter->getElement('fax');?>
+									</div>
+								</div>
+								
+								<label class="col-md-2 control-label"><?php echo $tr->translate("REMARK");?></label>
+								<div class="col-md-4">
+									<?php echo $formFilter->getElement('remark');?>
+								</div>
+							</div>
+						<div class="form-group">
+								<label  class="col-md-12 col-md-offset-4 col-md-8">
+									<button type="submit" name="save_close" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i> <?php echo $tr->translate("SAVE_CLOSE")?></button>
+									<button type="submit" name="save_new" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+									<a href="<?php echo $this->baseUrl();?>/branch/index"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("EXIT")?></button></a>
+								</label>
+						</div>
+						
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

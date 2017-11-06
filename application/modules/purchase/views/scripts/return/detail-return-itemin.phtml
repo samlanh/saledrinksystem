@@ -1,0 +1,91 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage(); 
+	$return_info = $this->return_info;
+	$returnItemDetail = $this->returnItemDetail;
+?>
+<title><?php echo $tr->translate("DETAIL_RETURN_ITEM");?></title>
+<div calss="wrapper">
+	<div class="left">
+	</div><!-- end of left -->
+	<div class="right" style="padding: 10px;">
+		<div class="btn" align="right">
+				<!--
+			    <a href="<?php //echo BASE_URL."/purchase/return/update-return-item/id/".$return_info['returnin_id']; ?>" class="negative">
+			        <img src="<?php //echo BASE_URL?>/images/icon/edit.png" alt=""/>
+			        <?php //echo $tr->translate("EDIT");?>
+			    </a> -->
+			    <a href="<?php echo BASE_URL."/purchase/return/return-in"; ?>" class="negative">
+			        <img src="<?php echo BASE_URL?>/images/icon/previous.gif" alt=""/>
+			        <?php echo $tr->translate("BACK"); ?>
+			    </a>
+		</div>
+	    <div>
+			<div class="head_form">
+				<?php echo $tr->translate("RETURN_VENDOR_INFO");?>
+			</div>
+		   	<div class="contain_form">
+		   		<table style="width: 55%">
+					<tr>
+						<td class="field"><?php echo ($tr->translate("REFERENCE")." (Out)");?></td>
+						<td class="value"><?php echo $return_info['return_no'];?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo ($tr->translate("INVOICE_NUM")." (In)");?></td>
+						<td class="value"><?php echo $return_info['returnin_no'];?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo ($tr->translate("LOCATION_NAME"));?></td>
+						<td class="value"><?php echo $return_info['Name']; ?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo ($tr->translate("RETURN_DATE"));?></td>
+						<td class="value"><?php echo $return_info['date_return_in'];?></td>
+					</tr>
+				</table>
+		   	</div>
+		</div><!-- end of view-table -->
+		<br/>
+	    <div class="view-table">
+			<div class="head_form">
+				<?php echo $tr->translate("ORDER_ITEMS");?>
+			</div>
+		   	<div class="contain_form">
+		   		<table class="collape" rule="rows">
+					<tr height="25px">
+						<td class="sub-tdheader"><?php echo $tr->translate("NUM");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("ITEM_NAME_CAP");?></td>
+						<!--<td class="sub-tdheader"><?php //echo $tr->translate("LOCATION_NAME_CAP");?></td> -->
+						<td class="sub-tdheader"><?php echo $tr->translate("QTY_RETURN");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("UNIT_PRICE_CAP");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("TOTAL_PRICE_CAP");?></td>
+						<td class="sub-tdheader"><?php echo strtoupper($tr->translate("RETURN_REMARK"));?></td>
+					</tr>
+					<?php 
+						if(count($returnItemDetail) > 0) {
+							$i = 0;
+							foreach($returnItemDetail as $item) {
+								$i++;
+								?>
+								<tr class="trbody">
+									<td align="center"><?php echo $i;?></td>
+									<td><?php echo $item['item_name'];?></td>
+									<!--<td><?php //echo $item['location_id'];?></td>-->
+									<td><?php echo $item['qty_return'];?></td>
+									<td><?php echo $item['price'];?></td>
+									<td><?php echo $item['sub_total'];?></td>
+									<td><?php echo $item['return_remark'];?></td>
+								</tr>
+							<?php }
+						}
+					?>
+								<tr class="trbody">
+									<td colspan="4"></td>
+									<td align="right"><?php echo $tr->translate("ALL-TOTAL");?></td>
+									<td><?php echo $return_info['all_total'];?></td>
+								</tr>
+				</table>
+		   	</div>
+		</div><!-- end of view-table -->
+		
+	</div><!-- end right -->
+</div><!-- end wrapper -->

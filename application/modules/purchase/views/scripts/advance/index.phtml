@@ -1,0 +1,72 @@
+<?php 					
+	$url_new = $this->url(array(
+		'module'=>'purchase',
+		'controller'=>'index',
+		'action'=>'add-purchase',
+	));
+	$url_delete = $this->url(array(
+		'module'=>'purchase',
+		'controller'=>'index',
+		'action'=>'delete-purchase-order',
+	));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+?>
+<title><?php echo $tr->translate("PURCHASE_ORDER_LIST_CAP");?></title>
+<div class="right" style="padding:10px; width: 97%">
+<div class="wrapper">
+	<div style="width:98%; margin:0 auto;">
+				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
+					<div class="select" style="width: 100%;">
+					<table >
+						<tr>
+							<td class="add-edit">
+								<table>
+									<tr>
+										<td class="select"><?php echo $tr->translate("PURCHASE_ORDER_CAP");?></td>
+										<td class="add-edit"><?php echo $formFilter->getElement('order');?></td>
+										<td class="select"><?php echo $tr->translate("PHONE_NUM_CAP");?></td>
+										<td class="add-edit"><?php echo $formFilter->getElement('phone');?></td>
+										<td class="select"><?php echo $tr->translate("VENDOR_NAME_CAP");?></td>
+										<td class="add-edit"><?php echo $formFilter->getElement('vendor_name');?></td>
+									</tr>
+									<tr>
+										<td class="select"><?php echo $tr->translate("START_DATE_CAP");?></td>
+										<td class="add-edit"><?php echo $formFilter->getElement('search_start_date');?></td>
+										<td class="select"><?php echo $tr->translate("END_DATE_CAP");?></td>
+										<td class="add-edit"><?php echo $formFilter->getElement('search_end_date');?></td>
+										<td class="select"><?php echo $tr->translate("STATUS_CAP");?></td>
+										<td class="add-edit"><?php echo $formFilter->getElement('status');?></td>
+									</tr>
+									<tr>
+										<td colspan="4" class="btn"></td>
+										<td class="btn"><input type="submit" value="<?php echo $tr->translate("REFRESH");?>" />
+										</td>
+										<td class="btn" colspan="2">
+											<div class="btn" align="right">
+												<?php 
+													$formList = new Application_Form_Frmlist();
+													echo $formList->showAddBuntton($url_new);
+													echo $formList->showDeleteBuntton($url_delete);
+												?>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					</div>
+			   	  <div class="">
+						<div class="head_form">
+							<?php echo $tr->translate("PURCHASE_ORDER_LIST_CAP");?>
+						</div>
+						<div class="contain_form">
+							<?php echo $this->list; ?>
+						</div><!-- end of .contain_form -->
+				</div>
+				</form>
+	</div>
+</div><!-- end wrapper -->
+</div><!-- end of .right -->
+												

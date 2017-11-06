@@ -1,0 +1,201 @@
+<title>Add User</title>
+<?php $form=$this->form; ?>
+      
+<script language="javascript">
+      var temp=-1;
+   
+	function validateUser(field)
+	{
+		if(temp==1) return '* User name already exist!';
+		else temp==-1;
+	}
+    function validatePassword(field)
+	{
+    	var com=$('#confirm_password').val();
+    	var pwd=$('#password').val();
+		if(com!=pwd) return '* Password mismatch!';		 
+	}
+</script>
+<script type="text/javascript">
+	$( document ).ready(function() {
+		addRow();
+		jQuery('#frm').validationEngine('attach', {promptPosition : "centerRight"});
+		
+	});
+</script>
+<?php 
+	Application_Model_Decorator::removeAllDecorator($form);
+	$cancel_url=$this->url(array(
+		'module'=>'rsvAcl',
+		'controller'=>'user',
+		'action'=>'index',
+	)); 	
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$url_cancel = $this->url(array('module'=>'rsvacl','controller'=>'user','action'=>'index'));
+?>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_USER")?>
+				</div>
+				<div class="tools" >
+					<a href="<?php echo $url_cancel;?>" class="btn btn-sm pull-right" style="color:white;">
+					<i class="fa fa-undo"></i>	&nbsp;<?php echo $tr->translate("GO_BACK");?>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<!-- BEGIN FORM-->
+				<form id="frm" action="<?php //echo $url_submit; ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+					<div class="form-body">
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate('GENDER_TITLE');?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('title');?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate('FULL_NAME');?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('fullname');?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate('USER_NAME');?><span class="required">
+							* </span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+								<?php echo $form->getElement('username');?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate('EMAIL');?><span class="required">
+								 </span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<?php echo $form->getElement('email');?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate('PASSWORD');?><span class="required">
+								 </span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<?php echo $form->getElement('password');?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate('RE_PASSWORD');?><span class="required">
+							* </span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<?php echo $form->getElement('confirm_password');?></div>
+							</div>
+						</div>
+						<div class="form-group" >
+							<label class="control-label col-md-2"><?php echo $tr->translate('USER_TYPE');?><span class="required">
+								 </span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<?php echo $form->getElement('user_type_id');?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("ASS_TO_LOCATION");?><span class="required">
+								 </span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<?php echo $form->getElement("LocationId");?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group" >
+						<label class="control-label col-md-6">
+						</label>
+						<label class="control-label col-md-2">
+						<input type="hidden" id="identity" name="identity" />
+									<button class="btn btn-primary" type="button" id="new_item" onclick="addRow(1);" name="new_followup" value="New">
+													&nbsp;<img src="<?php echo $this->baseUrl()?>/images/icon/new-row.png" alt="">Add</button>
+						</label>
+							<label class="control-label col-md-4">
+								<table class="collape" id="table_order" style="width: 100%;">
+									<tr height="25px">
+										<td class="sub-tdheader" width="20px"><?php echo $tr->translate("NUM");?></td>
+										<td class="sub-tdheader"><?php echo $tr->translate("BRANCH_NAME");?></td>
+									</tr>
+								</table>
+							</label>
+						</div>
+						<div class="form-group">
+							<div class="col-md-4">
+								<div class="input-icon right">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<button type="submit" name="btnsavenew" class="btn blue btn-block btn-lg"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+							</div>
+							<div class="col-md-4">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var index5 = 0;
+var option5 = '<?php echo $this->locations; ?>';
+
+var baseUrl = '<?php echo BASE_URL; ?>';
+var template = '';
+var value = '';
+function addRow() {
+	index5++;
+	template='<tr id="row_order_'+index5+'">';
+	var inp = '';
+	if(index5 == 1) {
+		template+='<td class="quater-input">&nbsp;</td>';
+	} else {
+		template+='<td class="quater-input"><img onClick="deleteRecord('+index5+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+	}
+	template+='<td class="quater-input"><select Onchange="AddLocation('+index5+')" class="validate[required] form-control select2me"  id="location_id_'+index5+'"  name="location_id_'+index5+'" >'+option5+'</select>'+inp+'</td>'; 
+	template+="</tr>";
+	$('#table_order').append(template);
+	if($('#identity').val()!="") {
+		var identity = $('#identity').val();
+		$('#identity').val(identity+','+index5);
+	} else {$('#identity').val(index5);}
+	//$("#orderFrm").validationEngine();
+	
+}
+
+//$('#new_item').click(addRow);
+
+function deleteRecord(index) {
+	var identity = $('#identity').val();
+	var arrays = identity.split(',');
+	for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+	}
+	var strings = arrays.join(',');
+	$('#identity').val(strings);
+	$("#row_order_"+index).remove();
+
+}
+</script>

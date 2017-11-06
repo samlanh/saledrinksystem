@@ -1,0 +1,140 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage(); 
+	$orderIteminfo = $this->order_info;
+	$orderItemDetail = $this->orderItemDetail;
+	$optionsStatus = $this->optionsStatus;
+?>
+<title><?php echo $tr->translate("MENU_PURCHASE_INDEX_DETAIL_PURCHASE_ORDER");?></title>
+<div calss="wrapper">
+	<div class="left">
+	</div><!-- end of left -->
+	<div class="right" style="padding: 10px;">
+		<div class="btn" align="right">
+			<?php if($orderIteminfo['status']!= 4) {?>
+			    <a href="<?php echo BASE_URL."/purchase/index/update-purchase-order/id/".$orderIteminfo['order_id']; ?>" class="negative">
+			        <img src="<?php echo BASE_URL?>/images/icon/edit.png" alt=""/>
+			        <?php echo $tr->translate("EDIT");?>
+			    </a>
+<!-- 		    <a href="<?php //echo BASE_URL."/purchase/index/index/".$orderIteminfo['order_id']; ?>" class="negative">
+			        <img src="<?php //echo BASE_URL?>/images/icon/delete-row.png" alt=""/>
+			        <?php //echo $tr->translate("DELETE");?>
+			    </a> -->	
+			<?php } ?>
+			    <a href="<?php echo BASE_URL."/purchase/index/index"; ?>" class="negative">
+			        <img src="<?php echo BASE_URL?>/images/icon/previous.gif" alt=""/>
+			        <?php echo $tr->translate("BACK"); ?>
+			    </a>
+		</div>
+	    <div>
+			<div class="head_form">
+				<?php echo $tr->translate("CUSTOMER-ORDERED-INFO");?>
+			</div>
+		   	<div class="contain_form">
+		   		<table style="width: 55%">
+					<tr>
+						<td class="field"><?php echo $tr->translate("INVOICE_NUM");?></td>
+						<td class="value"><?php echo $orderIteminfo['order'];?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo $tr->translate("DATE_ORDER");?></td>
+						<td class="value"><?php echo $orderIteminfo['date_order'];?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo $tr->translate("DATE_IN");?></td>
+						<td class="value"><?php echo $orderIteminfo['date_in'];?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo $tr->translate("STATUS");?></td>
+						<?php $status=$orderIteminfo['status'];
+							if($status==1){
+								$str_statuse="Quote";
+							}
+							elseif($status==2){
+								$str_statuse="Open";
+							}
+							elseif($status==3){
+								$str_statuse="In Progress";
+							}
+							elseif($status==4){
+								$str_statuse="Paid";
+							}
+							elseif($status==5){
+								$str_statuse="Cancel";
+							}
+							else{
+								$str_statuse="";
+							}	
+						?>
+						<td class="value"><?php echo $str_statuse;?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo $tr->translate("VENDOR_NAME");?></td>
+						<td class="value"><?php echo $orderIteminfo['v_name'];?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo $tr->translate("CON_NAME");?></td>
+						<td class="value"><?php echo $orderIteminfo['contact_name'];?></td>
+					</tr>
+					
+					<tr> 
+						<td class="field"><?php echo $tr->translate("CON_NUM");?></td>
+						<td class="value"><?php echo $orderIteminfo['phone'];?></td>
+					</tr>
+					<tr>
+						<td class="field"><?php echo $tr->translate(strtoupper("VENDOR_ADD"));?></td>
+						<td class="value"><?php echo $orderIteminfo['add_name']; ?></td>
+					</tr>
+				</table>
+		   	</div>
+		</div><!-- end of view-table -->
+		<br/>
+	    <div class="view-table">
+			<div class="head_form">
+				<?php echo $tr->translate("ORDER_ITEMS");?>
+			</div>
+		   	<div class="contain_form">
+		   		<table class="collape" rule="rows">
+					<tr height="25px">
+						<td class="sub-tdheader"><?php echo $tr->translate("NUM");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("ITEM_NAME_CAP");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("QTY_ORDER_CAP");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("UNIT_PRICE_CAP");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("TOTAL_PRICE_CAP");?></td>
+						<td class="sub-tdheader"><?php echo $tr->translate("SUB_TOTAL_CAP");?></td>
+						<td class="sub-tdheader"><?php echo strtoupper($tr->translate("REMARK"));?></td>
+					</tr>
+					<?php 
+						if(count($orderItemDetail) > 0) {
+							$i = 0;
+							foreach($orderItemDetail as $item) {
+								$i++;
+								$totalPrice = $item['qty_order'] * $item['qty_order'];
+								$discount=($item['qty_order']==1)?$totalPrice*$item['qty_order']/100:$item['qty_order'];
+								?>
+								<tr class="trbody">
+									<td width="20px" align="center"><?php echo $i;?></td>
+									<td><?php echo $item['item_name'];?></td>
+									<td><?php echo $item['qty_order'];?></td>
+									<td><?php echo $item['price']; ?></td>
+									<td><?php echo $item['total_befor'];?></td>
+									<td><?php echo $item['sub_total'];?></td>
+									<td><?php echo $item['remark'];?></td>
+								</tr>
+							<?php }
+						}
+					?>
+								<tr class="trbody">
+									<td colspan="5" rowspan="2"></td>
+									<td align="right"><?php echo $tr->translate("NET-TOTAL");?></td>
+									<td><?php echo $orderIteminfo['net_total'];?></td>
+								</tr>
+								<tr class="trbody">
+									<td align="right"><?php echo $tr->translate("ALL-TOTAL");?></td>
+									<td><?php echo $orderIteminfo['all_total'];?></td>
+								</tr>	
+				</table>
+		   	</div>
+		</div><!-- end of view-table -->
+		
+	</div><!-- end right -->
+</div><!-- end wrapper -->

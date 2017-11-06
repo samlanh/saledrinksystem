@@ -1,0 +1,691 @@
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$form=$this->form_purchase;
+	$url_submit = $this->url(array('module'=>'purchase','controller'=>'checkin','action'=>'index'));
+	$url_cancel = $this->url(array('module'=>'purchase','controller'=>'checkin','action'=>'index'));
+	$url_new = $this->url(array('module'=>'purchase','controller'=>'checkin','action'=>'index'));
+	$rowLostItems = $this->rowsOrder;
+?>
+<style>
+.min input[type="text"]{ min-width:50px !important;max-width:100px !important; padding-right:32px; text-align:left;}
+.measure{ font-size: 11px; color:#060; margin-left:-30px}
+</style>
+<title><?php echo $tr->translate("ADD_PURCAHSE_ORDER");?></title>
+<div class="wrapper">
+    <div class="right">
+    	<form id="orderFrm" action="<?php echo $url_submit; ?>" method="post" enctype="multipart/form-data">
+    	<div class="contorl-cus">
+        	<?php  $frmctrol=$this->control ;?>
+        	<a href="<?php echo $url_new ?>" class="new"><?php echo $tr->translate("NEW");?></a>
+        	<?php 
+        		echo $frmctrol->getElement('Save');
+			    echo $frmctrol->getElement("SaveNew");
+			?>
+        	<a href="<?php echo $url_cancel ?>" class="cancel"><?php echo $tr->translate("CANCEL");?></a>
+        	
+        	
+        	<!-- <div class="view-table shadow margin">
+        		<input class="btn_submit" type="submit" value="<?php //echo $tr->translate("SAVE_NEW");?>" name="payment" />
+				<input class="btn_submit" type="submit" name="payment" value="<?php //echo  $tr->translate("SAVE_CLOSE");?>" />
+				<input class="btn_submit" OnClick="Cancel()" type="button" name="payment" value="<?php //echo  $tr->translate("CANCEL");?>" />
+			</div> -->
+        </div>
+			<div class="style-form" style="padding:7px 20px 5px 20px;">
+		        <div class="view-table">
+				     	<div class="head_form">
+				     	
+					   		<?php echo $tr->translate("PURCHASE_INFO");?>
+					   	</div>
+					   	<div class="contain_form shadow">
+					   	<?php echo $form->getElement("order_id"); ?>
+					   		<table>
+				                <tr>
+									<td><?php echo $tr->translate("ORDER_NUMER");?>
+									<td><?php echo $form->getElement("order_no"); ?></td>
+				                    <td><?php echo $tr->translate("LOCATION_NAME");?></td>
+				                    <td width="33%"><?php echo $form->getElement("LocationId");?></td>
+				                </tr>
+				                <tr>
+									<td><?php echo $tr->translate("VENDOR_NAME");?></td>
+				                    <td width="33%"><?php echo $form->getElement("v_name");?>
+				                        <div id='userInfo'></div>
+				                    </td>
+				                	<td><?php  echo $tr->translate("POORDER_DATE"); //echo $tr->translate("CON_NAME");?></td>
+				                    <td><?php echo $form->getElement("order_date");?>
+				                       <?php //echo $form->getElement('contact'); ?>
+				                    </td>          
+				                    <td><div id = "feedback"></div></td>
+				                    
+				                </tr>
+				                 <tr>
+				                 	<td><?php  echo $tr->translate("STATUS"); //echo $tr->translate("CON_NAME");?></td>
+				                    <td><?php echo $form->getElement("status");?></td>    
+				                	<td><?php  echo $tr->translate("DATE_IN"); //echo $tr->translate("CON_NAME");?></td>
+				                    <td><?php echo $form->getElement("date_in");?></td>          
+				                </tr>
+				                <tr>
+				                 	<td><?php  //echo $tr->translate("STATUS"); //echo $tr->translate("CON_NAME");?></td>
+				                    <td><?php  echo $form->getElement("order_num");?></td>    
+				                	<td><?php  echo $tr->translate("INVOICE_NO")."(IN)"; //echo $tr->translate("CON_NAME");?></td>
+				                    <td><?php echo $form->getElement("invoice_no");?></td>          
+				                </tr>
+				               
+				            </table>
+					   	</div>
+		         </div><!-- end of .view_table -->
+		       </div><!-- end of .style form -->
+		       <div id="tabs" class="tabs-bottom">
+					<ul style="border-top:1px solid #999;">
+						<li><a href="#tabs-1"><?php echo $tr->translate("PURCAHSE_ORDER");?></a></li>
+					</ul>
+					<div class="tabs-spacer"></div>
+					<div id="tabs-1">
+					     	<div class="head_form">
+						   		<?php echo $tr->translate("PURCHASE_ORDER_LIST_CAP");?>
+						   	</div>
+						   	<div class="contain_form">
+						   		<div class="view-table">
+						   		<table class="collape" id="table_order">
+									<tr height="33px">
+										<td class="sub-tdheader"><?php echo $tr->translate("DEL");?></td>
+										<td class="sub-tdheader"><?php echo $tr->translate("NUM");?></td>
+										<td class="sub-tdheader" width="100px"><?php echo $tr->translate("ITEM_NAME_CAP");?></td>
+										<td class="sub-tdheader"><?php echo $tr->translate("QTY_UNIT");?></td>
+										<td class="sub-tdheader"><?php echo $tr->translate("QTY_PER_UNIT");?></td>
+										<td class="sub-tdheader"><?php echo $tr->translate("QTY_ORDER_CAP");?></td>
+										<td class="sub-tdheader"><?php echo $tr->translate("UNIT_PRICE_CAP");?></td>
+										<!-- <td class="sub-tdheader"><?php //echo $tr->translate("TOTAL_PRICE_CAP");?></td>
+										<td class="sub-tdheader"><?php //echo $tr->translate("DISCOUNT_CAP");?></td> -->
+										<td class="sub-tdheader"><?php echo $tr->translate("SUB_TOTAL_CAP");?></td>
+										<td class="sub-tdheader"><?php echo $tr->translate("REMARK_CAP");?></td>
+									</tr>
+								</table>
+								</div>
+								<input type="hidden" id="identity" name="identity" />
+								<table>
+									<tr>
+										<td class="new-row">
+											<div class="btn">
+												<button class="positive" type="button" id="new_item"  name= "new_followup" value="New">
+													&nbsp;<img src="<?php echo BASE_URL?>/images/icon/new-row.png" alt=""/><?php echo $tr->translate("ADD");?>
+												</button>
+											</div>
+										</td>
+									</tr>
+								</table>
+					            <div class="view-table shadow margin">
+									<table style="width:95%; margin:0 auto;">
+						                <tr class="height">
+						                	<td width="2%"><?php //echo $tr->translate("PAYMENT_METHOD");?></td>
+						                    <td width="30%">
+						                    	<?php //echo $form->getElement("payment_name");?>
+						                    </td>
+						                    <td width="12%">តម្លៃសរុប​ ៖</td>
+						                    <td width="30%"><?php echo $form->getElement("totalAmoun");?></td>
+						                       
+						                    
+						                </tr>
+						                <tr class="height">
+						                	<td><?php //echo $tr->translate("PRICE_CURRENCY");?></td>
+						                    <td>
+						                    	<?php //echo $form->getElement("currency");?>
+						                    	<?php echo $tr->translate("REMARK");?>
+						                    </td>
+						                    <td><?php echo $tr->translate("PAID");?></td>
+						                    <td><?php echo $form->getElement("paid");?></td>
+						                    
+						                </tr>
+						                <tr class="height">
+						                	<td></td>
+						                    <td rowspan="2"><?php echo $form->getElement("remark");?></td>
+											
+						                    <td><?php echo $tr->translate("BALANCE");?></td>
+						                    <td><?php echo $form->getElement("remain");?></td>
+						                </tr>
+						                <tr class="height">
+						                    <td></td>
+						                    <td colspan="2"></td>
+						                </tr>
+						                <tr>
+						                	<td></td>
+						                	<td colspan="3" align="center">
+							                	<input class="btn_submit" type="submit" value="<?php echo $tr->translate("SAVE_NEW");?>" name="payment" />
+							                    <input class="btn_submit" type="submit" name="payment" value="<?php echo  $tr->translate("SAVE_CLOSE");?>" />
+						                        <input class="btn_submit" OnClick="Cancel()" type="button" name="payment" value="<?php echo  $tr->translate("CANCEL");?>" />
+						                    
+						                	</td>
+						                </tr>
+						            </table>	
+						         </div>	 <!-- end of .view-table --> 
+						   	</div> <!-- end of .contain_form --> 
+						 
+			</div><!-- end tab1 -->
+			
+		</div><!-- end of main tab -->	
+    	</form>
+    </div><!-- end right -->
+</div><!-- end wrapper -->
+<script>
+//action when click on add/delete of followup
+var index5 = 0;
+var option5 = '<?php echo $this->items; ?>';
+
+var baseUrl = '<?php echo BASE_URL; ?>';
+var template = '';
+var value = '';
+// add order record
+function addRow() {
+	index5++; var first = index5;
+	template='<tr id="row_order_'+index5+'" style="height:33px;">';
+	var inp = '';
+	if(index5 == 1) {
+		template+='<td class="quater-input">&nbsp;</td>';
+	} else {
+		template+='<td class="quater-input"><img onClick="deleteRecord('+index5+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+		//inp = '<input type="text" style="position: relative;margin-top: -15px; top:-15px; width: 211px;" onchange="AddLocation('+index5+')" class="validate[required] ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" value="'+value+'">';
+	}
+	template+='<td class="quater-input" width="2%">'+index5+'</td>';
+	template+='<td class="quater-input" width="25%"><select Onchange="ShowPopupProduct('+ index5 + ')" id="item_id_'+index5+'" name="item_id_'+index5+'" >'+option5+'</select>'+inp+'</td>';
+	//template+='<td class="quater-input" width="25%"><label name="item_'+index5+'" id="item_'+index5+'"></label></td>';
+	template+='<td class="quater-input" width="15%"><div class="min"><input size="5" type="text" onBlur="getQtyById('+index5+')" class="validate[required,custom[number]] input" id="qty_unit_'+index5+'" name="qty_unit_'+index5+'" /><label class="measure" id="lbl_measure'+index5+'" ></label></div></td>';
+	template+='<td class="quater-input" width="15%"><div class="min"><input type="text" onBlur="totalQty('+index5+')" class="validate[required,custom[number]] input" id="qty_per_unit_'+index5+'" name="qty_per_unit_'+index5+'" /><label class="measure" id="lbl_label'+index5+'" ></label></div></td>';
+	template+='<td class="quater-input"><input type="text" onBlur="calculatePrice('+index5+')" class="validate[required,custom[number],onlyNumberSp] input" id="qty'+index5+'" name="qty'+index5+'"/></td>';
+	template+='<td class="quater-input"><input type="text" onBlur="calculatePrice('+index5+')" class="validate[required,custom[number]] input" id="price'+index5+'" name="price'+index5+'" /></td>';
+	template+='<td class="quater-input"><input type="text" class="input" readonly="readonly" id="total'+index5+'" name="total'+index5+'" /></span></td>';
+	template+='<td class="quater-input"><input type="text" class="input" id="remark_'+index5+'" name="remark_'+index5+'" /></td>';
+	//template+='<td class="quater-input"><input type="radio" onChange="calculatePrice('+index5+')" name="dis-type-'+index5+'"  id="dis-type-'+index5+'" value="2" />Fix Value &nbsp;<input type="radio" onChange="calculatePrice('+index5+')" name="dis-type-'+index5+'" id="dis-type2-'+index5+'" value="1" checked="checked" />% &nbsp;<input type="text"  onChange="calculatePrice('+index5+')" class="input70px input" id="dis-value'+index5+'" name="dis-value'+index5+'" /> =<input type="text" readonly="readonly" class="input70px input" id="real-value'+index5+'" name="real-value'+index5+'" /></td>';
+	//template+='<td class="quater-input"><input type="text" class="input100px input" readonly="readonly" id="after_discount'+index5+'" name="after_discount'+index5+'" /></td>';
+	template+="</tr>";
+	$('#table_order').append(template);
+	if($('#identity').val()!="") {
+		var identity = $('#identity').val();
+		$('#identity').val(identity+','+index5);
+	} else {$('#identity').val(index5);}
+	$("#orderFrm").validationEngine();
+	
+}
+
+//add default row or record when click
+$('#new_item').click(addRow);
+//add default row or record when ready
+jQuery(document).ready(function(){
+	//addRow();
+});
+
+function deleteRecord(index) {
+	var identity = $('#identity').val();
+	var arrays = identity.split(',');
+	for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+	}
+	var strings = arrays.join(',');
+	$('#identity').val(strings);
+	$("#row_order_"+index).remove();
+
+	// total price
+	netTotal();
+	doTotal();
+}
+
+function totalQty(index){
+	//alert(index);
+// 	unit = $("#qty_unit_"+index).val();
+// 	qty_per_unit = $("#qty_per_unit_"+index).val();
+// 	total_qty=unit*qty_per_unit;
+// 	$("#qty"+index).val(total_qty);
+	//calculatePrice(index);
+	getQtyById(index);
+	calculatePrice(index);
+	netTotal();
+	
+}
+
+
+//Calculate price of order
+function calculatePrice(index) {
+	// total price
+	//alert(22);
+	var price = $('#price'+index).val();
+	var qty = $('#qty'+index).val();
+
+	var total = price * qty;
+	$('#total'+index).val(total);
+
+	// discount of total price
+	/*var disType = $('input:radio[name=dis-type-'+index+']:checked').val();
+	var disValue = ($('#dis-value'+index).val() == '')? 0 : $('#dis-value'+index).val();
+	var discount = (disType == 1)? total * disValue / 100 : disValue;
+	$('#real-value'+index).val(discount);
+	var lastTotal = $('#total'+index).val() - discount;
+	$('#after_discount'+index).val(lastTotal);*/
+	// total price
+// 	netTotal();
+// 	doRemain();
+}
+function doTotal() {
+	/*var discountType = $('input:radio[name="discount_type"]:checked').val();
+	var discountValue = ($('#discount_value').val() == '')? 0 : $('#discount_value').val();
+	var netTotal = ($('#net_total').val()=='')?0 : $('#net_total').val();
+	var discountReal = 0;
+	discountReal = (discountType == 1)? (netTotal * discountValue) / 100 : discountValue;
+	$('#discount_real').val(discountReal);
+	var allTotal = Number(netTotal)-Number(discountReal);
+	$('#all_total').val(allTotal);
+	$('#remain').val(allTotal);*/
+}
+function doRemain() {
+	// total for all record(total part)
+	var total = $('#totalAmoun').val();
+	var paid = $('#paid').val();
+	var remain = total-paid;
+	//alert(remain);
+	$('#remain').val(remain);
+}
+
+function netTotal() {
+	// total for all record(total part)
+
+	var netTotal=0;
+	var paid = $("#paid").val();
+	var rowId = $('#identity').val();
+	var rowIDArray = rowId.split(',');
+	for(var n = 0; n < rowIDArray.length; n++) {
+		netTotal += Number($('#total'+rowIDArray[n]).val());
+	}
+	$('#totalAmoun').val(netTotal);
+	$('#totalAmoun').val(netTotal);
+	var totalremain = netTotal - paid;
+	$('#remain').val(totalremain);
+}
+</script>
+<?php  //$url_check =  $this->url(array('module'=>'purchase','controller'=>'Index','action'=>'check'));?>
+<script type = "text/javascript">
+			/*$(document).ready(function(){ //when the document is ready, run the function
+				$('#feedback').load('<?php //echo $url_check?>').show();
+				$('#txt_order').keyup(function(){
+
+					$.post('<?php //echo $url_check;?>', { username: orderFrm.txt_order.value },
+						function(result){
+							$('#feedback').html(result).show();
+						});
+					
+				});
+			});*/
+</script>
+<!-- end new product -->
+<div id="overlay" class="web_dialog_overlay"></div>
+<?php $frm_product= $this->form;?>
+		<div id="dialog" class="web_dialog">
+		<form id="frm1">
+			<div class="web_dialog_title" align="center"><?php echo $tr->translate("ADD_NEW_ITEM");?>
+				<a href="#" id="btnClose" class="cancelDailog"></a>
+			</div>
+			<table style="width: 95%; margin:0 auto;" cellpadding="3" cellspacing="0">
+				
+				<tr>
+					<td><?php echo $tr->translate("ITEM");?></td>
+					<td><?php echo $frm_product->getElement("txt_name");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("ITEM_CODE");?></td>
+					<td><?php echo $frm_product->getElement("item_code");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("CATEGORY_NAME");?></td>
+					<td><?php echo $frm_product->getElement("category_id");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("BRANCH_NAME");?></td>
+					<td><?php echo $frm_product->getElement("brand_id");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("DESC");?></td>
+					<td><?php echo $frm_product->getElement("remark_order");?></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input id="btn_add" Onclick="addProduct()" type="button" value="<?php echo $tr->translate("ADD_NEW");?>" />
+						<input id="btnCancel" class="cancelDailog" type="button" value="<?php echo $tr->translate("CANCEL");?>" />
+					</td>
+				</tr>
+	       </table>
+	     </form>
+ </div>
+ <!-- add new location -->
+<!-- end new product -->
+<div id="overlay-location" class="web_dialog_overlay"></div>
+		<?php $form_stock = $this->form_addstock; ?>
+		<div id="dialog-location" class="web_dialog">
+		<form id="frm-location">
+			<div class="web_dialog_title" align="center"><?php echo $tr->translate("ADD_NEW_LOCATION");?>
+				<a href="#" id="btnCloseLocation" class="cancelDailog"></a>
+			</div>
+			<table style="width: 95%; margin:0 auto;" cellpadding="3" cellspacing="0">
+				
+				<tr>
+					<td><?php echo $tr->translate("LOCATION_NAME");?></td>
+					<td><?php echo $form_stock->getElement("StockName");?></td>
+					<td><?php echo $tr->translate("CON_NAME");?></td>
+					<td><?php echo $form_stock->getElement("ContactName");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("CON_NUM");?></td>
+					<td><?php echo $form_stock->getElement("ContactNumber");?></td>
+					<td><?php echo $tr->translate("STOCK_ADD");?></td>
+					<td><?php echo $form_stock->getElement("location_add");?></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td><?php echo $tr->translate("DESC");?></td>
+					<td><?php echo $form_stock->getElement("description");?></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input id="btn_add" Onclick="addNewLocation()" type="button" value="<?php echo $tr->translate("ADD_NEW");?>" />
+						<input id="btncancel_location" class="cancelDailog" type="button" value="<?php echo $tr->translate("CANCEL");?>" />
+					</td>
+					<td colspan="2"></td>
+				</tr>
+	       </table>
+	     </form>
+ </div>
+  <!-- add new customer -->
+<div id="overlay-vendor" class="web_dialog_overlay"></div>
+<?php $frm_vendor= $this->form_vendor;?>
+		<div id="dialog-vendor" class="web_dialog">
+		<form id="frmvendor">
+			<div class="web_dialog_title" align="center"><?php echo $tr->translate("ADD_NEW_VENDOR");?>
+				<a href="#" id="btnClosevendor" class="cancelDailog"></a>
+			</div>
+			<table style="width: 98%; margin:0 auto;" cellpadding="3" cellspacing="0">
+				
+				<tr>
+					<td width="70px"><?php echo $tr->translate("VENDOR_NAME");?></td>
+					<td><?php echo $frm_vendor->getElement("vendor_name");?></td>
+					<td><?php echo $tr->translate("CON_NAME");?></td>
+					<td><?php echo $frm_vendor->getElement("txt_contact_name");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("CON_NUM");?></td>
+					<td><?php echo $frm_vendor->getElement("v_phone");?></td>
+					<td><?php echo $tr->translate("VENDOR_ADD");?></td>
+					<td rowspan="2"><?php echo $frm_vendor->getElement("txt_address");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("EMAIL");?></td>
+					<td><?php echo $frm_vendor->getElement('txt_mail');?></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td colspan="2">
+						<input id="btn_add" Onclick="addNewVendor()" type="button" value="<?php echo $tr->translate("ADD_NEW");?>" />
+						<input id="btnCancelVendor" class="cancelDailog" type="button" value="<?php echo $tr->translate("CANCEL");?>" />
+					</td>
+					
+				</tr>
+	       </table>
+	     </form>
+ </div>
+
+<script>
+//show popup
+//for add new product
+ var record_id = 1;
+function ShowPopupProduct(index){
+	item_id = $("#item_id_"+ index).val();
+	record_id = index;
+	if(item_id==-1){
+		ShowDialog(true);
+	}
+	
+}
+<?php $url_add_new =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new')); ?>
+function addProduct(){
+	var pro_name = $("#txt_name").val();
+	var pro_code = $("#item_code").val();
+	var category_id = $("#category_id").val();
+	var brand_id = $("#brand_id").val();
+	var remark = $("#remark_order").val();
+	validate_text('#txt_name');
+	validate_text('#item_code');
+		$.ajax({
+	        url: "<?php echo $url_add_new;?>",
+	        type: "post",
+	        data: {'pro_name':pro_name,'pro_code':pro_code,'category_id':category_id,'brand_id':brand_id,'remark':remark},
+	        success: function(data){
+	           val = $.parseJSON(data);
+	           $('#item_id_'+record_id).append($('<option></option>').attr('value',val['pid']).attr("selected",true).text(pro_name)); 
+	           $('#item_id_'+record_id).trigger("liszt:updated");
+	            document.getElementById("frm1").reset();
+	            HideDialog();
+	        },
+	        error:function(){
+	            $("#result").html('There is error while submit');
+	        }
+	    });	
+}
+//////////////////vendor get vendor info or add new
+<?php $url_get_customer =  $this->url(array('module'=>'purchase','controller'=>'index','action'=>'get-customer-info')); ?>
+function getCustomerInfo(){
+	var vendor_id = $("#v_name").val();
+	if(vendor_id==-1){
+			  ShowVendorDialog(true);
+			 
+	  }
+	else{
+		$.ajax({
+	        url: "<?php echo $url_get_customer;?>",
+	        type: "post",
+	        data: {'vendor_id':vendor_id},
+	        success: function(data){
+	            //alert(data);
+	            val = $.parseJSON(data);
+	            $("#contact").val(val.contact_name);
+	            $("#txt_phone").val(val.phone);
+	            $("#vendor_address").val(val.address);
+	        },
+	        error:function(){
+	           // alert("Please Select Vendor");
+	            $("#result").html('There is error while submit');
+	        }
+	    });
+	}
+}
+<?php $url_add_vendor =  $this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'add-vendor')); ?>
+function addNewVendor(){
+	var v_name  = $("#vendor_name").val();
+	var contact = $("#txt_contact_name").val();
+	var phone   = $("#v_phone").val();
+	var address = $("#txt_address").val();
+	var txt_mail= $("#txt_mail").val();
+	validate_text('#vendor_name');
+	$.ajax({
+        url: "<?php echo $url_add_vendor;?>",
+        type: "post",
+        data: {'v_name':v_name,'contact':contact,'phone':phone,'address':address,'txt_mail':txt_mail},
+        success: function(data){
+            val = $.parseJSON(data);
+	        $('#v_name').append($("<option></option>").attr("value",val['vid']).attr("selected",true).text(v_name));  
+            $("#contact").val(contact);
+            $("#txt_phone").val(phone);   
+            $("#vendor_address").val(address);     
+           // $('#v_name').next().val(v_name);
+            document.getElementById("frmvendor").reset();
+            HideDialogVendor();
+        },
+        error:function(){
+            alert("faile insert");
+            $("#result").html('There is error while submit');
+        }
+    });
+}
+//Add location or check popup location
+function AddLocation(){
+	var location_id= $("#LocationId").val();
+	if(location_id==-1){
+		     AddNewLocation(true);
+			 
+	  }	
+}
+<?php $url_add_location =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new-location')); ?>
+function addNewLocation(){
+	var location_name = $("#StockName").val();
+	var ContactName   = $("#ContactName").val();
+	var ContactNumber = $("#ContactNumber").val();
+	var location_add  = $("#location_add").val();
+	var remark_add    = $("#description").val();
+	validate_text('#StockName');
+	$.ajax({
+        url: "<?php echo $url_add_location;?>",
+        type: "post",
+        data: {'location_name':location_name,'ContactName':ContactName,'ContactNumber':ContactNumber,'location_add':location_add,'remark_add':remark_add},
+        success: function(data){
+           val = $.parseJSON(data);
+           
+            $('#LocationId').append($("<option></option>").attr("value",val['LocationId']).attr("selected",true).text(location_name)); 
+            //$('#LocationId').next().val(location_name);
+            document.getElementById("frm-location").reset();
+            HideDialoglocation();
+        },
+        error:function(){
+            alert("faile insert");
+            $("#result").html('There is error while submit');
+        }
+    });
+ 
+}
+function Cancel(){
+	var comfir= confirm("តើអ្នកពិតជាចង់ចាកចេញរឺ? ");
+	if(comfir==true){
+		window.open("<?php echo BASE_URL;?>/purchase/index/index","_parent");
+	}
+	
+}
+<?php $url_code =  $this->url(array('module'=>'purchase','controller'=>'index','action'=>'check-purchaseno')); ?>
+// function getPurchaseOrder(){
+// 				pur_no=$("#txt_order").val();
+// 				if(pur_no=="" || pur_no ==null){
+// 					return false;
+// 				}
+// 				else{
+// 				$.ajax({
+						//url:"<?php //echo $url_code;?>",
+// 						type:"post",
+// 						data:{'pur_no':pur_no},
+// 						success: function(data){
+// 							value = $.parseJSON(data);
+// 							if(value=="" || value==null){
+// 							}
+// 							else{
+// 								alert("Invoice number is exist !");
+// 								$("#txt_order").css("border-color","red");
+// 								$("#txt_order").val("");
+// 							}
+							
+// 						},
+// 						error:function(){
+// 						}
+// 					});
+// 				}
+				
+// 			}
+//add vendor
+<?php $url_getinvoice =  $this->url(array('module'=>'purchase','controller'=>'checkin','action'=>'get-purchaseid')); ?>
+function getPurchaseOrder(){
+	var index=0;
+    order_id = $("#order_no").val();
+    
+     $.ajax({
+			url:"<?php echo $url_getinvoice;?>",
+			type:"post",
+			data:{'invoice_id':order_id},
+			success: function(data){
+			items = $.parseJSON(data);
+			item=items['item'];
+			clearTable();
+			for (var i = 0 ; i < item.length; i++) {
+				index++;
+				addRow();
+				a = item[i]['qty_order'];
+				//alert(a);
+				b = item[i]['qty_perunit'];
+				c = item[i]['pro_id'];
+				
+				$('#item_id_'+index).val(c);
+				 $('#qty_unit_'+index).val((parseInt(a)-((parseInt(a) % parseInt(item[i]['qty_perunit'])))) / parseInt(b));
+				 $('#qty_per_unit_'+index).val(parseInt(a) % parseInt(b));
+				 $('#price'+index).val(item[i]['price']);
+				 $('#qty'+index).val(item[i]['qty_order']);
+				 $('#item_'+index).text(item[i]['item_name']);
+				 $('#lbl_measure'+index).text(item[i]['measure_name']);
+				 $('#lbl_label'+index).text(item[i]['label']);
+				 $('#total'+index).val(item[i]['sub_total']);
+				 $("#item_id_"+index).chosen();
+				 
+				}
+			info = items['poinfo'];
+			$('#v_name').val(info['vendor_id']);
+			$('#LocationId').val(info['LocationId']);
+			$('#order_date').val(info['date_order']);
+           $('#status').val(info['status']);
+           $('#order_num').val(info['order']);
+           $('#paid').val(info['paid']);
+           $('#totalAmoun').val(info['all_total']);
+           $('#remain').val(info['balance']);
+           $('#order_id').val(info['order_id']);
+        },
+			error:function(){
+			}
+		});
+}
+function clearTable(){
+	var identity = $('#identity').val();
+	if(identity==null || identity==""){
+	}
+	else{
+		var arrays = identity.split(',');
+		for(var i=0;i<arrays.length;i++) {
+			$("#row_order_"+arrays[i]).remove();
+	   }
+		$('#identity').val("");
+		index5=0;
+	}
+}
+
+<?php $url_qty =  $this->url(array('module'=>'purchase','controller'=>'index','action'=>'getqtybyid')); ?>
+function getQtyById(index){
+				item_id=$("#item_id_"+index).val();
+				qty_unit=$("#qty_unit_"+index).val();
+				qty_per_unit=$("#qty_per_unit_"+index).val();
+				if(qty_unit==null || qty_unit==""){
+					if(qty_per_unit!==null && qty_per_unit!==""){
+						$("#qty"+index).val(qty_per_unit);
+					}
+				}else{
+					$.ajax({
+						url:"<?php echo $url_qty;?>",
+						type:"post",
+						data:{'item_id':item_id},
+						success: function(data){
+							item_qty = $.parseJSON(data);
+							qty_unit=$("#qty_unit_"+index).val();
+							totalqty=qty_unit*item_qty['qty_perunit'];
+							if(qty_per_unit==null || qty_per_unit==""){
+							}
+							else{
+								qtyunit = parseInt($("#qty_per_unit_"+index).val());
+								totalqty = qty_unit*item_qty['qty_perunit'] +qtyunit;
+							}
+							//$("#qty"+index).val(totalqty);
+							$("#qty"+index).val(totalqty);
+							
+						},
+						error:function(){
+						}
+					});
+				}
+				
+			}
+</script>								    

@@ -1,0 +1,188 @@
+
+<?php 
+$baseurl = Zend_Controller_Front::getInstance()->getBaseUrl();//new
+$url_submit =  $this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'add'));
+$url_edit =  $this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'index'));
+$form=$this->form;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<title><?php echo $tr->translate("ADD_NEW_VENDOR");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("VENDOR_NAME");?>
+				</div>
+				<div class="caption pull-right" >
+					<a href="<?php echo $url_edit;?>" class="btn btn-sm " style="color:white;">
+					<i class="fa fa-undo"></i>	&nbsp;<?php echo $tr->translate("GO_BACK");?>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="form_sample_2" action="<?php echo $url_submit; ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					<div class="form-group">
+						<label class="control-label col-md-2"><?php echo $tr->translate("OVER_SEA_VENDOR");?> <span class="required"></span></label>
+						<div class="col-md-4" style="margin-top: 10px;">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<input type="checkbox" name="is_over_sea" id="is_over_sea" value="1" onClick="isOverSea()">
+								</div>
+							</div>
+					</div>
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("COMPANY_NAME");?> <span class="required"></span></label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_name'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2 hides">
+							<?php echo $tr->translate("COMPANY_NUMBER");?>
+							</label>
+							<div class="col-md-4 hides">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_phone'); ?>
+								</div>
+							</div>
+						</div>
+					<div class="form-group hides">
+							<label class="control-label col-md-2"><?php echo $tr->translate("CON_NAME");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_contact_name'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("CON_NUMBER");?><span class="required"></span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i><?php echo $form->getElement('contact_phone'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group hides">
+							<label class="control-label col-md-2"><?php echo $tr->translate("VENDOR_ADD");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("txt_address");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("EMAIL");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_mail'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group hides">
+							<label class="control-label col-md-2"><?php echo $tr->translate("FAX");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_fax'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("WEBSITE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_website'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group hides">
+						<label class="control-label col-md-2"><?php echo $tr->translate("BALANCE");?> <span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_balance'); ?>
+								</div>
+						</div>
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("REMARK");?><span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("remark");?>
+								</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2"><?php //echo $tr->translate("BALANCE");?> <span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php //echo $form->getElement('txt_balance'); ?>
+								</div>
+						</div>
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("STATUS");?><span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+							<div class="input-icon right">
+								<i class="fa"></i>
+								<?php echo $form->getElement("status");?>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-3"></div>
+						<div class="col-md-2">
+							<a href="<?php echo $this->baseUrl();?>/purchase/vendor"><button type="button" class="btn red btn-block btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+						</div>
+						<div class="col-md-2">
+							<div class="input-icon right">
+								<button type="submit" value="saveclose" class="btn blue btn-block btn-lg" ><i class="fa fa-close"></i> <?php echo $tr->translate("SAVE_CLOSE")?></button>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<button type="submit" name="btnsavenew" class="btn blue btn-block btn-lg"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+						</div>
+						<div class="col-md-3"></div>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+<script>
+	function isOverSea(){
+		val = $('#is_over_sea');
+		if(val.is(':checked')){
+			$('.hides').hide();
+		}else{
+			$('.hides').show();
+		}
+	}
+</script>

@@ -1,0 +1,53 @@
+<title>Detail User Type - RSMK</title>
+<style>
+fieldset.fifthy {	
+	border-right: 0px;
+	width: 30%;
+}
+fieldset.fifthy table{
+	padding-right: 1px;
+}
+table.user td{
+	vertical-align: top;   
+}
+</style>       
+
+<?php $rs=$this->rs;
+
+$edit_url=$this->url(array(
+		'module'=>'rsvacl',
+		'controller'=>'user-type',
+		'action'=>'edit-user-type',
+		'id'=>$rs['user_type_id'],
+	));
+$cancel_url=$this->url(array(
+		'module'=>'rsvacl',
+		'controller'=>'user-type',
+		'action'=>'index',
+	));
+
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<div class="right" style="width: 97%; padding: 10px;">
+	<div class="btn" align="right">
+		    <a class="negative" href="<?php echo $edit_url;?>">
+		        <img alt="" src="<?php echo BASE_URL?>/images/icon/edit.png">
+		        <?php echo $tr->translate('EDIT');?>
+		    </a>												   						
+		    <a class="negative" href="<?php echo $cancel_url;?>">
+		        <img alt="" src="<?php echo BASE_URL?>/images/icon/cross.png">
+		        <?php echo $tr->translate('CANCEL');?>
+		    </a>
+	</div>
+	<div class="head_form">
+		<?php echo $tr->translate('USER_TYPE');?>
+	</div>
+	<div class="contain_form">
+		<table style="width: 50%;">
+			<tr>
+				<td class="field"><?php echo $tr->translate('USER_TYPE');?></td>
+				<td class="value"><?php echo $rs['user_type'];?></td>				
+			</tr>		
+		</table>
+	</div>
+</div>

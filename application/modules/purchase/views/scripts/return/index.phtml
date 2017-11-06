@@ -1,0 +1,40 @@
+<?php 					
+	$url_new = $this->url(array('module'=>'purchase','controller'=>'return','action'=>'add-return-item',));
+	$url_delete = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'delete-purchase-order',));
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$formFilter = $this->formFilter;
+?>
+<title><?php echo $tr->translate("MENU_PURCHASE_RETURN_INDEX");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("MENU_PURCHASE_ADVANCE_INDEX");?>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 20px;">
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('order');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('vendor_name');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('status');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('search_start_date');?></label>
+						<label class="control-label col-md-1"><?php echo $formFilter->getElement('search_end_date');?></label>
+						<label class="control-label">
+							<button class="btn btn-primary" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
+							<?php 
+										$formList = new Application_Form_Frmlist();
+										echo $formList->showAddBuntton($url_new);
+							?>
+							</label>
+					</div>			
+					
+				</form> 
+					<div class="contain_form">
+						<?php echo $this->list; ?>
+					</div>
+		   </div>
+		</div>
+	</div>
+</div>

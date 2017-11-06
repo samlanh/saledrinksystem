@@ -1,0 +1,61 @@
+<title>Acess Control - RSMK</title>
+<style>
+fieldset.fifthy {	
+	border-right: 0px;
+	width: 30%;
+}
+fieldset.fifthy table{
+	padding-right: 1px;
+}
+table.user td{
+	vertical-align: top;   
+}
+</style>       
+
+<?php $rs=$this->rs;
+
+$edit_url=$this->url(array(
+		'module'=>'rsvAcl',
+		'controller'=>'acl',
+		'action'=>'edit-acl',
+		'id'=>$rs['acl_id'],
+	));
+$cancel_url=$this->url(array(
+		'module'=>'rsvAcl',
+		'controller'=>'acl',
+		'action'=>'index',
+	));
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<div class="right" style="width: 97%; padding: 10px;">
+	<div class="btn" align="right">
+			    <a class="negative" href="<?php echo $edit_url;?>">
+			        <img alt="" src="<?php echo BASE_URL?>/images/icon/edit.png">
+			        <?php echo $tr->translate('EDIT');?>
+			    </a>												   						
+			    <a class="negative" href="<?php echo $cancel_url;?>">
+			        <img alt="" src="<?php echo BASE_URL?>/images/icon/cross.png">
+			        <?php echo $tr->translate('CANCEL');?>
+			    </a>
+	</div>
+	
+	<div class="head_form">
+		<?php echo $tr->translate('MODULE')."/".$tr->translate('CONTROLLER')."/".$tr->translate('ACTION');?>
+	</div>
+	<div class="contain_form">
+		<table style="width:100%">
+			<tr>
+				<td class="field"><?php echo $tr->translate('MODULE')." ".$tr->translate('NAME');?></td>
+				<td class="value"><?php echo $rs['module'];?></td>				
+			</tr>
+			<tr>
+				<td class="field"><?php echo $tr->translate('CONTROLLER')." ".$tr->translate('NAME');?></td>
+				<td class="value"><?php echo $rs['controller'];?></td>				
+			</tr>
+			<tr>
+				<td class="field"><?php echo $tr->translate('ACTION')." ".$tr->translate('NAME');?></td>
+				<td class="value"><?php echo $rs['action'];?></td>				
+			</tr>			
+		</table>
+	</div>
+</div>

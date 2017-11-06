@@ -1,0 +1,741 @@
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$form=$this->form_purchase;
+	$orderItemDetail = $this->rowsOrder;
+	$row_received = $this->rowsreceived;
+	$url_submit = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'add-purchase'));
+	$url_cancel = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'index'));
+	$url_search = $this->url(array('module'=>'purchase','controller'=>'index','action'=>'add-search'));
+	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
+?>
+<title><?php echo $tr->translate("AVANCE_PAGE");?></title>
+<div class="wrapper">
+    <div class="right">
+    	<form id="orderFrm" action="<?php echo $url_submit; ?>" method="post" enctype="multipart/form-data">
+    	<div class="contorl-cus">
+        	<?php  $frmctrol=$this->control ;?>
+        	<?php //echo $frmctrol->getElement('New');?>
+        	<a href="<?php echo $url_submit; ?>" class="new"><?php echo $tr->translate("NEW");?></a>
+        	<?php echo $frmctrol->getElement('Save');?>
+        	<?php //echo $frmctrol->getElement('Version');?>
+        	<?php //echo $frmctrol->getElement('Deactive');?>
+        	<a href="<?php echo $url_cancel ?>" class="cancel"><?php echo $tr->translate("CANCEL");?></a>
+        	<?php echo $form->getElement("id");?>
+    		
+        </div>
+				<div class="style-form" style="padding:20px 20px 5px 20px;">
+		        <div class="view-table">
+				     	<div class="head_form">
+					   		<?php echo $tr->translate("Vendor info");?>
+					   	</div>
+					   	<div class="contain_form  shadow">
+				        	<table class="margin">
+				                 <tr>
+				                	<td><?php echo $tr->translate("VENDOR_NAME");?></td>
+				                    <td width="30%"><?php echo $form->getElement("v_name");?>                       
+				                        <div id='userInfo'></div>
+				                    </td>
+				                    <td><?php echo $tr->translate("LOCATION_NAME");?></td>
+				                    <td width="30%"><?php echo $form->getElement("LocationId");?></td>
+				                </tr>
+				                <tr>
+				                	<td><?php echo $tr->translate("CON_NAME");?></td>
+				                    <td><?php echo $form->getElement('contact'); ?></td>          
+				                    <td><?php echo $tr->translate("ORDER");?><div id = "feedback"></div></td>
+				                    <td><?php echo $form->getElement("txt_order"); ?></td>
+				                </tr>
+				                <tr>
+				                	<td><?php echo $tr->translate("CON_NUM");?></td>
+				                    <td><?php echo $form->getElement("txt_phone"); ?></td>
+				                    <td><?php echo $tr->translate("ORDER_DATE");?></td>
+				                    <td><?php echo $form->getElement("order_date");?></td>
+				                </tr>
+				                <tr>
+				                	<td><?php echo $tr->translate("Vendor Address");?></td>
+				                    <td><?php echo $form->getElement("vendor_address");?></td>
+				                    <td><?php echo $tr->translate("Status");?></td>
+				                    <td><?php echo $form->getElement("status");?></td>
+				                </tr>
+				                 
+				            </table>
+		            </div><!-- end of .contain_form -->
+		         </div>
+		       </div>
+		       <div id="tabs" class="tabs-bottom">
+					<ul style="border-top:1px solid #999;">
+						<li><a href="#tabs-1">Order Item</a></li>
+						<li><a href="#tabs-2">Recieve Item</a></li>
+						<li><a href="#tabs-3">Payment</a></li>
+						<li><a class="tab-links" onclick="openSimple()" href="#">Simple</a></li>
+					</ul>
+					<div class="tabs-spacer"></div>
+					<div id="r"></div>
+					<div id="tabs-1">
+						<div class="head_form">
+							<?php echo $tr->translate("Order item");?>
+						</div>
+						<div class="contain_form">
+						<table class="collape">
+							<tr>
+			                    <td class="sub-tdheader"><?php echo $tr->translate("DEL");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("ITEM_NAME_CAP");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("QTY_ORDER_CAP");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("UNIT_PRICE_CAP");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("TOTAL_PRICE_CAP");?></td>
+								<td class="sub-tdheader"><?php echo strtoupper($tr->translate("DISCOUNT-TYPE"));?></td>
+								<td class="sub-tdheader"><?php echo strtoupper($tr->translate("DISCOUNT-VALUE"));?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("SUB_TOTAL_CAP");?></td>
+							</tr>
+							<?php 
+								if(count($orderItemDetail) > 0) {
+									$i = 0;
+									foreach($orderItemDetail as $item) {
+										$i++;
+										$totalPrice = $item['qty_order'] * $item['qty_order'];
+										$discount=($item['qty_order']==1)?$totalPrice*$item['qty_order']/100:$item['qty_order'];
+										?>
+										<tr class="trbody">
+											<td><?php echo $i;?></td>
+											<td><?php echo $item['item_name'];?></td>
+											<td><?php echo $item['qty_order'];?></td>
+											<td><?php echo $item['price']; ?></td>
+											<td><?php echo $item['total_befor'];?></td>
+											<td><?php echo ($item['qty_order'] == 1)? $tr->translate("PERCENTAGE"): $tr->translate("FIX_VALUE_CAP");?></td>
+											<td><?php echo $item['disc_value'];?></td>
+											<td><?php echo $item['sub_total'];?></td>
+										</tr>
+									<?php }
+								}
+							?>
+						</table>
+					</div>	
+			</div><!-- end tab1 -->
+			<div id="tabs-2">
+					<div class="head_form">
+						<?php echo $tr->translate("Add Vendor Order");?>
+					</div>
+					<div class="contain_form">
+					<div class="view-table">
+						<table class="collape" id="table_order">
+							<tbody id="receive_order">
+										<tr height="33px">
+											<td class="sub-tdheader"><?php echo $tr->translate("DEL");?></td>
+											<td class="sub-tdheader" width="200px"><?php echo $tr->translate("ITEM_NAME_CAP");?></td>
+											<td class="sub-tdheader"><?php echo $tr->translate("QTY_ORDER_CAP");?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("QTY_RECEIVE"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("QTY_REMAIN"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("RECEIVE_DATE"));?></td>
+											<td class="sub-tdheader"><?php echo strtoupper($tr->translate("RECEIVED"));?></td>											
+										</tr>	
+										<?php 
+											if(count($row_received) > 0) {
+												$i = 0;
+												foreach($row_received as $item) {
+												$i++;?>
+													<tr class="trbody">
+														<td><?php echo $i;?></td>
+														<td><?php echo $item['item_name'];?></td>
+														<td><?php echo $item['qty_order'];?></td>
+														<td><?php echo $item['qty_receive']; ?></td>
+														<td><?php echo $item['qty_remain'];?></td>
+														<td><?php echo $item['receive_date'];?></td>
+														<td><div class="received"><?php echo$tr->translate("Received");?></div></td>
+													</tr>
+												<?php }
+											}
+										$record = $i; ?>
+<!-- 											<tbody id="addrow"> 
+										
+												</tbody>-->
+							</tbody>
+						</table>
+						</div>
+<!-- 									<table class="collape" id="receive_order"> -->
+																			
+<!-- 									</table> -->
+									<input type="hidden" id="identities" name="identities" />
+			           
+			           <div class="view-table">
+			           		 <input type="button" Onclick="getOrder()" class="btn_submit" name="btn_autofile" value="AutoFill" />	
+			           		 <input style = "float:right" type="button" Onclick="getOrderComplete()" class="btn_submit" name="btn_rec_compl" value="Complete" />
+			           </div>	 
+					</div><!-- end of .contain_form -->
+									
+			</div><!-- end of tab2 -->
+			<div id="tabs-3">
+					<div class="head_form">
+						<?php echo $tr->translate("Order info");?>
+					</div>
+					<div class="contain_form">
+					
+						<table class="collape">
+							<tr>
+								<td class="sub-tdheader"><?php echo $tr->translate("NUM");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("ITEM NAME");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("QTY ORDER");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("UNIT PRICE");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("TOTAL-PRICE");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("DISCOUNT-TYPE");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("DISCOUNT-VALUE");?></td>
+								<td class="sub-tdheader"><?php echo $tr->translate("SUB TOTAL");?></td>
+							</tr>
+							<?php 
+								if(count($orderItemDetail) > 0) {
+									$i = 0;
+									foreach($orderItemDetail as $item) {
+										$i++;
+										$totalPrice = $item['qty_order'] * $item['qty_order'];
+										$discount=($item['qty_order']==1)?$totalPrice*$item['qty_order']/100:$item['qty_order'];
+										?>
+										<tr class="trbody">
+											<td><?php echo $i;?></td>
+											<td><?php echo $item['item_name'];?></td>
+											<td><?php echo $item['qty_order'];?></td>
+											<td><?php echo $item['price']; ?></td>
+											<td><?php echo $item['total_befor'];?></td>
+											<td><?php echo ($item['qty_order'] == 1)? $tr->translate("PERCENTAGE"): $tr->translate("FIX-VALUE");?></td>
+											<td><?php echo $item['disc_value'];?></td>
+											<td><?php echo $item['sub_total'];?></td>
+										</tr>
+									<?php }
+								}
+							?>
+						 </table>
+						 <br/>
+						 <div class="view-table shadow">
+							<table style="width:95%; margin:0 auto;">
+				                <tr>
+				                	<td><?php echo $tr->translate("PAID_DATE");?></td>
+				                    <td width="30%"><?php echo $form->getElement("paid_date_payment");?></td>
+				                    <td><?php echo $tr->translate("BALANCE");?></td>
+				                    <td width="30%"><?php echo $form->getElement("remain");?></td> 
+				                </tr>
+				                <tr class="height">
+				                    <td></td>
+				                    <td></td>
+				                    <td><?php echo $tr->translate("REMAIN");?></td>
+				                    <td><?php echo $form->getElement("remain");?></td> 
+				                </tr>
+				                <tr>
+				                	<td><?php echo $tr->translate("Remark");?></td>
+				                    <td><?php echo $form->getElement("remark");?></td>
+									<td></td>
+									<td></td>
+				                    
+				                </tr>
+				                <tr class="height">
+				                	<td colspan="4"></td>
+				                </tr>
+				                <tr>
+				                    <td></td>
+				                    <td colspan="2"><input class="btn_submit" Onclick="calCulatePayment()"  type="button" value="payment" name="payment" /></td>
+				                    <td></td>
+				                </tr>
+				            </table>	
+		              </div>		
+				</div><!-- end of .contain_form -->
+			</div><!-- end of tab2 -->
+		</div><!-- end of main tab -->	
+    	</form>
+    </div><!-- end right -->
+</div><!-- end wrapper -->
+<div id="overlay" class="web_dialog_overlay"></div>
+<?php $frm_product= $this->form;?>
+		<div id="dialog" class="web_dialog">
+		<form id="frm1">
+			<div class="web_dialog_title" align="center">Add New Product
+				<a href="#" id="btnClose" class="cancelDailog"></a>
+			</div>
+			<table style="width: 95%; margin:0 auto;" cellpadding="3" cellspacing="0">
+				
+				<tr>
+					<td><?php echo $tr->translate("Item Name/Code");?></td>
+					<td><?php echo $frm_product->getElement("txt_name");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("Sale Price");?></td>
+					<td><?php echo $frm_product->getElement("price");?></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><?php echo $frm_product->getElement("remark_order");?></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input id="btn_add" Onclick="addProduct()" type="button" value="Add New " />
+						<input id="btnCancel" class="cancelDailog" type="button" value="Cancel" />
+					</td>
+				</tr>
+	       </table>
+	     </form>
+ </div>
+  <!-- add new customer -->
+<div id="overlay-vendor" class="web_dialog_overlay"></div>
+<?php $frm_vendor= $this->form_vendor;?>
+		<div id="dialog-vendor" class="web_dialog">
+		<form id="frmvendor">
+			<div class="web_dialog_title" align="center">Add New Vendor
+				<a href="#" id="btnClosevendor" class="cancelDailog"></a>
+			</div>
+			<table style="width: 98%; margin:0 auto;" cellpadding="3" cellspacing="0">
+				<tr>
+					<td width="70px"><?php echo $tr->translate("Vendor Name");?></td>
+					<td><?php echo $frm_vendor->getElement("vendor_name");?></td>
+					<td><?php echo $tr->translate("Contact Name");?></td>
+					<td><?php echo $frm_vendor->getElement("txt_contact_name");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("Contact Phone");?></td>
+					<td><?php echo $frm_vendor->getElement("v_phone");?></td>
+					<td><?php echo $tr->translate("Vendor Address");?></td>
+					<td rowspan="2"><?php echo $frm_vendor->getElement("txt_address");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("Email");?></td>
+					<td><?php echo $frm_vendor->getElement('txt_mail');?></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td colspan="2">
+						<input id="btn_add" Onclick="addNewVendor()" type="button" value="Add New " />
+						<input id="btnCancelVendor" class="cancelDailog" type="button" value="Cancel" />
+					</td>
+					
+				</tr>
+	       </table>
+	     </form>
+ </div>
+ <!-- end new product -->
+<div id="overlay-location" class="web_dialog_overlay"></div>
+		<?php $form_stock = $this->form_addstock; ?>
+		<div id="dialog-location" class="web_dialog">
+		<form id="frm-location">
+			<div class="web_dialog_title" align="center">Add New Location
+				<a href="#" id="btnCloseLocation" class="cancelDailog"></a>
+			</div>
+			<table style="width: 95%; margin:0 auto;" cellpadding="3" cellspacing="0">
+				
+				<tr>
+					<td><?php echo $tr->translate("Stock Name");?></td>
+					<td><?php echo $form_stock->getElement("StockName");?></td>
+					<td><?php echo $tr->translate("Contact To");?></td>
+					<td><?php echo $form_stock->getElement("ContactName");?></td>
+				</tr>
+				<tr>
+					<td><?php echo $tr->translate("Phone Number");?></td>
+					<td><?php echo $form_stock->getElement("ContactNumber");?></td>
+					<td><?php echo $tr->translate("Stock Address");?></td>
+					<td><?php echo $form_stock->getElement("location_add");?></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td><?php echo $tr->translate("Description");?></td>
+					<td><?php echo $form_stock->getElement("description");?></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input id="btn_add" Onclick="addNewLocation()" type="button" value="Add New " />
+						<input id="btncancel_location" class="cancelDailog" type="button" value="Cancel" />
+					</td>
+					<td colspan="2"></td>
+				</tr>
+	       </table>
+	     </form>
+ </div>
+<script>
+var index5 = 0;
+var index_id = <?php echo $record;?>;
+var index = 0;
+var option5 = '<?php echo $this->items; ?>';
+var baseUrl = '<?php echo BASE_URL; ?>';
+var template = '';
+var x = 0;
+// add order record
+
+function deleteRecord(index) {
+	var identity = $('#identities').val();
+	var arrays = identity.split(',');
+	for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+	}
+	var strings = arrays.join(',');
+	$('#identities').val(strings);
+	$("#row_receiv_order_"+index).remove();
+
+	// total price
+}
+
+
+<?php  $url_check =  $this->url(array('module'=>'purchase','controller'=>'Index','action'=>'check'));?>
+
+			$(document).ready(function(){ //when the document is ready, run the function
+				$('#feedback').load('<?php echo $url_check?>').show();
+				$('#txt_order').keyup(function(){
+
+					$.post('<?php echo $url_check;?>', { username: orderFrm.txt_order.value },
+						function(result){
+							$('#feedback').html(result).show();
+						});
+					
+				});
+			});
+
+///<!-- end new product -->
+ //<!-- add new location -->
+ <?php $url_get_customer =  $this->url(array('module'=>'purchase','controller'=>'index','action'=>'get-customer-info')); ?>
+//show popup
+//for add new product
+ var record_id = 1;
+function ShowPopupProduct(index){
+	item_id = $("#item_id_"+ index).val();
+	record_id = index;
+	if(item_id==-1){
+		ShowDialog(true);
+        e.preventDefault();
+	}
+}
+<?php $url_add_new =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new')); ?>
+function addProduct(){
+	var pro_name = $("#txt_name").val();
+	var price = $("#price").val();
+	var remark = $("#remark_purchase_order").val();
+	validate_text('#txt_name');
+		$.ajax({
+	        url: "<?php echo $url_add_new;?>",
+	        type: "post",
+	        data: {'pro_name':pro_name,'price':price,'remark':remark},
+	        success: function(data){
+	           val = $.parseJSON(data);
+	           $('#item_id_'+record_id).append($('<option></option>').attr('value',val['pid']).attr("selected",true).text(pro_name)); 
+	          // $('#item_id_'+record_id).next().val(pro_name);
+	            document.getElementById("frm1").reset();
+	            HideDialog();
+	        },
+	        error:function(){
+	            $("#result").html('There is error while submit');
+	        }
+	    });	
+}
+//////////////////vendor get vendor info or add new
+function getCustomerInfo(){
+	var vendor_id = $("#v_name").val();
+	if(vendor_id==-1){
+			  ShowVendorDialog(true);
+			  e.preventDefault();
+	  }
+	else{
+		$.ajax({
+	        url: "<?php echo $url_get_customer;?>",
+	        type: "post",
+	        data: {'vendor_id':vendor_id},
+	        success: function(data){
+	            //alert(data);
+	            val = $.parseJSON(data);
+	            $("#contact").val(val.contact_name);
+	            $("#txt_phone").val(val.phone);
+	            $("#vendor_address").val(val.address);
+	        },
+	        error:function(){
+	            alert("Please Select Vendor");
+	            $("#result").html('There is error while submit');
+	        }
+	    });
+	}
+}
+<?php $url_add_vendor =  $this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'add-vendor')); ?>
+function addNewVendor(){
+	var v_name  = $("#vendor_name").val();
+	var contact = $("#txt_contact_name").val();
+	var phone   = $("#v_phone").val();
+	var address = $("#txt_address").val();
+	var txt_mail= $("#txt_mail").val();
+	validate_text('#vendor_name');
+	$.ajax({
+        url: "<?php echo $url_add_vendor;?>",
+        type: "post",
+        data: {'v_name':v_name,'contact':contact,'phone':phone,'address':address,'txt_mail':txt_mail},
+        success: function(data){
+            val = $.parseJSON(data);
+	        $('#v_name').append($("<option></option>").attr("value",val['vid']).attr("selected",true).text(v_name));  
+            $("#contact").val(contact);
+            $("#txt_phone").val(phone);   
+            $("#vendor_address").val(address);     
+           // $('#v_name').next().val(v_name);
+            document.getElementById("frmvendor").reset();
+            HideDialogVendor();
+        },
+        error:function(){
+            alert("faile insert");
+            $("#result").html('There is error while submit');
+        }
+    });
+}
+//Add location or check popup location
+function AddLocation(){
+	var location_id= $("#LocationId").val();
+	if(location_id==-1){
+		     AddNewLocation(true);
+			  e.preventDefault();
+	  }	
+}
+<?php $url_add_location =  $this->url(array('module'=>'product','controller'=>'index','action'=>'add-new-location')); ?>
+function addNewLocation(){
+	var location_name = $("#StockName").val();
+	var ContactName   = $("#ContactName").val();
+	var ContactNumber = $("#ContactNumber").val();
+	var location_add  = $("#location_add").val();
+	var remark_add    = $("#description").val();
+	validate_text('#StockName');
+	$.ajax({
+        url: "<?php echo $url_add_location;?>",
+        type: "post",
+        data: {'location_name':location_name,'ContactName':ContactName,'ContactNumber':ContactNumber,'location_add':location_add,'remark_add':remark_add},
+        success: function(data){
+           val = $.parseJSON(data);
+            $('#LocationId').append($("<option></option>").attr("value",val['LocationId']).attr("selected",true).text(location_name)); 
+           // $('#LocationId').next().val(location_name);
+            document.getElementById("frm-location").reset();
+            HideDialoglocation();
+        },
+        error:function(){
+            alert("faile insert");
+            $("#result").html('There is error while submit');
+        }
+    });
+ 
+}
+<?php $url_get_purchase_order =  $this->url(array('module'=>'purchase','controller'=>'advance','action'=>'get-purchae-order')); ?>
+function getOrder(){
+	var option5 = '<?php echo $this->itemsOption; ?>';
+	var purchase_order = $("#id").val();
+	//alert(purchase_order);
+	$.ajax({
+        url: "<?php echo $url_get_purchase_order;?>",
+        type: "post",
+        data: {'purchase_order':purchase_order},
+        success: function(data){
+           val = $.parseJSON(data);     
+          // alert(data);       
+          for (var index = 1 ; index <= val.length; index++) {
+               	//if(){
+           	if(parseInt(val[index-1]['qty_order'])!=0){
+               	//alert(data);
+           		//alert(val[index-1]['item_name']);
+           		var val_itemname = val[index-1]['item_name'];
+           		var inp = '';
+           		x++;
+           		//inp = '<input type="text" style="position: relative;margin-top: -15px; top:-15px; width: 211px;" onchange="AddLocation('+index5+')" class="validate[required] ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" value="'+val_itemname+'">';
+        	
+	            	
+	         		if(index >= 1) {// if pro_id have been recive all
+		         		var j = 1;
+	         			$("table#table_order tr.receiv_order").each(function(i) {
+		         			var rn_array = $(this).attr('id').split("_");
+							var r_pro_id = $("#item_id_"+rn_array[3]).val();
+							var pro_id = val[index-1]['pro_id'];
+							//alert("r="+r_pro_id+" p="+pro_id);
+							if(r_pro_id == pro_id){//if this pro_id is ready
+								j = 0;
+								return false;
+								//throw $break;
+							}else{
+								j = 2;
+							}
+							
+	         			});
+						
+	         			if(j >= 1){
+		         			template='<tr id="row_receiv_order_'+x+'" class="receiv_order" style="height:33px;">';
+	         				template+='<td class="quater-input"><input type="hidden" id="item_id_'+x+'" name="item_id_'+x+'"/><input type="hidden" id="item_name_'+x+'" name="item_name_'+x+'" /><img onClick="deleteRecord('+x+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+		         			template+='<td class="quater-input"><select Onchange="ShowPopupProduct('+x+')" id="rec_item_id_'+x+'" class="input200px" name="rec_item_id_'+x+'" >'+option5+'</select>'+inp+'</td>';
+		         			template+='<td class="quater-input"><input type="text" readonly="readonly" class="input validate[required,custom[number]]" id="qty_order_'+x+'" name="qty_order_'+x+'"/></td>';
+		         			template+='<td class="quater-input"><input type="text" onBlur="calQtyRemain('+x+')" class="input validate[required,custom[number]]" id="rec_qty_order_'+x+'" name="rec_qty_order_'+x+'" /></td>';
+		         			template+='<td class="quater-input"><input type="text" input" readonly="readonly" id="qty_remain_'+x+'" name="qty_remain_'+x+'" /></span></td>';
+		         			template+='<td class="quater-input"><input type="text" input" id="receive_date_'+x+'" name="receive_date_'+x+'" /></td>';
+		         			template+='<td class="quater-input"><input type="button" value="Receive" Onclick="ReceiveItem('+x+')" name="btn_rec_'+x+'" id="btn_rec_'+x+'"  /></td>';
+		         			template+="</tr>";	
+	         			        		
+			         		$('#receive_order').append(template);
+			         		if($('#identities').val()!="") {
+			         			var identity = $('#identities').val();
+			         			$('#identities').val(identity+','+x);
+			         		} else {$('#identities').val(x);}
+			         		$("#orderFrm").validationEngine();
+				             $('#qty_order_'+x).val(val[index-1]['qty_order']);
+				             $('#rec_item_id_'+x).val(val[index-1]['pro_id']);  
+				             $('#item_name_'+x).val(val[index-1]['item_name']); //for give value to hidden text box
+				             $('#item_id_'+x).val(val[index-1]['pro_id']);//set to hidden text box
+				             var currentTime = new Date()
+				             var month = currentTime.getMonth() + 1
+				             var day = currentTime.getDate()
+				             var year = currentTime.getFullYear()
+				             var date =(year + "/" + month + "/" + day )
+				             $('#receive_date_'+x).val(date);
+	         			} 
+	         		}else {
+	         		}
+           }
+         } 
+          $('#status').val("In Progress");
+        },
+        error:function(){
+            alert("You Have Error Get Order Item");
+            $("#result").html('There is error while submit');
+        }
+    });	
+}
+<?php $url_complete_order =  $this->url(array('module'=>'purchase','controller'=>'advance','action'=>'received-order-complete')); ?>
+function getOrderComplete(){
+	var purchase_order = $("#id").val();
+	var location_id = $("#LocationId").val();
+	var identities = $("#identities").val();
+	$.ajax({
+        url: "<?php echo $url_complete_order;?>",
+        type: "post",
+        data: {'purchase_order':purchase_order,'location_id':location_id,'identities':identities},
+        success: function(data){
+           val = $.parseJSON(data);
+           alert("Product has been received completed! ");
+        },
+        error:function(){
+            alert("faile insert");
+            $("#result").html('There is error while submit');
+        }
+    });
+	
+}
+function openSimple()
+{
+		
+}
+//calculator
+function doTotal() {
+	var discountType = $('input:radio[name="discount_type"]:checked').val();
+	var discountValue = ($('#discount_value').val() == '')? 0 : $('#discount_value').val();
+	var netTotal = ($('#net_total').val()=='')?0 : $('#net_total').val();
+	var discountReal = 0;
+	discountReal = (discountType == 1)? (netTotal * discountValue) / 100 : discountValue;
+	$('#discount_real').val(discountReal);
+	var allTotal = Number(netTotal)-Number(discountReal);
+	$('#all_total').val(allTotal);
+	$('#remain').val(allTotal);
+}
+
+
+function doRemain() {
+	// total for all record(total part)
+	var total = $('#all_total').val();
+	var paid = $('#paid').val();
+	var remain = total-paid;
+	$('#remain').val(remain);
+}
+// Calculate price of order
+function calculatePrice(index) {
+	// total price
+	var price = $('#price'+index).val();
+	var qty = $('#qty'+index).val();
+	var total = price * qty;
+	$('#total'+index).val(total);
+
+	// discount of total price
+	var disType = $('input:radio[name=dis-type-'+index+']:checked').val();
+	var disValue = ($('#dis-value'+index).val() == '')? 0 : $('#dis-value'+index).val();
+	var discount = (disType == 1)? total * disValue / 100 : disValue;
+	$('#real-value'+index).val(discount);
+	var lastTotal = $('#total'+index).val() - discount;
+	$('#after_discount'+index).val(lastTotal);
+	// total price
+}
+function calQtyRemain(index){
+	var qty_order = $('#qty_order_'+index).val();
+	var qty_receive = $('#rec_qty_order_'+index).val();
+	var remain_qty = qty_order - qty_receive;
+	if(qty_receive > qty_order){
+		alert("You're Enter Over then Quantity Order ");
+		}
+	else{
+		  $('#qty_remain_'+index).val(remain_qty); 
+		}
+		
+}
+<?php $url_add_receive_order =  $this->url(array('module'=>'purchase','controller'=>'advance','action'=>'add-purchase-receive')); ?>
+function ReceiveItem(index){
+	var v_name = $('#v_name').val();
+	var location_id = $('#LocationId').val();
+	var purchase_order_id= $('#id').val();
+	var pro_id = $('#rec_item_id_'+index).val();
+	var qty_order = $('#qty_order_'+index).val();
+	var qty_receive = $('#rec_qty_order_'+index).val();
+	var qty_remain = $('#qty_remain_'+index).val();
+	var reveive_date= $('#receive_date_'+index).val();
+    var item_name = $('#item_name_'+index).val();
+	if(qty_receive !== ""){
+		$('#btn_rec_'+index).val("Received");
+		$.ajax({
+	        url: "<?php echo $url_add_receive_order;?>",
+	        type: "post",
+	        data: {'v_id':v_name,'location_id':location_id,'purchase_id':purchase_order_id,
+	               'pro_id':pro_id,'qty_order':qty_order,'qty_receive':qty_receive,
+	               'qty_remain':qty_remain,'reveive_date':reveive_date},
+	        success: function(data){
+	        val = $.parseJSON(data);
+	        
+	        var addrecord = $('#addrow'); index_id= index_id+1;
+	        var tr = $('<tr class="trbody">'); //the new row
+	        var td = $("<td>").text(index_id); var td1 = $("<td>").text(item_name);
+	        var td2 = $("<td>").text(qty_order); var td3 = $("<td>").text(qty_receive);
+	        var td4 = $("<td>").text(qty_remain); var td5 = $("<td>").text(reveive_date); var td6 = $("<td>").text("Reveided");
+	        
+	        //var td = $("<td>").text(qty_receive);
+	        //td.appendTo(tr);td1.appendTo(tr);td2.appendTo(tr);td3.appendTo(tr);td4.appendTo(tr);td5.appendTo(tr);td6.appendTo(tr);
+	        //tr.appendTo(addrecord);
+
+			var tr_row = '<tr class="trbody">'+
+							'<td>'+index_id+'</td>'+
+							'<td>'+item_name+'</td>'+
+							'<td>'+qty_order+'</td>'+
+							'<td>'+qty_receive+'</td>'+
+							'<td>'+qty_remain+'</td>'+
+							'<td>'+reveive_date+'</td>'+
+							'<td><div class="received">Received</div></td>'+
+						'</tr>';
+
+     		$('#receive_order .trbody:last').after(tr_row);
+
+     		
+	        $("#row_receiv_order_"+index).remove();
+	        
+	        },
+	        error:function(){
+	            alert("faile insert");
+	            $("#result").html('There is error while submit');
+	        }
+	    });		
+	}	
+	else{
+		alert("Please Enter Qauntity Receive");	
+	}
+}
+<?php $url_calculate_payment =  $this->url(array('module'=>'purchase','controller'=>'advance','action'=>'calculate-payment')); ?>
+function calCulatePayment(){
+	var amount_paid = $('#paid').val();
+	var all_total = $('#all_total').val();
+	var purchase_id = $('#id').val();
+	$.ajax({
+        url: "<?php echo $url_calculate_payment;?>",
+        type: "post",
+        data: {'purchase_id':purchase_id,'amount_paid':amount_paid,'all_total':all_total},
+        success: function(data){
+        val = $.parseJSON(data); 
+        alert("Payment has been Calculate Successed !");
+        $('#remain').all_total-amount_paid;
+        },
+        error:function(){
+            alert("Payment has been Calculate Failed !");
+            $("#result").html('There is error while submit');
+        }
+    });
+}
+</script>								    
