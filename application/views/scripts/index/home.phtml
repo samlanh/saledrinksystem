@@ -1,0 +1,165 @@
+<?php 
+	echo $this->headTitle("DASHBOAD");
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$session_user=new Zend_Session_Namespace('auth');
+	//print_r ($session_user) ;
+// 	echo $tr->translate('USERNAME') .":  " . $session_user->user_name;
+// 	echo "<br>user id " . $session_user->user_id;
+// 	echo "<br> " . $tr->translate('EMAIL_ADDRESS') . ":  ".  $session_user->email;
+// 	echo "<br>level " . $session_user->level;
+// 	echo "Full Name".$session_user->fullname;
+	
+	$url_purchase =  array($this->url(array('module'=>'purchase','controller'=>'index','action'=>'index')), "MENU_PURCHASE_INDEX_INDEX");
+	$url_add_purchase = array($this->url(array('module'=>'purchase','controller'=>'index','action'=>'add-purchase')), "MENU_PURCHASE_INDEX_ADD_PURCHASE");
+	
+	$url_pro_add =  array($this->url(array('module'=>'product','controller'=>'index','action'=>'add')), "MENU_PRODUCT_INDEX_ADD");
+	$url_pro_list =  array($this->url(array('module'=>'product','controller'=>'index','action'=>'index')), "MENU_PRODUCT_INDEX_INDEX");
+	$url_curr =  array($this->url(array('module'=>'product','controller'=>'current-stock','action'=>'index')), "MENU_PRODUCT_CURRENT_STOCK_INDEX");
+	$url_adj =  array($this->url(array('module'=>'product','controller'=>'adjust-stock','action'=>'adjust')), "MENU_PRODUCT_ADJUST_STOCK_ADJUST");
+	
+	$url_sales_list = array($this->url(array('module'=>'sales','controller'=>'sales-order','action'=>'index')), "MENU_SALES_SALES_ORDER_INDEX");
+	$url_sales_add = array($this->url(array('module'=>'sales','controller'=>'sales-order','action'=>'customer-order')), "MENU_SALES_SALES_ORDER_ADD_CUSTOMER_ORDER");
+	$url_sales_quote = array($this->url(array('module'=>'sales','controller'=>'sales-order','action'=>'add-customer-quote')), "MENU_SALES_SALES_ORDER_ADD_CUSTOMER_QUOTE");
+	
+	$url_vendor = array($this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'index')), "MENU_PURCHASE_VENDOR_INDEX");
+	$url_vendor_add = array($this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'add')), "MENU_PURCHASE_VENDOR_ADD");
+	
+	$url_cust_list = array($this->url(array('module'=>'sales','controller'=>'customer','action'=>'index')), "MENU_SALES_CUSTOMER_INDEX");
+	$url_add_cust = array($this->url(array('module'=>'sales','controller'=>'customer','action'=>'add')), "MENU_SALES_CUSTOMER_ADD");
+	
+?>
+<a href="<?php  //echo $this->url(array('module'=>'','controller'=>'index','action'=>'logout', 'value'=>1));?>"><strong><?php //echo $tr->translate('SIGNOUT');?></strong></a>
+
+<?php //echo $this->flag_html;?>
+<div class="dashbord">
+	<ul class="main-dash">
+		<li>
+			<div class="item-dash">
+						<div class="head-dash">
+							<div><img src="<?php echo BASE_URL; ?>/images/green.png" alt="" /></div>
+							<div class="title"><?php echo $tr->translate("Purchase Order"); ?></div>
+						</div>
+						<div class="nav-dash">
+							<a href="<?php echo $url_add_purchase[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/add-new-purchase.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_add_purchase[1])?></div>
+						        </div>
+		            		</a>
+	            			<a href="<?php echo $url_purchase[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/icon-list-purchase.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_purchase[1])?></div>
+						        </div>
+		            		</a>
+						</div>
+					</div>
+		</li>	
+		<li>
+			<div class="item-dash">
+						<div class="head-dash">
+							<div><img src="<?php echo BASE_URL; ?>/images/inventory_categories.png" alt="" /></div>
+							<div class="title"><?php echo $tr->translate("INVENTORY"); ?></div>
+						</div>
+						<div class="nav-dash">
+							<a href="<?php echo $url_pro_add[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/add-new-products.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_pro_add[1])?></div>
+						        </div>
+		            		</a>
+	            			<a href="<?php echo $url_pro_list[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/icon-list.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_pro_list[1])?></div>
+						        </div>
+		            		</a>
+	            			<a href="<?php echo $url_curr[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/curr-stock.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_curr[1])?></div>
+						        </div>
+		            		</a>
+	            			<a href="<?php echo $url_adj[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img style="margin-top:-10px" src="<?php echo BASE_URL; ?>/images/edit1.jpg" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_adj[1])?></div>
+						        </div>
+		            		</a>
+						</div>
+					</div>
+		</li>	
+		<li>
+			<div class="item-dash">
+						<div class="head-dash">
+							<div><img src="<?php echo BASE_URL; ?>/images/yellow.png" alt="" /></div>
+							<div class="title"><?php echo $tr->translate("Sales Order"); ?></div>
+						</div>
+						<div class="nav-dash">
+							<a href="<?php echo $url_sales_add[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/add-new-sales.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_sales_add[1])?></div>
+						        </div>
+		            		</a>
+	            			<a href="<?php echo $url_sales_list[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/icon-list-sales.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_sales_list[1])?></div>
+						        </div>
+		            		</a>
+		            		<a href="<?php //echo $url_sales_quote[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/add-new-sales-quote.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_sales_quote[1])?></div>
+						        </div>
+		            		</a>
+						</div>
+					</div>
+		</li>	
+		<li>
+			<div class="item-dash">
+						<div class="head-dash">
+							<div><img src="<?php echo BASE_URL; ?>/images/vendor-big.png" alt="" /></div>
+							<div class="title"><?php echo $tr->translate("VENDOR"); ?></div>
+						</div>
+						<div class="nav-dash">
+	            			<a href="<?php echo $url_vendor_add[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/add-new-vendor.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_vendor_add[1])?></div>
+						        </div>
+		            		</a>
+	            			<a href="<?php echo $url_vendor[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/icon-list-vendor.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_vendor[1])?></div>
+						        </div>
+		            		</a>
+						</div>
+					</div>
+		</li>	
+		<li>
+			<div class="item-dash">
+						<div class="head-dash">
+							<div><img src="<?php echo BASE_URL; ?>/images/customer-big.png" alt="" /></div>
+							<div class="title"><?php echo $tr->translate("CUSTOMER"); ?></div>
+						</div>
+						<div class="nav-dash">
+	            			<a href="<?php echo $url_add_cust[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/add-new-customer.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_add_cust[1])?></div>
+						        </div>
+		            		</a>
+		            		<a href="<?php echo $url_cust_list[0]; ?>">
+		            			<div class="nav2">
+							         <div class="nav2img"><img src="<?php echo BASE_URL; ?>/images/icon-list-customer.png" alt="" /></div>
+							         <div class="navtext"><?php echo $tr->translate($url_cust_list[1])?></div>
+						        </div>
+		            		</a>
+						</div>
+					</div>
+		</li>
+	</ul>
+</div><!-- end of .dashbord -->

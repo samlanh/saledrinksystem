@@ -1,0 +1,225 @@
+
+<?php 
+	$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+	$request=Zend_Controller_Front::getInstance()->getRequest();
+	$action=$request->getActionName();
+	$controller=$request->getControllerName();
+	$module=$request->getModuleName();
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+<link type="text/css" href="<?php echo BASE_URL;?>/css/style.css" rel="stylesheet"/>
+<script type="text/javascript"  src="<?php echo BASE_URL;?>/js/other.js"></script>
+<link href="<?php echo $this->baseUrl()?>/css/style.css" rel="stylesheet" type="text/css"/>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+<!-- <link href="<?php //echo $this->baseUrl()?>/css/jquery-ui-1.9.2.custom.css" rel="stylesheet"> -->
+<!-- END GLOBAL MANDATORY STYLES -->
+
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<!-- END GLOBAL MANDATORY STYLES -->
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/clockface/css/clockface.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"/>
+<!-- END PAGE LEVEL STYLES -->
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/typeahead/typeahead.css">
+
+<!-- END PAGE LEVEL STYLES -->
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/select2/select2.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-datepicker/css/datepicker.css"/>
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
+<!-- END PAGE LEVEL STYLES -->
+<!-- BEGIN THEME STYLES -->
+<link href="<?php echo $this->baseUrl()?>/assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+<link id="style_color" href="<?php echo $this->baseUrl()?>/assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->baseUrl()?>/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- END THEME STYLES -->
+
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->baseUrl();?>/images/icon.ico" />
+
+</head>
+<!--[if lt IE 9]>
+
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/respond.min.js"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/excanvas.min.js"></script> 
+<![endif]-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<script type="text/javascript" src="<?php //echo $this->baseUrl();?>/js/jquery-1.7.2.min.js"></script>
+<script src="<?php // echo $this->baseUrl()?>/assets/global/plugins/jquery-3.1.1.min.js" type="text/javascript"></script>
+ <script src="<?php //echo $this->baseUrl()?>/assets/global/plugins/jquery.min.js" type="text/javascript"></script> -->
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+<!-- <script src="<?php //echo $this->baseUrl()?>/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script> -->
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+
+<link type="text/css" rel="stylesheet" media="screen" href="<?php echo BASE_URL;?>/js/validation/validationEngine.jquery.css">
+<script src="<?php echo BASE_URL;?>/js/validation/languages/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
+<script src="<?php echo BASE_URL;?>/js/validation/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+<link type="text/css" href="<?php echo BASE_URL;?>/css/custom-theme/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
+
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.tablesorter.js"> </script>
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.tablesorter.pager.js"> </script>			
+<!-- <script type="text/javascript" src="<?php //echo $this->baseUrl();?>/js/jquery-ui-1.8.20.custom.min.js"></script> -->
+	<script type="text/javascript">
+			/*$(function(){		
+				$("#frm").validationEngine();
+			});*/
+</script>
+		
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery-validation/js/additional-methods.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-markdown/lib/markdown.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+<!-- <script type="text/javascript" src="<?php //echo $this->baseUrl()?>/assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script> -->
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL STYLES -->
+<script src="<?php echo $this->baseUrl()?>/assets/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+
+<script src="<?php echo $this->baseUrl()?>/assets/admin/pages/scripts/table-advanced.js"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/admin/pages/scripts/components-form-tools.js"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/fuelux/js/spinner.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
+
+
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/clockface/js/clockface.js"></script>
+
+<!--<script type="text/javascript" src="<?php ///echo $this->baseUrl()?>/assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>-->
+
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="<?php echo $this->baseUrl()?>/assets/admin/pages/scripts/components-pickers.js"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/admin/pages/scripts/table-managed.js"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/admin/pages/scripts/table-advanced.js"></script>
+<script src="<?php echo $this->baseUrl()?>/assets/admin/pages/scripts/form-validation.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/test/chosen.jquery.js"></script>
+
+
+<!-- END PAGE LEVEL SCRIPTS -->
+	
+	<body class="page-header-fixed page-quick-sidebar-over-content ">
+<!-- BEGIN HEADER -->
+<div class="page-header navbar navbar-fixed-top">
+	<!-- BEGIN HEADER INNER -->
+	<?php echo $this->render('head-toolbar.phtml')?>
+</div>
+<!-- END HEADER -->
+<div class="clearfix">
+</div>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+	<?php echo $this->render('left-toolbar.phtml')?>
+	<!-- BEGIN CONTENT -->
+	<div class="page-content-wrapper" >
+		<div class="page-content" style="height: auto;" >
+			<?php echo $this->layout()->content; ?>
+		</div>
+	</div>
+	<?php // echo $this->render('rigth.phtml')?>
+</div>
+
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+	<div class="page-footer-inner">
+		
+	</div>
+	<div class="scroll-to-top">
+		<i class="icon-arrow-up"></i>
+	</div>
+</div>
+</body>
+	
+<!-- Validate Control's form -->
+
+<script>
+$(document).ready(function() { 
+   
+    Metronic.init(); // init metronic core components
+	Layout.init(); // init current layout
+	QuickSidebar.init(); // init quick sidebar
+	Demo.init(); // init demo features
+    ///ComponentsFormTools.init();
+    //ComponentsPickers.init();
+    //TableManaged.init();
+    //TableAdvanced.init();
+    FormValidation.init();
+    //displayPhoto();
+    //FormFileUpload.init();
+ }); 
+ 
+          
+    </script>
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<!-- END JAVASCRIPTS -->
+<!-- END JAVASCRIPTS -->
+<!-- BEGIN GOOGLE RECAPTCHA 
+<script type="text/javascript">
+        var RecaptchaOptions = {
+           theme : 'custom',
+           custom_theme_widget: 'recaptcha_widget'
+        };
+</script>
+<script type="text/javascript" src="https://www.google.com/recaptcha/api/challenge?k=6LcrK9cSAAAAALEcjG9gTRPbeA0yAVsKd8sBpFpR"></script>
+-->
+</body>
+<!-- END BODY -->
+</html>

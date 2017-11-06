@@ -1,0 +1,329 @@
+<?php 
+	$user_info = new Application_Model_DbTable_DbGetUserInfo();
+	$result = $user_info->getUserInfo();
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage(); 
+	$session_user=new Zend_Session_Namespace('auth');
+	$request=Zend_Controller_Front::getInstance()->getRequest();
+	 $level = $result["level"];
+	//must add edit it
+	$url_pro_add =  array($this->url(array('module'=>'product','controller'=>'index','action'=>'add'),null, true), "ADD_NEW_PRODUCT");
+	$url_pro_list =  array($this->url(array('module'=>'product','controller'=>'index','action'=>'index'),null, true), "PRODUCT_LIST");
+	$url_category =  array($this->url(array('module'=>'product','controller'=>'category','action'=>'index'),null, true), "PRODUCT_CATEGORY");
+	$url_brand = array($this->url(array('module'=>'product','controller'=>'brand','action'=>'index'),null, true), "BRAND_NAME");
+	$url_curr =  array($this->url(array('module'=>'product','controller'=>'current-stock','action'=>'index'),null, true), "MENU_PRODUCT_CURRENT_STOCK_INDEX");
+	$url_adj =  array($this->url(array('module'=>'product','controller'=>'adjust','action'=>'add'),null, true), "ADJUST_STOCK");
+	$url_transfer = array($this->url(array('module'=>'product','controller'=>'transfer','action'=>'index'),null, true), "MENU_PRODUCT_ADJUST_STOCK_TRANSFER_STOCK");
+	$url_location = array($this->url(array('module'=>'product','controller'=>'branch','action'=>'index'),null, true), "MENU_PRODUCT_INDEX_INDEX_LOCATION");
+	$url_other = array($this->url(array('module'=>'product','controller'=>'other','action'=>'index')), "MENU_OTHER");
+	$url_deliver = array($this->url(array('module'=>'sales','controller'=>'delivery','action'=>'index')), "MENU_DELIVERY");
+	
+	$url_damagedstock = array($this->url(array('module'=>'product','controller'=>'damagedstock','action'=>'index')), "STOCK_DAMAGED");
+	
+	$request_transfer = array($this->url(array('module'=>'product','controller'=>'transfer','action'=>'requestlist'),null, true), "MENU_REQUEST_TRANSFER_LIST");
+	$request_transfer_appr = array($this->url(array('module'=>'product','controller'=>'transfer','action'=>'requestappr'),null, true), "MENU_REQUEST_TRANSFER_APPROVE");
+	$make_transfer_list = array($this->url(array('module'=>'product','controller'=>'transfer','action'=>'transferlist'),null, true), "MENU_MAKE_TRANSFER_LIST");
+	$receive_transfer_list = array($this->url(array('module'=>'product','controller'=>'transfer','action'=>'receiverequest'),null, true), "MENU_RECEIVE_TRANSFER_LIST");
+	
+	$url_purchasepayment =  array($this->url(array('module'=>'purchase','controller'=>'payment','action'=>'index'),null, true), "PAYMENT");
+	$url_purchase =  array($this->url(array('module'=>'purchase','controller'=>'index','action'=>'index'),null, true), "MENU_PURCHASE_INDEX_INDEX");
+	$url_add_purchase = array($this->url(array('module'=>'purchase','controller'=>'index','action'=>'add'),null, true), "MENU_PURCHASE_INDEX_ADD_PURCHASE");
+	$url_vendor = array($this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'index'),null, true), "MENU_PURCHASE_VENDOR_INDEX");
+	$url_vendor_add = array($this->url(array('module'=>'purchase','controller'=>'vendor','action'=>'add'),null, true), "MENU_PURCHASE_VENDOR_ADD");
+	$url_return = array($this->url(array('module'=>'purchase','controller'=>'return','action'=>'index'),null, true), "MENU_PURCHASE_RETURN");
+	$url_return_vendor_in = array($this->url(array('module'=>'purchase','controller'=>'return','action'=>'return-in')), "MENU_PURCHASE_RETURN_IN");
+	$url_recieved  = array($this->url(array('module'=>'purchase','controller'=>'receive','action'=>'index'),null, true), "Receive Stock");
+	
+	// module sales
+	$url_sales_list = array($this->url(array('module'=>'sales','controller'=>'index','action'=>'index'),null, true), "MENU_SALES_SALES_ORDER_INDEX");
+	$url_sales_approved = array($this->url(array('module'=>'sales','controller'=>'salesapprove','action'=>'index'),null, true), "MENU_APPROVED");
+	$url_invocie_approved = array($this->url(array('module'=>'sales','controller'=>'invoiceapprove','action'=>'index'),null, true), "MENU_APPROVED");
+	$url_qoute_approved = array($this->url(array('module'=>'sales','controller'=>'quoteapprove','action'=>'index'),null, true), "MENU_QOUTEAPPROVED");
+	
+	$url_sales_add = array($this->url(array('module'=>'sales','controller'=>'index','action'=>'add'),null, true), "ADD_SALE_ORDER");
+	$url_quotelist = array($this->url(array('module'=>'sales','controller'=>'quoatation','action'=>'index'),null, true), "QUOTATION_LIST");
+	$url_sales_quote = array($this->url(array('module'=>'sales','controller'=>'quoatation','action'=>'add'),null, true), "MENU_SALES_SALES_ORDER_ADD_CUSTOMER_QUOTE");
+	$url_cust_list = array($this->url(array('module'=>'sales','controller'=>'customer','action'=>'index'),null, true), "MENU_SALES_CUSTOMER_INDEX");
+	$url_add_cust = array($this->url(array('module'=>'sales','controller'=>'customer','action'=>'add'),null, true), "MENU_SALES_CUSTOMER_ADD");
+	$url_sals_agent = array($this->url(array('module'=>'sales','controller'=>'saleagent','action'=>'index')), "MENU_SALES_AGENT");
+	$url_return_in = array($this->url(array('module'=>'sales','controller'=>'return','action'=>'index'),null, true), "MENU_SALES_RETURN_INT");
+	$url_return_out = array($this->url(array('module'=>'sales','controller'=>'return','action'=>'return-out'),null, true), "MENU_SALES_RETURN_OUT");
+	$url_termcondiction= array($this->url(array('module'=>'sales','controller'=>'termcondiction','action'=>'index'),null, true), "MENU_SALES_TERMCONDICTION");
+	$url_customer_type= array($this->url(array('module'=>'sales','controller'=>'customer','action'=>'customertypelist'),null, true), "MENU_CUSTOMER_TYPE");
+	//module user 
+	$url_user_list = array($this->url(array('module'=>'rsvacl','controller'=>'user','action'=>'index'),null, true), "MENU_RSVACL_USER_INDEX");
+	$url_user_add = array($this->url(array('module'=>'rsvacl','controller'=>'user','action'=>'add'),null, true), "MENU_RSVACL_USER_ADD_USER");
+	$url_add_user_access = array($this->url(array('module'=>'rsvacl','controller'=>'useraccess','action'=>'index'),null, true), "MENU_RSVACL_USER_ACCESS_ADD");
+	$url_user_acl_list = array($this->url(array('module'=>'rsvacl','controller'=>'acl','action'=>'index'),null, true), "MENU_RSVACL_USER_ACL_LIST");
+	$url_user_type = array($this->url(array('module'=>'rsvacl','controller'=>'usertype','action'=>'index'),null, true), "MENU_RSVACL_USER_TYPE_LIST");
+	
+	//module report$url_report_summary
+	$url_report_user = array($this->url(array('module'=>'report','controller'=>'user','action'=>'index'),null, true), "MENU_REPORT_USER_INDEX");
+	$url_report_list = array($this->url(array('module'=>'report','controller'=>'index','action'=>'index'),null, true), "MENU_REPORT_INDEX_INDEX");
+	$url_report_product = array($this->url(array('module'=>'report','controller'=>'product','action'=>'index'),null, true), "MENU_REPORT_PRODUCT");
+	$url_report_sale = array($this->url(array('module'=>'report','controller'=>'index','action'=>'index')), "MENU_REPORT_SALES_INDEX");
+	$url_report_summary = array($this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-summary'),null, true), "MENU_REPORT_INDEX_RPT_SUMMARY");
+	$url_report_pro = array($this->url(array('module'=>'report','controller'=>'product','action'=>'index'),null, true), "MENU_REPORT_PRODUCT_INDEX");
+	$url_report_purchase = array($this->url(array('module'=>'report','controller'=>'index','action'=>'rptpurchase'),null, true), "MENU_REPORT_PURCHASE_INDEX");
+	$url_report_transfer = array($this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-transfer'),null, true), "MENU_REPORT_INDEX_RPT-TRANSFER");
+	$url_report_all_in_one = array($this->url(array('module'=>'report','controller'=>'index','action'=>'index'),null, true), "MENU_PO_SO_REPORT");
+	$url_report_product = array($this->url(array('module'=>'report','controller'=>'product','action'=>'index'),null, true), "MENU_REPORT_PRODUCT");
+	$url_chart_po =  array($this->url(array('module'=>'report','controller'=>'index','action'=>'pochart'),null, true), "MENU_REPORT_INDEX_POCHART");
+	$url_chart_so =  array($this->url(array('module'=>'report','controller'=>'index','action'=>'sochart'),null, true), "MENU_REPORT_INDEX_SOCHART");
+	$url_measure  = array($this->url(array('module'=>'product','controller'=>'measure','action'=>'index'),null, true), "MEASURE");
+	$url_other  = array($this->url(array('module'=>'product','controller'=>'other','action'=>'index'),null, true), "OTHER");
+	$url_pricelevel = array($this->url(array('module'=>'product','controller'=>'pricelevel','action'=>'index'),null, true), "PRICE_LEVEL");
+	$module=$request->getModuleName();
+	$class_active='start active open';
+	?>
+<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar-wrapper">
+		<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+		<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+		<div class="page-sidebar navbar-collapse collapse">
+			
+			<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+				<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+				<li class="sidebar-toggler-wrapper">
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+					<div class="sidebar-toggler">
+					</div>
+					<!-- END SIDEBAR TOGGLER BUTTON -->
+				</li>
+				<!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+				<?php if($level==1 OR $level==4  OR $level==9 ){?>
+				<li class="<?php if($module=='product'){echo $class_active;}?>">
+					<a href="javascript:;">
+					<i class="icon-home"></i>
+					<span class="title"><?php echo $tr->translate("INVENTORY")?></span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li>
+							<a href="<?php echo $url_pro_add[0]; ?>">
+							<i class="icon-bar-chart"></i><?php echo $tr->translate($url_pro_add[1])?></a>
+						</li>
+						<li>
+							<a href="<?php echo $url_pro_list[0]; ?>">
+							<i class="icon-bulb"></i><?php echo $tr->translate($url_pro_list[1])?></a>
+						</li>
+						<li>
+							<a href="<?php echo $url_damagedstock[0]; ?>">
+							<i class="icon-bulb"></i><?php echo $tr->translate($url_damagedstock[1])?></a>
+						</li>
+						<!-- <li>
+							<a href="<?php //echo $url_curr[0]; ?>">
+							<i class="icon-graph"></i><?php //echo $tr->translate($url_curr[1])?></a>
+						</li> -->
+						<?php //if($result["level"]==3 ){ ?>
+	            		<!--<li>
+	            			<a href="<?php //echo $url_adj[0]; ?>">
+							      <i class="icon-bulb"></i>  <?php //echo $tr->translate($url_adj[1])?>
+		            		</a>
+	            		</li>
+	            		<li>
+	            			<a href="<?php echo $url_transfer[0]; ?>">
+							      <i class="icon-bulb"></i><?php echo $tr->translate($url_transfer[1])?>
+		            		</a>
+	            		</li>-->
+	            		<li>
+	            			<a href="<?php echo $url_adj[0]; ?>">
+							    <i class="icon-bulb"></i><?php echo $tr->translate($url_adj[1])?>
+		            		</a>
+	            		</li>
+						
+	            		<li>
+	            			<a href="<?php echo $url_category[0]; ?>">
+							      <i class="icon-bulb"></i><?php echo $tr->translate($url_category[1]);?>
+		            		</a>
+	            		</li>
+	            		<li>
+	            			<a href="<?php echo $url_brand[0]; ?>">
+							   <i class="icon-bulb"></i> <?php echo $tr->translate($url_brand[1]);?>
+		            		</a>
+	            		</li>
+	            		 <li>
+	            			<a href="<?php echo $url_pricelevel[0]; ?>">
+							    <i class="icon-bulb"></i><?php echo $tr->translate($url_pricelevel[1]);?></a>
+	            		<li> 
+	            		<li>
+	            			<a href="<?php echo $url_other[0]; ?>">
+							    <i class="icon-bulb"></i> <?php echo $tr->translate($url_other[1]);?>
+		            		</a>
+	            		</li>
+            			<li>
+	            			<a href="<?php echo $url_measure[0]; ?>">
+							 <i class="icon-bulb"></i><?php echo $tr->translate($url_measure[1])?></a>
+	            		<li>
+					</ul>
+				</li>
+				<?php }?>
+				<?php if($level==1 OR $level==8){?>
+				<li class="<?php if($module=='purchase'){echo $class_active;}?>">
+					<a href="javascript:;">
+					<i class="icon-screen-desktop"></i>
+					<span class="title"><?php echo $tr->translate("PURCHASING")?></span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li>
+            				<a href="<?php echo $url_purchase[0]; ?>">
+						        <i class="icon-arrow-right"></i><?php echo $tr->translate($url_purchase[1]);?>
+	            			</a>
+	            		</li> 
+	            		<li>
+	            			<a href="<?php echo $url_add_purchase[0]; ?>">
+							    <i class="icon-arrow-right"></i><?php echo $tr->translate($url_add_purchase[1]);?>
+		            		</a>
+	            		</li> 
+	            		<li>
+	            			<a href="<?php echo $url_vendor[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_vendor[1])?>
+		            		</a>
+	            		</li> 
+	            		<li>
+	            			<a href="<?php echo $url_vendor_add[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_vendor_add[1]);?>
+		            		</a>
+	            		</li> 
+						<li>
+	            			<a href="<?php echo $this->url(array('module'=>'purchase','controller'=>'expense','action'=>'index'),null, true); ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate("Expense List");?>
+		            		</a>
+	            		</li> 
+						<li>
+	            			<a href="<?php echo $url_purchasepayment[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate("PURCHASE_PAYMENT");?>
+		            		</a>
+	            		</li> 
+							<li>
+	            			<a href="<?php echo $this->url(array('module'=>'purchase','controller'=>'expensetitle','action'=>'index'),null, true); ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate("EXPENSE_TITLE");?>
+		            		</a>
+	            		</li> 
+					</ul>
+				</li>
+				<?php }?>
+				<li  class="<?php if($module=='sales'){echo $class_active;}?>">
+					<a href="javascript:;">
+					<i class="icon-screen-desktop"></i>
+					<span class="title"><?php echo $tr->translate("SALES"); ?></span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li>
+	            			<a href="<?php echo $url_sales_list[0]; ?>">
+							    <i class="icon-arrow-right"></i><?php echo $tr->translate($url_sales_list[1]);?>
+		            		</a>
+	            		</li> 
+	            		<li>
+	            			<a target="_blank" href="<?php echo $this->url(array('module'=>'sales','controller'=>'possale','action'=>'index'),null, true); ?>">
+							    <i class="icon-arrow-right"></i><?php echo $tr->translate($url_sales_add[1]);?>
+		            		</a>
+	            		</li> 
+	            		<!-- <li>
+	            			<a href="<?php echo $url_quotelist[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_quotelist[1])?>
+		            	    </a>
+	            		</li>  -->
+		            	<li>
+	            			<a href="<?php echo $url_cust_list[0]; ?>">
+							    <i class="icon-arrow-right"></i><?php echo $tr->translate($url_cust_list[1]);?>
+		            		</a>
+	            		</li> 
+						
+	            		<li>
+	            			<a href="<?php echo $url_add_cust[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_add_cust[1])?>
+		            		</a>
+	            		</li>
+	            		<li>
+	            			<a href="<?php echo $this->url(array('module'=>'sales','controller'=>'payment','action'=>'index'),null, true); ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate("CUSTOMER_PAYMENT");?>
+		            		</a>
+	            		</li>
+						<li>
+	            			<a href="<?php echo $this->url(array('module'=>'sales','controller'=>'comment','action'=>'index'),null, true); ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate("CUSTOMER_COMMENT");?>
+		            		</a>
+	            		</li>
+						<li>
+	            			<a href="<?php echo $url_customer_type[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_customer_type[1])?>
+		            		</a>
+	            		</li>
+	            		
+	            		
+	            		<li>
+	            			<a href="<?php echo $url_termcondiction[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_termcondiction[1]);?>
+		            		</a>
+	            		</li>
+					</ul>
+				</li>
+				
+				<li class="<?php if($module=='report'){echo $class_active;}?>">
+					<a href="javascript:;">
+					<i class="icon-screen-desktop"></i>
+					<span class="title"><?php echo ($tr->translate("REPORT"));?></span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+            		<li>
+            			<a href="<?php echo $url_report_product[0];?>">
+	            			<i class="icon-arrow-right"></i><?php echo $tr->translate( $url_report_product[1]);?>
+	            		</a>
+            		</li>
+            		<?php //}?>
+            		<?php if($level!=4 AND $level!=9){//admin and stock mg?> 
+            		<li>
+            			<a href="<?php echo $url_report_all_in_one[0];?>">
+	            			<i class="icon-arrow-right"></i><?php echo $tr->translate( $url_report_all_in_one[1]);?>
+	            		</a>
+            		</li>
+            		<?php }?>
+					</ul>
+				</li>
+				<?php if($level==1){?>
+				<li>
+					<a href="javascript:;">
+					<i class="icon-screen-desktop"></i>
+					<span class="title"><?php echo ($tr->translate("USERANDPERMISSION"));?></span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li>
+	            			<a href="<?php echo $url_user_list[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_user_list[1]);?>
+		            		</a>
+	            		</li> 
+            		    <li>
+	            			<a href="<?php echo $url_location[0]; ?>">
+							    <i class="icon-bulb"></i> <?php echo $tr->translate($url_location[1]);?>
+		            		</a>
+	            		</li>
+	            		<li>
+	            			<a href="<?php echo $url_user_add[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_user_add[1]);?>
+		            		</a>
+	            		</li> 
+	            		<li>
+	            			<a href="<?php echo $url_add_user_access[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_add_user_access[1]);?>
+		            		</a>
+	            		</li>
+	            		<li>
+	            			<a href="<?php echo $url_user_acl_list[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_user_acl_list[1]);?>
+		            		</a>
+	            		</li> 
+	            		<li>
+	            			<a href="<?php echo $url_user_type[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_user_type[1]);?>
+		            		</a>
+	            		</li> 
+					</ul>
+				</li>
+				<?php }?>
+			</ul>
+		</div>
+	</div>

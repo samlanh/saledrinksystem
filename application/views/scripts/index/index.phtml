@@ -1,0 +1,147 @@
+<?php
+$this->headTitle('Registration | log in page'); 
+echo $this->headTitle();
+$base_url = $this->baseUrl();
+?>
+<!DOCTYPE HTML> 
+<html>
+<head>
+<style> .red{color:red;}</style>
+<?php /*
+*/?>
+<script src="<?php echo $base_url;?>/js/dojo-1.6.1/dojo/dojo.js"  djConfig="isDebug: true,parseOnLoad: true"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $base_url;?>/js/dojo-1.6.1/dijit/themes/tundra/tundra.css"/>
+	
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+	.btn{
+		height: 40px;
+		min-width: 100px;	
+	}
+</style>
+<link rel="stylesheet" href="css/stylelogin.css"/>
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->baseUrl();?>/images/icon.ico" />
+<script type="text/javascript">	
+	dojo.require("dijit.form.ValidationTextBox");
+	dojo.require('dijit.form.Form');	
+	dojo.require('dijit.form.Button');
+</script>
+</head>
+<body class="tundra">
+<div id="header">
+	<table width="100%">
+		<tr>
+			<td class="title" width="33%"><label class="textgreen footertitle"​ style="font:bold 22px 'Khmer OS Muol Light'; text-align: center;"><img src="<?php echo $this->baseUrl()."/images/cam-app-logo.png"?>" height="50px" /></label></td>
+			<td class="textblue" align="center">
+				<div class="textgreen footertitle"​ style="text-align: center; font-weight:bold;font-family: Arial Black;color:#BDC5CD; font-size: 22px;font-family:'Khmer MEF2'">ប្រព័ន្ធគ្រប់គ្រង ស្តុក</div>
+				<label class="textgreen footertitle"​ style="text-align: right; font-weight:bold;font-family: Arial Black;color:#BDC5CD; font-size: 22px;line-height: 17px;"><strong>S</strong>tock <strong> M</strong>anagement <strong>S</strong>ystem</label></td>
+			<td class="textblue" align="center" width="33%">
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="content" >
+<div id='marquee'>
+		<marquee behavior="scroll" direction="left" onmouseout="this.start()" onmouseover="this.stop()" scrollamount="5"><?php echo $this->data["label_animation"];?></marquee>
+</div>
+</div>
+<div id="content" style="position:absolute;bottom: 42%;" >
+	
+	<table cellpadding="0" cellspacing="0" id="main">
+		<tr>
+			<td style="width:50%;padding-left:50px;" >				
+				<img alt="<?php ?>" src="<?php //echo $base_url.$this->data['logo-path-name']?>">
+				<img src="<?php echo $base_url."/images/stockshow.png"?>" width="100%" height="100%">
+			</td>
+			<td align="right">
+				<div id="login">
+					<form id="frmLogin" dojoType="dijit.form.Form" method="post" action="">
+						<script type="dojo/method" event="onSubmit">				
+								if(this.validate()) {						
+									return true;
+								}
+								return false;
+						</script>
+						<table id="login">		
+						<tr>
+							<td colspan="2" align="center" class="lblheader textwithe">
+								<label style="font:bold 20px 'Khmer OS Muol Light';"><small>ប្រព័ន្ធសុវត្ថិភាព ​</small></label>
+							</td>				
+						</tr>	
+						<tr>
+							<td colspan="2" align="center" style="color: red; padding-bottom: 10px;">
+								<?php echo $this->msg;?>
+							</td>				
+						</tr>			
+						<tr>
+							<td id="field">អ៊ីម៉ែលអ្នកប្រើប្រាស់ </td>
+							<td class="add-edit">
+								<input type="text" required="true" name="txt_email" id="txt_email" placeholder="ឈ្មោះអ្នកប្រើប្រាស់​" 
+								dojoType="dijit.form.ValidationTextBox" missingMessage="សូមបំពេញឈ្មោះអ្នកប្រើប្រាស់! " style="width: 100%;"/>
+							</td>
+						</tr>
+						<tr>
+							<td id="field">លេខសំងាត់</td>
+							<td class="add-edit">
+								<input type="password" required="true" name="txt_password" id="txt_password" placeholder="លេខសំងាត់" 
+								dojoType="dijit.form.ValidationTextBox" missingMessage="សូមបំពេញលេខសំងាត់!" style="width: 100%;"/>
+							</td>
+						</tr>
+						<tr>
+							<td id="field">ភាសា</td>
+							<td class="add-edit">
+								<select name="lang" id="lang" style=" height: 30px; width:170px " > 
+									<option value="1">ខ្មែរ</option> 
+									<option value="2">អង់គ្លេស</option> 
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="right">
+								<input  type="submit" value="ចាប់ផ្តើម" label="ចាប់ផ្តើម" dojoType="dijit.form.Button" />
+								<input  type="reset" value="សំអាត" id="clear_login" dojoType="dijit.form.Button" label="សំអាត" /> 								
+							</td>				
+						</tr>
+					</table>
+					</form>
+				</div>
+			</td>
+		</tr>
+	</table>	
+</div>
+<div id="footer" style="position: absolute; bottom: 0;">
+	<table id="main">
+		<tr>
+			<td valign="top">
+			<span style="font-weight: bold;font-family: Arial Black;color: #BDC5CD;font-size: 22px;"></span>
+			<?php						
+						$services= explode("," , $this->data['camappservices']);						
+						foreach ($services AS $i =>$service){
+							echo "<p class='t_shadow' style='font-weight:bold;font-size:15px;color:#5F8EC2;line-height:5px;white-space:nowrap; '>".$service."</p>";
+						}
+					?>	
+			</td>
+			<td align="right" class="textwithe" valign="middle" style="padding-top:10px;">
+			<span style="font-weight: bold;font-family: Arial Black;color: #BDC5CD;font-size: 18px;">&nbsp;</span><span style="text-align: center; font-weight:bold;
+					color:gold;font-size: 18px;font-family:'Khmer MEF2'"><?php echo $this->data['camappservice']?></span>
+			<dl style="margin-top:-2px;">
+				   <lable class="f_style"><b><?php echo $this->data['camappadress']?></b></lable><br />
+				  	<?php						
+						$tels = explode("," , $this->data['camapptel']);						
+						foreach ($tels AS $i =>$tel){
+							echo "<span class='t_shadow' style='font-weight:bold;font-size:20px;'>".$tel."<span><br />";
+						}
+					?>	
+					<lable class='t_shadow' style='font-weight:bold; font-size:21px;'><a target="_blank" href="http://<?php echo $this->data['website']?>"><?php echo $this->data['website']?></a></lable><br />
+				</dl>
+				<label class="textgreen footertitle"></label>
+				<a href="http://cam-app.com/" target="_blank"><label class="textyellow footertitle">
+					<?php echo $this->data['power_by']?>
+				</label>				
+			</td>
+		</tr>
+		
+	</table>
+</div>
+</body>
+</html>
