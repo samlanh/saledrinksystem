@@ -13,6 +13,15 @@ table.calculate td,table.calculate th{padding:0px 3px !important; line-height: 2
 }
 .fullside{ width:100%; height: 35px;}
 .fullblog{ width:100%; height: 28px;font-size: 15px !important;}
+legend {font-size: 14px;line-height: 33px;margin: 0px !important;
+		background: rgb(125, 125, 125);color: #FFFFFF;
+	}
+ .portlet.box.blue > .portlet-title {
+    	/*background-color: #65879A;*/
+		background: rgb(125, 125, 125);color: #FFFFFF;
+	}
+
+ 
 td{padding: 1px !important;}
 .aligncenter{text-align: center;background:#eaeaea;
 white-space: nowrap;font-size: 14px;line-height:33px;}
@@ -50,6 +59,85 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 	                                          </label>
 	                                    </div>
 	                                    <div class="portlet-body">
+	                                    
+	                                    <!-- sale rep from  -->
+	                                    <div class="table-responsive">
+	                                      
+	                                            <table id="salerep_row" border="1px" style="border-collapse: collapse; border:1px solid #ccc;width:100%;">
+													<thead>
+														<tr>
+															<td width="33%" valign="top">
+																<fieldset>
+																<legend align="center" ><strong><?php echo $tr->translate("SALE_AGENT")?></strong></legend>
+															   <table id="sale_agen"   style="border-collapse: collapse; width:100%;">
+																	<tr>
+																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("SALE_ORDER")?></td>
+																		<td colspan="11" id="lbl_termcondition" align="center">
+																		 <input dojoType="dijit.form.TextBox" id="txt_order" name="txt_order" value="<?php echo $this->invoice;?>" readonly type="text" class="fullside">
+														    			</td>
+																	</tr>
+																	<tr>
+																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("SALE_AGENT")?></td>
+																		<td colspan="11" id="lbl_termcondition" align="center">
+																		<select class="fullside"  name="saleagent_id" id="saleagent_id" dojoType="dijit.form.FilteringSelect" queryExpr="*${0}*" autoComplete="false" >
+																			<option value="-1"><?php echo $tr->translate("SELECT_SALE_RAP")?></option>
+																			<?php if(!empty($this->sale_agen)){ foreach($this->sale_agen as $rs){?>
+																				<option value="<?php echo $rs['id']?>"><?php echo $rs['name']?></option>
+																			<?php }}?>
+														    			</select>
+														    			</td>
+																	</tr>
+																	<tr>
+																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("NOTE")?></td>
+																		<td colspan="11" id="lbl_termcondition" align="center">
+																		 <textarea class="fullside"  style=" height: 60px !important;" tabindex="20" id="note" name="note"  >  </textarea>
+														    			</td>
+																	</tr>
+																</table>
+																</fieldset>
+															</td>
+															<td width="33%" valign="top">
+															  <fieldset>
+																<legend align="center" ><strong><?php echo $tr->translate("DATE")?></strong></legend>
+															   <table id="pament_dateline"   style="border-collapse: collapse; width:100%;">
+																	<tr>
+																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("DATE")?></td>
+																		<td colspan="11" id="lbl_termcondition" align="center"><input dojoType="dijit.form.DateTextBox" required="true" constraints="{datePattern:'dd/MM/yyyy'}" id="order_date" name="order_date" value="<?php echo date("Y-m-d");?>" type="text" class="fullside"></td>
+																	</tr>
+																	<tr>
+																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("PAYMENT_DATE")?></td>
+																		<td colspan="11" id="lbl_termcondition" align="center"><input dojoType="dijit.form.DateTextBox" required="true" constraints="{datePattern:'dd/MM/yyyy'}" id="payment_date" name="payment_date" value="<?php echo date("Y-m-d");?>" type="text" class="fullside"></td>
+																	</tr>
+																	<tr>
+																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("SAVING")?></td>
+																		<td colspan="11" id="lbl_termcondition" align="center">
+																		<select class="fullside"  name="saving_id" id="saving_id" dojoType="dijit.form.FilteringSelect" >
+																			<option value="1"><?php echo $tr->translate("Yes")?></option>
+																			<option value="0"><?php echo $tr->translate("No")?></option>
+														    			</select>
+														    			</td>
+																	</tr>
+																	<tr>
+																		<td colspan="11"  align="center"><?php echo $tr->translate("STATUS")?></td>
+																		<td colspan="11"  align="center">
+																		<select class="fullside"  name="status" id="status" dojoType="dijit.form.FilteringSelect" >
+																			<option value="1"><?php echo $tr->translate("ACTIVE")?></option>
+																			<option value="0"><?php echo $tr->translate("DEACTIVE")?></option>
+														    			</select>
+														    			</td>
+																	</tr>
+																</table>
+																</fieldset>
+															</td>
+															 
+														</tr>
+													</thead>
+												</table>
+	                                        
+	                                        </div>
+	                                 <!--/end sale rap from  -->
+	                                 
+	                                 <!-- add row product  -->   
 	                                        <div class="table-responsive">
 	                                        	<label class="control-label col-md-8" style="margin-left: -4px;">
 				                                    <div style="background: #cccccc;padding: 10px;">
@@ -58,7 +146,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 								    			</label>
 								    			<label class="control-label col-md-4" style="background: #cccccc;">
 								    				<div style="padding: 10px;">
-										    			<select class="fullside" onchange="addTermcondition();" name="term_condition" id="term_condition" dojoType="dijit.form.FilteringSelect" onchange="addProductRow();">
+										    			<select class="fullside" onchange="addTermcondition();" name="term_condition" id="term_condition" dojoType="dijit.form.FilteringSelect" onchange="addProductRow();" queryExpr="*${0}*" autoComplete="false"​>
 															<option value="-1">ជ្រើសរើសលក្ខខ័ណ្ឌ</option>
 															<?php if(!empty($this->term_opt)){ foreach($this->term_opt as $rs){?>
 																<option <?php echo $rs['id']?>><?php echo $rs['con_khmer']?></option>
@@ -73,11 +161,10 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 		                                        <table id="table_row" border="1px" style="border-collapse: collapse; border:1px solid #ccc;width:100%;">
 													<thead>
 														<tr id="head-title" class="table table-bordered" align="right" style="">
-															<th class="aligncenter">#</th>
+															<th class="aligncenter">ល.រ</th>
 															<th class="aligncenter">ឈ្មោះមុខទំនិញ</th>
-															<th class="aligncenter">ស្តុក</th>
-															<th class="aligncenter">បរិ.ដុំ</th>
-															<th class="aligncenter">បរិ.រាយ</th>
+															<th class="aligncenter">បរិមាណ</th>
+															<th class="aligncenter">បរិមាណបន្ថែម</th>
 															<th class="aligncenter">បរិមាណ</th>
 															<th class="aligncenter">តម្លៃលក់</th>
 															<th class="aligncenter">បញ្ចុះតម្លៃ</th>
@@ -94,7 +181,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 												 <table id="table_rowterm" border="1px" style="border-collapse: collapse; border:1px solid #ccc;width:100%;">
 														<thead>
 															<tr id="head-title" class="table table-bordered" align="right" style="">
-																<th class="aligncenter">#</th>
+																<th class="aligncenter">ល.រ</th>
 																<th class="aligncenter">លក្ខខណ្ឌ</th>
 																<th class="aligncenter">លុប</th>
 															</tr>
@@ -105,12 +192,15 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 													</table>
 												</label>
 	                                        </div>
+	                                    <!--/end add row product  -->  
+	                                        
 	                                    </div>
 	                                     <div style="clear:both;"></div>
 	                                </div>
 	                                <div style="clear:both;"></div>
 	                               
 							</label>
+							<!--information Customer Payment  -->
 							<label class="control-label col-md-3" style="background: #eee;">
 							<div class="portlet box blue">
 	                                    <div class="portlet-title">
@@ -225,11 +315,14 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 											</lable>
 										</lable>-->
 	                               </label>
+	                         <!--/end information Customer Payment  -->
 					</form> 
 			   </div>
 		</div>
 	</div>
 </form>
+
+<!--show save print -->
 <div class="dijitHidden" style="width: 20cm !important; height: 12cm ; padding: 0px; margin: 0px;">
 <div id="invoice" data-dojo-type="dijit.Dialog" style="width:24cm;height: 18cm ;" align="center" data-dojo-props="title:'<?php echo $tr->translate("OFFICIAL_RECEIPT");?>'"  >
 	<div id="PrintReceipt" style="border:1px dashed #ccc;width:18cm !important; padding: 0px; margin-bottom:30px; ">
@@ -386,6 +479,8 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 		<lable class="col-md-4"></lable>
 	</div>
 </div>
+<!--/end show save print -->
+
 <?php $form = $this->form_customer; ?>
 <div id="customerpopup" class="modal fade" tabindex="-1" data-width="1200">
        <div class="modal-dialog">
@@ -555,6 +650,7 @@ dojo.require("dijit.form.ValidationTextBox");
 dojo.require("dijit.form.TextBox");
 dojo.require('dijit.form.FilteringSelect');
 dojo.require("dijit.form.NumberTextBox");  
+dojo.require("dijit.form.DateTextBox");
 dojo.require('dijit.form.Button');
 dojo.require("dojo.NodeList-manipulate");
 dojo.require("dojo.html");
@@ -583,9 +679,33 @@ require(["dojo/ready"], function(ready){
 		searchAttr: "name",
 		queryExpr: "*${0}*",
 		autoComplete: false,
+		placeHolder:"<?php echo $tr->translate("SELECT_PRODUCT")?>",
 		class: 'fullside',
 		onChange: function() {
+
+			pro_id   = dijit.byId('product_id').get('value');
+				var rowId = $('#identity').val();
+			if(rowId!=''){ 
+				var rowIDArray = rowId.split(',');
+				for(var n = 0; n < rowIDArray.length; n++){
+				var product_name = dijit.byId('product_id'+rowIDArray[n]).get('value');
+				 
+				if(product_name == pro_id){
+					var num=dijit.byId("qty_"+rowIDArray[n]).get("value");
+					//var curr_qty=dijit.byId("curr_qty"+rowIDArray[n]).get("value");
+					  if(isNaN(num)){
+						  num=0;
+					  }
+                    dijit.byId("qty_"+rowIDArray[n]).attr("value",parseFloat(num)+1);
+                    calCualtePrice(rowIDArray[n]);
+					return false;
+					}
+				}
+				
+			} 
 			addProductRow();
+			
+			
 		}
 		}, "product_id");
 
@@ -626,6 +746,16 @@ function checkTime(i) {
 	startTime();
 function showReceipt(){
 	if(dijit.byId('office_receipt').validate()){
+		if(dijit.byId("saleagent_id").get("value")==-1){
+			alert("Please Select Sale Agent Name!!!");
+			dijit.byId("saleagent_id").focus();
+			return false;
+		}
+		if(dijit.byId("customer_id").get("value")==""){
+			alert("Please Customer Name!!!");
+			dijit.byId("customer_id").focus();
+			return false;
+		}
 	balance = dijit.byId("balance").get("value");
 	customer_id = dijit.byId("customer_id").get("value");
 	if(balance> 0 && (customer_id=='' || customer_id==1)){alert("សូមជ្រើសរើស អតិថិជន");dijit.byId("customer_id").focus();return false;}
@@ -755,8 +885,8 @@ function addNewCustomer(){
 <?php $url_getcustomerinfo =  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'get-customerinfo')); ?>
 function getCustomerInfo(){
 	customer_id = dijit.byId("customer_id").get("value");
-	if(customer_id==-1){
-		//$('#customerpopup').modal('show');
+	if(customer_id==-1 || customer_id=="" ){
+		return false;
 	}else{
 		dojo.xhrPost({
 		    url: "<?php echo $url_getcustomerinfo;?>",
@@ -770,7 +900,7 @@ function getCustomerInfo(){
 			   dojo.byId("lbl_address").innerHTML=data.address;
 		   },		
 		    error: function(err) {
-				   alert(err);
+				   //alert(err);
 			    }
 			});
 	}
@@ -837,14 +967,14 @@ function addProductRow(){
 			title=1;
 			dojo.byId('lbl_noproduct').innerHTML = '';
 		}
-		template+='<td style="min-width:20px;text-align:center">'+col+'</td>';
-		template+='<td style="min-width:230px;font-size:13px;"><input type="hidden" value="'+product_name+'" id="product_name'+col+'">'+product_name+'<input type="hidden"  value="'+product_id+'" id="product_id'+col+'" name="product_id'+col+'" /></td>';
-		template+='<td style="min-width:170px"><lable style="font-size:12px;" id="lblcurrent_qty'+col+'"></lable><input type="hidden" name="qty_perunit'+col+'" id="qty_perunit'+col+'"/><input type="hidden" readonly dojoType="dijit.form.TextBox" id="current_qty'+col+'" name="current_qty'+col+'" /></td>';
+		template+='<td style="min-width:20px;text-align:center">'+col+'<input type="hidden" name="qty_perunit'+col+'" id="qty_perunit'+col+'"/><input type="hidden" readonly dojoType="dijit.form.TextBox" id="current_qty'+col+'" name="current_qty'+col+'" /></td>';
+		template+='<td style="min-width:230px;font-size:13px;"><input type="hidden" value="'+product_name+'" id="product_name'+col+'">'+product_name+'<input type="hidden"  value="'+product_id+'" id="product_id'+col+'" name="product_id'+col+'" dojoType="dijit.form.TextBox" /></td>';
+		 
 		template+='<td style="min-width:50px"><input type="text" onkeyup="calCualtePrice('+col+');" name="qty_'+col+'" class="fullblog" id="qty_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder=""/></td>';
 		template+='<td style="min-width:50px"><input type="text" onkeyup="calCualtePrice('+col+');" name="qtydetail_'+col+'" class="fullblog" id="qtydetail_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder=""/></td>';
 		template+='<td style="min-width:50px"><input required="1" readonly name="qty_sold'+col+'" class="fullblog" id="qty_sold'+col+'" dojoType="dijit.form.NumberTextBox" placeholder=""/></td>';
 		template+='<td style="min-width:50px"><input required="1" type="text" tabindex="'+col+'"  onkeyup="calCualtePrice('+col+');" name="price_'+col+'" class="fullblog" id="price_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder=""/><input type="hidden" name="cost_price'+col+'" id="cost_price'+col+'" dojoType="dijit.form.TextBox" /></td>';
-		template+='<td style="min-width:50px"><input type="text"  onkeyup="calCualtePrice('+col+');"  name="discount_'+col+'" class="fullblog" id="discount_'+col+'" dojoType="dijit.form.TextBox" placeholder=""/></td>';
+		template+='<td style="min-width:50px"><input type="text"  onkeyup="calCualtePrice('+col+');"  name="discount_'+col+'" class="fullblog" id="discount_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="" value="0"/></td>';
 		template+='<td style="min-width:60px"><input type="text" name="sub_total'+col+'" class="fullblog" id="sub_total'+col+'" dojoType="dijit.form.NumberTextBox" readonly/></td>';
 		template+='<td width="60px"><button style="height:30px" type="button" onclick="deleteRecord('+col+')" name="save_close" class="btn default red">លុប</button></td>';
 		tmp='<tr id="row'+col+'" class="hover">';
@@ -858,9 +988,10 @@ function addProductRow(){
 		dojo.html.set(dojo.byId("row"+col),template , {
 		     parseContent: true,
 		});
-		dijit.byId("product_id").attr("value",'');
+		//dijit.byId("product_id").attr("value",'');
 		dijit.byId("product_id").focus();
 		getProductinfo(col,product_id);
+		 
 }
 function calCualtePrice(index){
 	main_qty= $("#qty_"+index).val();
@@ -959,9 +1090,9 @@ function getProductinfo(index,product_id){
 		},				    
 	   handleAs:"json", 
 	   load: function(data) {
-			dijit.byId("current_qty"+index).attr('value',data.qty);
+			//dijit.byId("current_qty"+index).attr('value',data.qty);
 			dijit.byId("price_"+index).attr('value',data.price);
-			dijit.byId("cost_price"+index).attr('value',data.cost_price);
+			//dijit.byId("cost_price"+index).attr('value',data.cost_price);
 			dijit.byId("qty_"+index).attr('value',1);
 			dijit.byId("qty_sold"+index).attr('value',1);
 
@@ -983,7 +1114,7 @@ function getProductinfo(index,product_id){
 			if(qty<1){
 				current_stock = '';
 			}
-			dojo.byId("lblcurrent_qty"+index).innerHTML=current_stock+""+qty_unitlable;
+			//dojo.byId("lblcurrent_qty"+index).innerHTML=current_stock+""+qty_unitlable;
 			$("#qty_perunit"+index).val(data.qty_perunit);
 			calCualtePrice(index);
 	   },		

@@ -163,18 +163,19 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if(!empty($search['text_search'])){
 			$s_where = array();
 			$s_search = trim(addslashes($search['text_search']));
-			$s_where[] = " s.sale_no LIKE '%{$s_search}%'";
-			$s_where[] = " s.net_total LIKE '%{$s_search}%'";
-			$s_where[] = " s.paid LIKE '%{$s_search}%'";
-			$s_where[] = " s.balance LIKE '%{$s_search}%'";
+			$s_search = str_replace(' ', '',$s_search);
+			$s_where[] = "REPLACE(s.sale_no,' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(s.net_total,' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(s.paid,' ','')  		LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(s.balance,' ','')  	LIKE '%{$s_search}%'";
 			$where .=' AND ('.implode(' OR ',$s_where).')';
 		}
 		if($search['customer_id']>0){
 			$where .= " AND s.customer_id = ".$search['customer_id'];
 		}
-		if($search['branch_id']>0){
-			$where .= " AND branch_id =".$search['branch_id'];
-		}
+// 		if($search['branch_id']>0){
+// 			$where .= " AND branch_id =".$search['branch_id'];
+// 		}
 		$dbg = new Application_Model_DbTable_DbGlobal();
 		$where.=$dbg->getAccessPermission();
 		$order=" ORDER BY id DESC ";
@@ -221,8 +222,8 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		(SELECT u.username FROM tb_acl_user AS u WHERE u.user_id = s.user_mod LIMIT 1 ) AS user_name,
 		so.qty_order,so.price,so.sub_total,s.net_total,
 		s.id,s.sale_no,s.date_sold,s.remark,
-		s.paid,s.tax,
-		s.balance
+		s.paid,s.tax,s.discount_value,
+		s.balance,so.saleorder_id
 		FROM `tb_sales_order` AS s,
 		`tb_salesorder_item` AS so,
 		tb_product AS it
@@ -234,13 +235,14 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if(!empty($search['txt_search'])){
 			$s_where = array();
 			$s_search = trim(addslashes($search['txt_search']));
-			$s_where[] = " it.item_name LIKE '%{$s_search}%'";
-			$s_where[] = " it.item_code LIKE '%{$s_search}%'";
-			$s_where[] = " it.barcode LIKE '%{$s_search}%'";
-			$s_where[] = " s.sale_no LIKE '%{$s_search}%'";
-			$s_where[] = " s.net_total LIKE '%{$s_search}%'";
-			$s_where[] = " s.paid LIKE '%{$s_search}%'";
-			$s_where[] = " s.balance LIKE '%{$s_search}%'";
+			$s_search = str_replace(' ', '',$s_search);
+			$s_where[] = "REPLACE(it.item_name,' ','')  LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(it.item_code,' ','')  LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(it.barcode,' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(s.sale_no,' ','') 	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(s.net_total,' ','') 	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(s.paid ,' ','')   	LIKE  '%{$s_search}%'";
+			$s_where[] = "REPLACE(s.balance,' ','')     LIKE '%{$s_search}%'";
 			$where .=' AND ('.implode(' OR ',$s_where).')';
 		}
 		if($search['item']>0){
@@ -249,15 +251,9 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['category_id']>0){
 			$where .= " AND it.cate_id =".$search['category_id'];
 		}
-		if($search['brand_id']>0){
-			$where .= " AND it.brand_id =".$search['brand_id'];
-		}
-		if($search['branch_id']>0){
-			$where .= " AND s.branch_id =".$search['branch_id'];
-		}
 		$dbg = new Application_Model_DbTable_DbGlobal();
 		$where.=$dbg->getAccessPermission();
-		$order=" ORDER BY s.id DESC ";
+		$order=" ORDER BY so.saleorder_id DESC";
 		return $db->fetchAll($sql.$where.$order);
 	}
 	function getAllCustomer($search){//7

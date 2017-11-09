@@ -6,17 +6,15 @@ class Sales_Model_DbTable_DbSaleOrder extends Zend_Db_Table_Abstract
 	protected $_name="tb_sales_order";
 	function getAllSaleOrder($search){
 			$db= $this->getAdapter();
-			$sql=" SELECT id,
-			(SELECT name FROM `tb_sublocation` WHERE tb_sublocation.id = branch_id AND status=1 AND name!='' LIMIT 1) AS branch_name,
-			(SELECT cust_name FROM `tb_customer` WHERE tb_customer.id=tb_sales_order.customer_id LIMIT 1 ) AS customer_name,
-			(SELECT contact_name FROM `tb_customer` WHERE tb_customer.id=tb_sales_order.customer_id LIMIT 1 ) AS contact_name,	
-			sale_no, date_sold,
-			net_total,discount_value,transport_fee,all_total,
-			(SELECT SUM(paid) FROM `tb_receipt_detail` WHERE STATUS=1 AND invoice_id=tb_sales_order.id ) AS paid,
-			(all_total-(SELECT SUM(paid) FROM `tb_receipt_detail` WHERE STATUS=1 AND invoice_id=tb_sales_order.id )) AS balance,
-			'វិក្កយបត្រ','លុបវិក្កយបត្រ',
-			(SELECT u.fullname FROM tb_acl_user AS u WHERE u.user_id = user_mod LIMIT 1) AS user_name
-			FROM `tb_sales_order` ";
+			$sql=" SELECT id,sale_no,
+				 	(SELECT contact_name FROM `tb_customer` WHERE tb_customer.id=tb_sales_order.customer_id LIMIT 1 ) AS contact_name,	
+				 	date_sold,payment_date,
+					net_total,discount_value,transport_fee,all_total,
+					(SELECT SUM(paid) FROM `tb_receipt_detail` WHERE STATUS=1 AND invoice_id=tb_sales_order.id ) AS paid,
+					(all_total-(SELECT SUM(paid) FROM `tb_receipt_detail` WHERE STATUS=1 AND invoice_id=tb_sales_order.id )) AS balance,
+					'វិក្កយបត្រ','លុបវិក្កយបត្រ',
+					(SELECT u.fullname FROM tb_acl_user AS u WHERE u.user_id = user_mod LIMIT 1) AS user_name
+					FROM `tb_sales_order` ";
 			
 			$from_date =(empty($search['start_date']))? '1': " date_sold >= '".$search['start_date']." 00:00:00'";
 			$to_date = (empty($search['end_date']))? '1': " date_sold <= '".$search['end_date']." 23:59:59'";
@@ -24,14 +22,12 @@ class Sales_Model_DbTable_DbSaleOrder extends Zend_Db_Table_Abstract
 			if(!empty($search['text_search'])){
 				$s_where = array();
 				$s_search = trim(addslashes($search['text_search']));
-				$s_where[] = " sale_no LIKE '%{$s_search}%'";
-				$s_where[] = " net_total LIKE '%{$s_search}%'";
-				$s_where[] = " paid LIKE '%{$s_search}%'";
-				$s_where[] = " balance LIKE '%{$s_search}%'";
+				$s_search = str_replace(' ', '', $s_search);
+				$s_where[] = "REPLACE(sale_no,' ','')  	LIKE '%{$s_search}%'";
+				$s_where[] = "REPLACE(net_total,' ','') LIKE '%{$s_search}%'";
+				$s_where[] = "REPLACE(paid,' ','')  	LIKE '%{$s_search}%'";
+				$s_where[] = "REPLACE(balance,' ','')  	LIKE '%{$s_search}%'";
 				$where .=' AND ('.implode(' OR ',$s_where).')';
-			}
-			if($search['branch_id']>0){
-				$where .= " AND branch_id = ".$search['branch_id'];
 			}
 			if($search['customer_id']>0){
 				$where .= " AND customer_id =".$search['customer_id'];
@@ -39,8 +35,10 @@ class Sales_Model_DbTable_DbSaleOrder extends Zend_Db_Table_Abstract
 			$dbg = new Application_Model_DbTable_DbGlobal();
 			$where.=$dbg->getAccessPermission();
 			$order=" ORDER BY id DESC ";
+			//echo $sql.$where;
 			return $db->fetchAll($sql.$where.$order);
 	}
+	
 	public function addSaleOrder($data)
 	{
 		$db = $this->getAdapter();
@@ -141,6 +139,7 @@ class Sales_Model_DbTable_DbSaleOrder extends Zend_Db_Table_Abstract
 			Application_Model_DbTable_DbUserLog::writeMessageError($err);
 		}
 	}
+	
 	public function RejectSale($data)
 	{
 		$id=$data["id"];

@@ -19,8 +19,9 @@ class Sales_PossaleController extends Zend_Controller_Action
 			try {
 				if(!empty($data['identity'])){
 					$db->addSaleOrder($data);
+					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
 				}
-				Application_Form_FrmMessage::message("INSERT_SUCESS");
+				Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message('INSERT_FAIL');
 				$err =$e->getMessage();
@@ -39,6 +40,8 @@ class Sales_PossaleController extends Zend_Controller_Action
 		$this->view->form_customer = $formpopup;
 		$db = new Application_Model_DbTable_DbGlobal();
 		$this->view->invoice = $db->getSalesNumber(1);
+		
+		$this->view->sale_agen=$db->getSaleAgentName();
 	}
 	public function editAction()
 	{

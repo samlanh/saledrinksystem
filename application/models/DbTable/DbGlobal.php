@@ -711,6 +711,14 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
     		return $rows;
     	}
     }
+    
+    function getSaleAgentName(){
+    	$db = $this->getAdapter();
+    	$sql=' SELECT id ,name FROM `tb_sale_agent` WHERE name!="" AND status=1  ';
+    	$order=" ORDER BY id DESC";
+    	return $db->fetchAll($sql.$order);
+    }
+    
 	function getUpdatetermcustomer(){
     	$db = $this->getAdapter();
     	$sql=" SELECT v.`credit_limit`,v.`credit_term`,v.key_code FROM `tb_view` AS v WHERE v.`type`=6 ";

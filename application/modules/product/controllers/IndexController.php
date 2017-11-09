@@ -35,15 +35,8 @@ public function init()
     			'status'	=>	1
     		);
     	}
-		if($level==1 or $level==2){
-			$rows = $db->getAllProductForAdmin($data);
-			$columns=array("BRANCH_NAME","ITEM_CODE","ITEM_NAME",
-					"PRODUCT_CATEGORY","MEASURE","QTY","SOLD_PRICE","COST_PRICE","USER","STATUS");
-		}else{
-			$rows = $db->getAllProduct($data);
-			$columns=array("BRANCH_NAME","ITEM_CODE","ITEM_NAME",
-					"CATEGORY","MEASURE","QTY","MASTER_PRICE","DEALER_PRICE","USER","STATUS");
-		}
+		$rows = $db->getAllProductForAdmin($data);
+		$columns=array("BARCODE","ITEM_CODE","ITEM_NAME","PRODUCT_CATEGORY","COST_PRICE","USER","STATUS");
 		$link=array(
 				'module'=>'product','controller'=>'index','action'=>'edit',
 		);
@@ -108,9 +101,9 @@ public function init()
 		$id = $this->getRequest()->getParam("id"); 
 		$db = new Product_Model_DbTable_DbProduct();
 		if($this->getRequest()->isPost()){ 
+			$post = $this->getRequest()->getPost();
+			$post["id"] = $id;
 				try{
-					$post = $this->getRequest()->getPost();
-					$post["id"] = $id;
 					$db->edit($post);
 					if(isset($post["save_close"]))
 					{

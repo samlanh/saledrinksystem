@@ -40,6 +40,7 @@ public function init()
 		$startDateElement->setValue($startDateValue);
 		$startDateElement->setAttribs(array(
 				'class'=>'form-control form-control-inline date-picker',
+				//'data-date-format'=>'dd/mm/yyyy',
 				'placeholder'=>'Start Date'
 		));
 		$this->addElement($startDateElement);
@@ -64,7 +65,8 @@ public function init()
 		$endDateElement->setValue($endDateValue);
 		$this->addElement($endDateElement);
 		$endDateElement->setAttribs(array(
-				'class'=>'form-control form-control-inline date-picker'
+				'class'=>'form-control form-control-inline date-picker',
+				//'data-date-format'=>'dd/mm/yyyy',
 		));
 		
 		$opt=array(-1=>"Choose Sale Person");

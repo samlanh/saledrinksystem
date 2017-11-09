@@ -324,8 +324,8 @@ class Product_Model_DbTable_DbAddProduct extends Zend_Db_Table_Abstract
 					'p_code'		=> $post["pro_code"],
 					'barcode'=>
 // 					'brand_id'
-					'cate_id'		=> $post["category_id"],//test
-					'branch_id'	 	=> 
+					'cate_id'		=> $post["category_id"],
+					'branch_id'	 	=> 1,
 					'remark'		=> $post['remark'],
 					'last_usermod'	=> $GetUserId,
 					'last_mod_date'	=> new Zend_Date(),//test

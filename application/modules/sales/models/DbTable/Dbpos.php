@@ -37,27 +37,30 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 			$so = $data['invoice'];
 	
 			$info_purchase_order=array(
-					"customer_id"   => $data['customer_id'],
-					"branch_id"     => $data["branch_id"],
-					"sale_no"       => $so,
-					"exchange_rate" => $data['exchange_rate'],
-					"net_total"     => $data['sub_total'],
+					"sale_no"		=>$data['txt_order'],
+					"saleagent_id"	=>$data['saleagent_id'],
+					"remark"		=>$data['note'],
+					"date_sold"		=>$data['order_date'],
+					"payment_date"	=>$data['payment_date'],
+					"saving_id"		=>$data['saving_id'],
+					"status"		=>$data['status'],
+					"customer_id"   	=> $data['customer_id'],
+					"exchange_rate" 	=> $data['exchange_rate'],
+					"net_total"     	=> $data['sub_total'],
+					"discount_value" 	=> $data['discount'],
+					"transport_fee"		=> $data["transport_fee"],
+					"all_total"     	=> $data['total_dollar'],
+					"all_total_riel"	=> $data['total_riel'],
+					"paid_dollar"   	=> $data['receive_dollar'],
+					"paid_riel"	    	=> $data["receive_riel"],
+					"paid"	        	=> $data["total_paid"],
+					'return_dollar'	 	=> $data["return_amount"],
+					'return_riel'   	=> $data["return_amountriel"],
+					"balance"      		=> $data['balance'],
+					"user_mod"     	=>$GetUserId,
+					"date"     		=> date("Y-m-d"),
+					"branch_id"     => 1,
 					"tax"			=> $data["tax"],
-					"transport_fee"	=> $data["transport_fee"],
-					"all_total"     => $data['total_dollar'],
-					"all_total_riel"=> $data['total_riel'],					
-					"paid_dollar"   => $data['receive_dollar'],
-					"paid_riel"	    => $data["receive_riel"],
-					"paid"	        => $data["total_paid"],
-					'return_dollar' => $data["return_amount"],
- 					'return_riel'   => $data["return_amount"],
-					"discount_value" => $data['discount'],
-					//"discount_type" => $data['discount'],
-					"balance"      => $data['balance'],
-					"user_mod"       => $GetUserId,
-					"date_sold"     => 	date("Y-m-d"),
-					"date"     => 	date("Y-m-d"),
-// 					"remark"         => $data['remark'],
 			);
 			$this->_name="tb_sales_order";
 			$sale_id = $this->insert($info_purchase_order);
@@ -103,16 +106,6 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 			$ids=explode(',',$data['identity']);
 			foreach ($ids as $i)
 			{
-				$rs = $this->getProductByProductId($data['product_id'.$i], $data["branch_id"]);
-				if(!empty($rs)){
-					$this->_name='tb_prolocation';
-					$arr = array(
-							'qty'=>$rs['qty']-$data['qty_sold'.$i]
-							);
-					$where=" id =".$rs['id'];
-					
-					$this->update($arr, $where);
-				}
 				$data_item= array(
 						'saleorder_id'=> $sale_id,
 						'pro_id'	  => $data['product_id'.$i],
@@ -122,6 +115,7 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 						'price'		  => $data['price_'.$i],
 						'old_price'   => $data['price_'.$i],
  						'cost_price'  => $data['cost_price'.$i],
+						'disc_value'  => $data['discount_'.$i],
 // 						'disc_value'  => str_replace("%",'',$data['dis_value'.$i]),//check it
 // 						'disc_type'	  => $data['discount_type'.$i],//check it
 						'sub_total'	  => $data['sub_total'.$i],

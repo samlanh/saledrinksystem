@@ -107,8 +107,10 @@
 							<i class="icon-bulb"></i><?php echo $tr->translate($url_pro_list[1])?></a>
 						</li>
 						<li>
+						<!--  
 							<a href="<?php echo $url_damagedstock[0]; ?>">
 							<i class="icon-bulb"></i><?php echo $tr->translate($url_damagedstock[1])?></a>
+						-->
 						</li>
 						<!-- <li>
 							<a href="<?php //echo $url_curr[0]; ?>">
@@ -137,9 +139,11 @@
 		            		</a>
 	            		</li>
 	            		<li>
+	            		<!-- 
 	            			<a href="<?php echo $url_brand[0]; ?>">
 							   <i class="icon-bulb"></i> <?php echo $tr->translate($url_brand[1]);?>
 		            		</a>
+		            	 -->
 	            		</li>
 	            		 <li>
 	            			<a href="<?php echo $url_pricelevel[0]; ?>">
@@ -151,13 +155,16 @@
 		            		</a>
 	            		</li>
             			<li>
+            			<!-- 
 	            			<a href="<?php echo $url_measure[0]; ?>">
 							 <i class="icon-bulb"></i><?php echo $tr->translate($url_measure[1])?></a>
+	            		 -->
 	            		<li>
 					</ul>
 				</li>
 				<?php }?>
 				<?php if($level==1 OR $level==8){?>
+				<!-- 
 				<li class="<?php if($module=='purchase'){echo $class_active;}?>">
 					<a href="javascript:;">
 					<i class="icon-screen-desktop"></i>
@@ -202,6 +209,8 @@
 	            		</li> 
 					</ul>
 				</li>
+				 -->
+				
 				<?php }?>
 				<li  class="<?php if($module=='sales'){echo $class_active;}?>">
 					<a href="javascript:;">
@@ -256,6 +265,11 @@
 	            		<li>
 	            			<a href="<?php echo $url_termcondiction[0]; ?>">
 		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_termcondiction[1]);?>
+		            		</a>
+	            		</li>
+	            		<li>
+	            			<a href="<?php echo $url_sals_agent[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_sals_agent[1]);?>
 		            		</a>
 	            		</li>
 					</ul>

@@ -85,7 +85,6 @@ class report_indexController extends Zend_Controller_Action
     				'start_date'=>date("Y-m-d"),
     				'end_date'=>date("Y-m-d"),
     				'customer_id'=>0,
-    				'branch_id'=>0,
     		);
     	}
     	$this->view->rssearch = $data;
@@ -119,8 +118,6 @@ class report_indexController extends Zend_Controller_Action
     				'end_date'=>date("Y-m-d"),
     				'item'=>0,
     				'category_id'=>0,
-    				'brand_id'=>0,
-    				'branch_id'=>0,
     		);
     	}
     	$this->view->rssearch=$search;

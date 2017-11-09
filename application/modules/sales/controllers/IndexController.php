@@ -24,13 +24,12 @@ class Sales_IndexController extends Zend_Controller_Action
 					'text_search'=>'',
 					'start_date'=>date("Y-m-d"),
 					'end_date'=>date("Y-m-d"),
-					'branch_id'=>-1,
 					'customer_id'=>-1,
 					);
 		}
 		$db = new Sales_Model_DbTable_DbSaleOrder();
 		$rows = $db->getAllSaleOrder($search);
-		$columns=array("BRANCH_NAME","Com.Name","CON_NAME","INVOICE_NO","SALE_DATE",
+		$columns=array("INVOICE_NO","CON_NAME","SALE_DATE","PAYMENT_DATE",
 				"SUB_TOTAL","DISCOUNT","TRANSPORT_FEE","TOTAL_AMOUNT","PAID","BALANCE","PRINT","លុបវិក្កយបត្រ","BY_USER");
 		$link=array(
 				'module'=>'sales','controller'=>'index','action'=>'edit',

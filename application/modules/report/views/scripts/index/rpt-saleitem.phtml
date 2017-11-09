@@ -8,16 +8,16 @@ $frm_sales_report = $this->form_search;
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-globe"></i><?php echo $tr->translate("Sale Item Detail Report");?>
+					<i class="fa fa-globe"></i><?php echo $tr->translate("REP_SALE_ITEM_DETAIL");?>
 				</div>
 						<div class="btn-group pull-right">
 							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
-							   Actions <i class="fa fa-angle-down"></i>
+							  <?php echo $tr->translate("ACTIONS");?>  <i class="fa fa-angle-down"></i>
 							 </button>
 								<ul class="dropdown-menu" role="menu">
 									<li>
 										<a href="#" onclick="doPrint();">
-											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print
+											<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo $tr->translate("PRINT");?>
 										</a>
 									</li>
 									<li>
@@ -30,17 +30,15 @@ $frm_sales_report = $this->form_search;
 				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
 					<div class="form-group" style="padding-top: 6px;">
 						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("txt_search");?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("branch_id");?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('brand_id');?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("category_id");?></label>
+						 <label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('item');?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("category_id");?></label>
+						 <label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('start_date');?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("end_date");?></label>
+						<label class="control-label col-md-1">
+							<input type="submit" value="<?php echo $tr->translate("SEARCH")?>"  class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /> 
+						</label>
 					</div>
-					<div class="form-group" style="padding-top: 6px;">
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('item');?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('start_date');?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("end_date");?></label>
-						<label class="control-label col-md-3">
-						<input type="submit" value="<?php echo $tr->translate("SEARCH")?>"  class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /></label>
-					</div><div style="clear:both;"></div>	
+					<div style="clear:both;"></div>	
 				</form> 
 	<div style=" min-height:12cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm;overflow: scroll;">
 	<div id="divPrint" style="width: 100%;">
@@ -63,8 +61,8 @@ $frm_sales_report = $this->form_search;
 		                	<td width="20%" valign="top"></td>
 		                	<td width="60%" valign="top">
 		                		<ul>
-		                			<li style="text-align:center; font-size:16px; font-family:'Khmer MEF2'">របាយការណ៏ លក់លម្អិត</li>
-		                			<li style="text-align:center; font-size:14px;"><?php echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li>
+		                			<li style="text-align:center; font-size:13px; font-family:'Khmer OS Muol'">របាយការណ៏ លក់លម្អិត</li>
+		                			<li style="text-align:center; font-size:12px;"><?php echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li>
 		                		</ul>
 		                	</td>
 		                    <td width="20%"></td>
@@ -90,7 +88,6 @@ $frm_sales_report = $this->form_search;
 		            <table border="1"  style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
 		                 <tbody><tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 25px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
 		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
-		                    <td><?php echo $tr->translate("BRANCH_NAME");?></td>
 							<td>&nbsp;<?php echo $tr->translate("CUSTOMER_NAME");?></td>
 							<td>&nbsp;<?php echo $tr->translate("SALE_NO");?></td>
 							<td width="10%">&nbsp;<?php echo $tr->translate("ORDER_DATE");?></td>
@@ -103,14 +100,13 @@ $frm_sales_report = $this->form_search;
 							<td><?php echo $tr->translate("TOTAL");?></td>
 							<td>&nbsp;<?php echo $tr->translate("BY_USER");?></td>
 		                </tr>
-		                <?php $num=1; 
+		                <?php $num=1;$old_saleorder_id='';$discount=0;
 		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
 		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
 		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
 		                if(!empty($this->product_rs))foreach ($this->product_rs AS $index => $rs){?>
 						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
 						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
-						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["branch_name"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["customer_name"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["sale_no"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_sold"]));?></td>
@@ -139,14 +135,18 @@ $frm_sales_report = $this->form_search;
 						echo$l_qty;?>
 						   
 						   </td>
-						   <td>&nbsp;<?php echo number_format($rs["price"],2);?></td>
-						   <td>&nbsp;<?php echo number_format($rs["sub_total"],2);?></td>
+						   <td>&nbsp;$&nbsp;<?php echo number_format($rs["price"],2);?></td>
+						   <td>&nbsp;$&nbsp;<?php echo number_format($rs["sub_total"],2);?></td>
 						   <td>&nbsp;<?php echo $rs["user_name"];?></td>
 						</tr>
 						   <?php 
-							$d_netotal = $d_netotal+$rs["net_total"];
-							$d_paid = $d_paid+$rs["paid"];
-							$d_balance = $d_balance+$rs["balance"];
+						   if($rs['saleorder_id']!=$old_saleorder_id){
+								$d_netotal = $d_netotal+$rs["net_total"];
+								$d_paid = $d_paid+$rs["paid"];
+								$d_balance = $d_balance+$rs["balance"];
+								$discount=$discount+$rs["discount_value"];
+						   }
+							$old_saleorder_id=$rs['saleorder_id'];
                     	 }?>
 		                </tbody>
 		           </table>
@@ -154,24 +154,26 @@ $frm_sales_report = $this->form_search;
 		             <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
 		                <tbody><tr height="30px;" bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:2px 0px; ">
 		                    <td><strong><?php echo $tr->translate("PURCHASE_AMOUNT");?></strong></td>
+		                     <td><strong><?php echo $tr->translate("DISCOUNT");?></strong></td>
 		                    <td><strong><?php echo $tr->translate("PAID");?></strong></td>
 		                    <td><strong><?php echo $tr->translate("BALANCE");?></strong></td>
 		                </tr>
 		                 <tr class="style" style=" line-height: 24px; font-size:11px;">
-		                    <td>&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
-		                    <td>&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>
-		                    <td>&nbsp;<?php echo number_format($d_balance,2);?>&nbsp;</td>
+		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
+		                    <td>&nbsp;$&nbsp;<?php echo number_format($discount,2);?>&nbsp;</td>
+		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>
+		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_balance,2);?>&nbsp;</td>
 		                 </tr>
 		               </tbody>
 		             </table>
 		              <br>
 			              <table align="center" width="100%">
 							   <tbody><tr style="font-size: 11px;">
-							        <th style="width:20%;text-align:center;  font-family:'Khmer MEF2'">យល់ព្រមដោយ</th>
+							        <th style="width:20%;text-align:center;   ">យល់ព្រមដោយ</th>
 							        <th></th>
-							        <th style="width:20%;text-align:center; font-family:'Khmer MEF2'">ត្រួតពិនិត្យដោយ</th>
+							        <th style="width:20%;text-align:center;  ">ត្រួតពិនិត្យដោយ</th>
 							        <th></th>
-							        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'">រៀបចំដោយ</th>
+							        <th style="width:20%;text-align:center; ">រៀបចំដោយ</th>
 							   </tr>
 							</tbody>
 						</table>	

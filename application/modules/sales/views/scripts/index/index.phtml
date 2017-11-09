@@ -15,9 +15,8 @@
 			<div class="portlet-body form">
 				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
 					<div class="form-group" style="padding-top: 6px;">
-						<label class="control-label col-md-2"><?php echo $formFilter->getElement('text_search');?></label>
-						<label class="control-label col-md-2"><?php echo $formFilter->getElement('branch_id');?></label>
-						<label class="control-label col-md-2"><?php echo $formFilter->getElement('customer_id');?></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('text_search');?></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('customer_id');?></label>
 						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php echo $formFilter->getElement('start_date');?></div></label>
 						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php echo $formFilter->getElement('end_date');?></div></label>
 						<label class="control-label col-md-2">
@@ -32,3 +31,13 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+   $('.input-group.date').datepicker({
+       todayBtn: "linked",
+       language: "it",
+       autoclose: true,
+       todayHighlight: true,
+       dateFormat: 'dd/mm/yyyy' 
+   });
+</script>

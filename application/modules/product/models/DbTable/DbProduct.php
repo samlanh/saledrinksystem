@@ -162,26 +162,22 @@ class Product_Model_DbTable_DbProduct extends Zend_Db_Table_Abstract
   	return $db->fetchAll($sql.$where.$location.$group_by);
   	
   }
+  
   function getAllProductForAdmin($data){
   	$db = $this->getAdapter();
   		$db_globle = new Application_Model_DbTable_DbGlobal();
 		$user_id = $this->getUserId();
   	$sql ="SELECT 
 			  p.`id`,
-			  (SELECT b.name FROM `tb_sublocation` AS b WHERE b.id=pl.`location_id` LIMIT 1) AS branch,
+			  p.barcode,
 			  p.`item_code`,
 			  p.`item_name` ,
 			  (SELECT c.name FROM `tb_category` AS  c WHERE c.id=p.`cate_id` LIMIT 1) AS cat,
-			  (SELECT m.name FROM `tb_measure` AS m WHERE m.id = p.`measure_id` LIMIT 1) AS measure,
-			  SUM(pl.`qty`) AS qty,
 			  (SELECT pp.`price` FROM `tb_product_price` AS pp WHERE pp.`pro_id`=p.`id` AND `type_id`=1 LIMIT 1) AS master_price,
-			  p.price,
-			  (SELECT `fullname` FROM `tb_acl_user` WHERE `user_id`=p.`user_id` LIMIT 1) AS user_name,
-  			  (SELECT v.`name_en` FROM tb_view AS v WHERE v.`type`=5  AND p.`status`=v.`key_code` LIMIT 1) AS status
+			 (SELECT `fullname` FROM `tb_acl_user` WHERE `user_id`=p.`user_id` LIMIT 1) AS user_name,
+			  (SELECT v.`name_en` FROM tb_view AS v WHERE v.`type`=5  AND p.`status`=v.`key_code` LIMIT 1) AS status
 			FROM
-			  `tb_product` AS p ,
-			  `tb_prolocation` AS pl
-			WHERE p.`id`=pl.`pro_id` ";
+	  		`tb_product` AS p  Where 1";
   		$where = '';
 	  	if($data["ad_search"]!=""){
 			$string = str_replace(' ','',$data['ad_search']);
@@ -193,28 +189,17 @@ class Product_Model_DbTable_DbProduct extends Zend_Db_Table_Abstract
 	  		$s_where[]=" REPLACE(p.serial_number,' ','') LIKE '%{$s_search}%'";
 	  		$where.=' AND ('.implode(' OR ', $s_where).')';
 	  	}
-	  	if($data["branch"]!=""){
-	  		$where.=' AND pl.`location_id`='.$data["branch"];
-	  	}
-	  	if($data["brand"]!=""){
-	  		$where.=' AND p.brand_id='.$data["brand"];
-	  	}
 	  	if($data["category"]!=""){
 	  		$where.=' AND p.cate_id='.$data["category"];
-	  	}
-	  	if($data["model"]!=""){
-	  		$where.=' AND p.model_id='.$data["model"];
-	  	}
-	  	if($data["color"]!=""){
-	  		$where.=' AND p.color_id='.$data["color"];
 	  	}
 	  	if($data["status"]!=-1){
 	  		$where.=' AND p.status='.$data["status"];
 	  	}
-	  	$location = $db_globle->getAccessPermission('pl.`location_id`');
-	  	$group_by = " GROUP BY p.id DESC ";
-  		return $db->fetchAll($sql.$where.$location.$group_by);
+// 	  	$location = $db_globle->getAccessPermission('pl.`location_id`');
+	  	$order = " ORDER BY p.id DESC";
+  		return $db->fetchAll($sql.$where.$order);
   }
+  
   function getAllProductOutStock($data){
   	$db = $this->getAdapter();
   	$db_globle = new Application_Model_DbTable_DbGlobal();
@@ -404,57 +389,23 @@ class Product_Model_DbTable_DbProduct extends Zend_Db_Table_Abstract
     	//print_r($data);exit();
     	$db = $this->getAdapter();
     	$db->beginTransaction();
-		
 		$user_info = new Application_Model_DbTable_DbGetUserInfo();
 		$result = $user_info->getUserInfo();
 		$session_user=new Zend_Session_Namespace('auth');
 		$request=Zend_Controller_Front::getInstance()->getRequest();
 		 $level = $result["level"];
     	try {
-			
     		$arr = array(
     			'item_name'		=>	$data["name"],
     			'item_code'		=>	$data["pro_code"],
     			'barcode'		=>	$data["barcode"],
     			'cate_id'		=>	$data["category"],
-    			'brand_id'		=>	$data["brand"],
-    			'color_id'		=>	$data["color"],
-    			'measure_id'	=>	$data["measure"],
-    			//'size_id'		=>	$data["size"],
-    			//'serial_number'	=>	$data["serial"],
-    			//'model_id'		=>	$data["model"],
-    			'qty_perunit'	=>	$data["qty_unit"],
-    			'unit_label'	=>	$data["label"],
     			'user_id'		=>	$this->getUserId(),
     			'note'			=>	$data["description"],
     			'status'		=>	$data["status"],
     		);
     		$this->_name="tb_product";
     		$id = $this->insert($arr);
-			
-			if($level==1 OR  $level==2){
-				$arrs =array("price" =>$data["price"]);
-				$where = $db->quoteInto("id=?", $id);
-				$this->update($arrs, $where);
-			}
-    		
-    		// For Product Location Section
-    		if(!empty($data['identity'])){
-    			$identitys = explode(',',$data['identity']);
-    			foreach($identitys as $i)
-    			{
-    				$arr1 = array(
-    					'pro_id'			=>	$id,
-    					'location_id'		=>	$data["branch_id_".$i],
-    					'qty'				=>	$data["total_qty_".$i],
-    					'qty_warning'		=>	$data["qty_warnning_".$i],
-    					'last_mod_userid'	=>	$this->getUserId(),
-    					'last_mod_date'		=>	new Zend_Date(),
-    				);
-    				$this->_name = "tb_prolocation";
-    				$this->insert($arr1);
-    			}
-    		}
     		// For Product Price
 			if($level==1 OR  $level==2){
 				if(!empty($data['identity_price'])){
@@ -463,14 +414,10 @@ class Product_Model_DbTable_DbProduct extends Zend_Db_Table_Abstract
 					{
 						$arr2 = array(
 								'pro_id'			=>	$id,
-								'location_id'		=>	$data["branch_id_".$i],
+								'location_id'		=>	1,
 								'type_id'			=>	$data["price_type_".$i],
 								'price'				=>	$data["price_".$i],
 								'remark'			=>	$data["price_remark_".$i],
-								//'last_mod_userid'	=>	$this->getUserId(),
-								//'location_id'		=>	$data["current_qty_".$i],
-								//'last_mod_date'		=>	new Zend_Date(),
-								//'cost_price'		=>	$data["cost_price_".$i],
 						);
 						$this->_name = "tb_product_price";
 						$this->insert($arr2);
@@ -495,59 +442,22 @@ class Product_Model_DbTable_DbProduct extends Zend_Db_Table_Abstract
 		 $level = $result["level"];
     	try {
     		$arr = array(
-    				'item_name'		=>	$data["name"],
-    				'item_code'		=>	$data["pro_code"],
-    				'barcode'		=>	$data["barcode"],
-    				'cate_id'		=>	$data["category"],
-    				'brand_id'		=>	$data["brand"],
-    				//'model_id'		=>	$data["model"],
-    				'color_id'		=>	$data["color"],
-    				'measure_id'	=>	$data["measure"],
-    				//'size_id'		=>	$data["size"],
-    				//'serial_number'	=>	$data["serial"],
-    				'qty_perunit'	=>	$data["qty_unit"],
-    				'unit_label'	=>	$data["label"],
-    				'user_id'		=>	$this->getUserId(),
-    				'note'			=>	$data["description"],
-    				'status'		=>	$data["status"],
-					
+    			'item_name'		=>	$data["name"],
+    			'item_code'		=>	$data["pro_code"],
+    			'barcode'		=>	$data["barcode"],
+    			'cate_id'		=>	$data["category"],
+    			'user_id'		=>	$this->getUserId(),
+    			'note'			=>	$data["description"],
+    			'status'		=>	$data["status"],
     		);
 			$this->_name="tb_product";
-			if($level==1 OR  $level==2){
-				$arrs =array("price" =>$data["price"]);
-				$where = $db->quoteInto("id=?", $data["id"]);
-				$this->update($arrs, $where);
-			}
-    		
     		$where = $db->quoteInto("id=?", $data["id"]);
     		$this->update($arr, $where);
-    
-    		// For Product Location Section
-    		$sql = "DELETE FROM tb_prolocation WHERE pro_id=".$data["id"];
-    		$db->query($sql);
-    		$location_id = 1;
-    		if(!empty($data['identity'])){
-    			$identitys = explode(',',$data['identity']);
-    			foreach($identitys as $i)
-    			{
-    				$arr1 = array(
-    						'pro_id'			=>	$data["id"],
-    						'location_id'		=>	$data["branch_id_".$i],
-    						'qty'				=>	$data["total_qty_".$i],
-    						'qty_warning'		=>	$data["qty_warnning_".$i],
-    						'last_mod_userid'	=>	$this->getUserId(),
-    						'last_mod_date'		=>	new Zend_Date(),
-    				);
-    				$this->_name = "tb_prolocation";
-    				$location_id = $data["branch_id_".$i];
-    				$this->insert($arr1);
-    			}
-    		}
+     
     		if($level==1 OR  $level==2){
     		// For Product Price
     		$sql = "DELETE FROM tb_product_price WHERE pro_id=".$data["id"];
     		$db->query($sql);
-			
 				if(!empty($data['identity_price'])){
 					$identitys = explode(',',$data['identity_price']);
 					foreach($identitys as $i)
@@ -555,12 +465,9 @@ class Product_Model_DbTable_DbProduct extends Zend_Db_Table_Abstract
 						$arr2 = array(
 								'pro_id'			=>	$data["id"],
 								'type_id'			=>	$data["price_type_".$i],
-								'location_id'		=>	$location_id,
+								'location_id'		=>	1,
 								'price'				=>	$data["price_".$i],
-								//'cost_price'		=>	$data["cost_price_".$i],
 								'remark'			=>	$data["price_remark_".$i],
-								//'last_mod_userid'	=>	$this->getUserId(),
-								//'last_mod_date'		=>	new Zend_Date(),
 						);
 						$this->_name = "tb_product_price";
 						$this->insert($arr2);

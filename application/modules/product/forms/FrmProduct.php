@@ -202,6 +202,8 @@ class Product_Form_FrmProduct extends Zend_Form
 		));
 		$price_type->setMultiOptions($opt);
 		
+		$_id = new Zend_Form_Element_Hidden('id');
+		
 		if($data!=null){
 			$name->setValue($data["item_name"]);
 			$pro_code->setValue($data["item_code"]);
@@ -219,9 +221,10 @@ class Product_Form_FrmProduct extends Zend_Form
 			//$qty_unit->setValue($data["qty_perunit"]);
 			$status->setValue($data["status"]);
 			$price->setValue($data["price"]);
+			$_id->setValue($data['id']);
 		}
 		
-		$this->addElements(array($price,$price_type,$branch,$status,$pro_code,$name,$serial,$brand,$model,$barcode,$category,$size,$color,$measure,$qty_per_unit,$unit,$label,$description));
+		$this->addElements(array($_id,$price,$price_type,$branch,$status,$pro_code,$name,$serial,$brand,$model,$barcode,$category,$size,$color,$measure,$qty_per_unit,$unit,$label,$description));
 		return $this;
 	}
 	function productFilter(){
