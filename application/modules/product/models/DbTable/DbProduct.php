@@ -722,5 +722,12 @@ class Product_Model_DbTable_DbProduct extends Zend_Db_Table_Abstract
 		$rows = $db->fetchAll($sql);
 		return $rows;
 	}
+	
+	function getProductPriceByid($id){
+		$db=$this->getAdapter();
+		$sql="SELECT * FROM tb_product_price WHERE pro_id=$id";
+		$rows = $db->fetchAll($sql);
+		return $rows;
+	}
     
 }

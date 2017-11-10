@@ -60,7 +60,7 @@ public function init()
 					{
 						Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", '/product/index');
 					}else{
-						Application_Form_FrmMessage::message("INSERT_SUCCESS");
+						Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", '/product/index');
 					}
 				  }catch (Exception $e){
 				  	Application_Form_FrmMessage::messageError("INSERT_ERROR",$err = $e->getMessage());
@@ -99,6 +99,7 @@ public function init()
 	public function editAction()
 	{
 		$id = $this->getRequest()->getParam("id"); 
+		//print_r($id);
 		$db = new Product_Model_DbTable_DbProduct();
 		if($this->getRequest()->isPost()){ 
 			$post = $this->getRequest()->getPost();
@@ -115,6 +116,7 @@ public function init()
 		}
 		$this->view->rs_location = $db->getProductLocation($id);
 		$this->view->rs_price = $db->getProductPrcie($id);
+		$this->view->pro_price=$db->getProductPriceByid($id);
 		$rs = $db->getProductById($id);
 		$formProduct = new Product_Form_FrmProduct();
 		$formStockAdd = $formProduct->add($rs);

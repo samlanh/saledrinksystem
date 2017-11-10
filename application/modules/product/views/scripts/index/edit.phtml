@@ -409,8 +409,8 @@ $('#product_id').submit(function() {
 });
 $( document ).ready(function() {
 	$('#price_type').val(1);
-	addProLocation();
-	addNewPriceType();
+	//addProLocation();
+	addOldPriceType();
 	$('#product_id').on('keyup keypress', function(e) {
 		var keyCode = e.keyCode || e.which;
 	  if (keyCode === 13) { 
@@ -518,6 +518,28 @@ $( document ).ready(function() {
 	}
 	
 	indexs=0;
+
+	function addOldPriceType(){
+		<?php if(!empty($this->pro_price)) foreach($this->pro_price As $prices){?>
+		indexs++;
+		var price_text = $("#price_type");
+		var txt_pr = $("option:selected",price_text).text();
+		var price_id = $("#price_type").val();
+		template='<tr id="row_price_'+indexs+'">';
+		template+='<td >'+indexs+'</td>';
+		template+='<td style="white-space:nowrap">'+txt_pr+'<input type="hidden" id="price_type_'+indexs+'" name="price_type_'+indexs+'" value="'+price_id+'" </td>';
+		template+='<td><input type="text" id="price_'+indexs+'" name="price_'+indexs+'" value="<?php echo $prices['price']?>" class="form-control"></td>'; 
+		template+='<td><input type="text" id="price_remark_'+indexs+'" name="price_remark_'+indexs+'" class="form-control" value="<?php echo $prices['remark']?>"></td>'; 
+		template+='<td><button type="button" onClick="deleteRecord('+indexs+',2)" name="save_close" class="btn default"><?php echo $tr->translate("DELETE");?></button></td>';
+		template+='</tr>';
+		$('#tr_price_type').append(template);
+		if($('#identity_price').val()!="") {
+			var identity_price = $('#identity_price').val();
+			$('#identity_price').val(identity_price+','+indexs);
+		} else {$('#identity_price').val(indexs);}
+		<?php }?>
+}
+	
 	function addNewPriceType(){
 			indexs++;
 			var price_text = $("#price_type");
