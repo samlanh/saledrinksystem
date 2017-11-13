@@ -11,16 +11,15 @@
 				<div class="caption">
 					<i class="fa fa-globe"></i><?php echo $tr->translate("SALE_AGENT_LIST");?>
 				</div>
-				<a href="<?php echo $url_new;?>" class="btn btn-sm green  pull-right">
+				<a style="padding: 10px;" href="<?php echo $url_new;?>" class="btn btn-sm green  pull-right" >
 					<i class="fa fa-plus"></i>&nbsp;<?php echo $tr->translate("ADD_NEW");?>
 				</a>
 			</div>
 			<div class="portlet-body form">
 				<form method="post" action="<?php echo $formFilter->getAction(); ?>">
 					<div class="form-group" style="padding-top: 6px;">
-						<label class="control-label col-md-2"><?php echo $formFilter->getElement('text_search');?></label>
-						<label class="control-label col-md-2"><?php echo $formFilter->getElement('branch_id');?></label>
-						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php echo $formFilter->getElement('start_date');?></div></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('text_search');?></label>
+						<label class="control-label col-md-3"><div class="input-icon right"><i class="fa fa-calendar"></i><?php echo $formFilter->getElement('start_date');?></div></label>
 						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php echo $formFilter->getElement('end_date');?></div></label>
 						<label class="control-label col-md-2"><?php echo $formFilter->getElement('status');?></label>
 						<label class="control-label col-md-2">

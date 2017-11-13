@@ -44,13 +44,10 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 			$this->update($arr, $where);
 		}
 	}
+	
 	function getAllCustomer($search){
 		$db = $this->getAdapter();
-		
-		$sql=" SELECT id,
-		(SELECT name FROM `tb_sublocation` WHERE id=branch_id LIMIT 1) AS branch_name,
-		 cust_name,(SELECT name_en FROM `tb_view` WHERE type=6 AND key_code=cu_type LIMIT 1) customer_type,
-		
+		$sql=" SELECT id,cust_name,(SELECT name_en FROM `tb_view` WHERE type=6 AND key_code=cu_type LIMIT 1) customer_type,
 		 contact_name,contact_phone,address,
 		 credit_team,credit_limit,
 		( SELECT name_en FROM `tb_view` WHERE type=5 AND key_code=tb_customer.status LIMIT 1) status,
@@ -63,11 +60,12 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 		if(!empty($search['text_search'])){
 			$s_where = array();
 			$s_search = trim(addslashes($search['text_search']));
-			$s_where[] = " cust_name LIKE '%{$s_search}%'";
-			$s_where[] = " phone LIKE '%{$s_search}%'";
-			$s_where[] = " contact_name LIKE '%{$s_search}%'";
-			$s_where[] = " contact_phone LIKE '%{$s_search}%'";
-			$s_where[] = " address LIKE '%{$s_search}%'";
+			$s_search = str_replace(' ', '',$s_search);
+			$s_where[] = "REPLACE(cust_name,' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(phone,' ','')  		LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(contact_name,' ','')  LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(contact_phone,' ','')	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(address,' ','')  		LIKE '%{$s_search}%'";
 			
 			$s_where[] = " email LIKE '%{$s_search}%'";
 			$s_where[] = " website LIKE '%{$s_search}%'";
@@ -75,9 +73,6 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 			$where .=' AND ('.implode(' OR ',$s_where).')';
 		}
 		
-		if($search['branch_id']>0){
-			$where .= " AND branch_id = ".$search['branch_id'];
-		}
 		if($search['customer_id']>0){
 			$where .= " AND id = ".$search['customer_id'];
 		}
@@ -85,11 +80,12 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 			$where .= " AND cu_type = ".$search['customer_type'];
 		}
 		//$order=" ORDER BY id DESC ";
-		$order=" ORDER BY date ASC ";
+		$order=" ORDER BY id DESC";
 		
 // 		echo $sql.$where.$order;
 		return $db->fetchAll($sql.$where.$order);
 	}
+	
 	public function addCustomer($post)
 	{
 		$session_user=new Zend_Session_Namespace('auth');

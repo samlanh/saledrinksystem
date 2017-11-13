@@ -15,7 +15,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 				<div class="caption">
 					<i class="icon-home"></i><?php echo $tr->translate("ADD_NEW_CUSTOMER");?>
 				</div>
-				<div class="caption pull-right">
+				<div class="caption" style="float:right">
 					<a href="<?php echo $url_new;?>" class="btn btn-bg blue  ">
 						<i class="fa fa-undo"></i>&nbsp;<?php echo $tr->translate("GO_BACK");?>
 					</a>
@@ -242,6 +242,21 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 </body>
 </html>
  <script>
+$('#frm').submit(function() {
+		/*category = $("#category").val();
+	    if(category==''){
+	        alert("សូមជ្រើសរើស ប្រភេទផលិតផល! ");
+	        $('#category').select2('open');
+	        return false;
+	    }*/
+		var r = confirm("សូមត្រួតពិនិត្យទិន្នន័យ អោយបានត្រឹមត្រូវ !\nតើលោកអ្នកពិតជាចង់រក្សាទុកទិន្នន័យនេះមែនឫទេ?");
+		if (r == true) {
+		    return true;
+		} else {
+		   return false;
+		}
+});
+	
  $(document).ready(function() {
 	getCustomerLimit();
 });

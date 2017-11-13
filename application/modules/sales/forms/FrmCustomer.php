@@ -22,7 +22,7 @@ $db=new Application_Model_DbTable_DbGlobal();
     		foreach($rowsStock as $readStock) $optionsStock[$readStock['id']]=$readStock['name'];
     	}
     	$mainStockElement = new Zend_Form_Element_Select('branch_id');
-    	$mainStockElement->setAttribs(array("onChange"=>"getCustomerCode()",'class'=>'form-control select2me'));
+    	$mainStockElement->setAttribs(array("onChange"=>"getCustomerCode()",'class'=>'form-control select2me',"readOnly"=>"readOnly"));
     	$mainStockElement->setMultiOptions($optionsStock);
     	$this->addElement($mainStockElement);
     	

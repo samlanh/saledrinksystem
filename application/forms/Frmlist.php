@@ -132,9 +132,11 @@ class Application_Form_Frmlist
     public function showAddBuntton($url_new) {
     	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
     	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
-    	$addButton = '<a href="'.$url_new.'">'
+    	$addButton = '<a style="font-size: 15px;font-weight: bold;color: #fff;
+    					 background: #4E9CAF; padding: 10px;   text-align: center;  border-radius: 5px;" 
+    					 href="'.$url_new.'">'
 					.'<img alt="" src="'.BASE_URL.'/images/icon/add.png">'
-					.$tr->translate("ADD")
+					.$tr->translate("ADD_NEW")
 					.'</a>';
 		return $addButton;
     }

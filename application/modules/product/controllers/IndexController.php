@@ -60,7 +60,7 @@ public function init()
 					{
 						Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", '/product/index');
 					}else{
-						Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", '/product/index');
+						Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", '/product/index/add');
 					}
 				  }catch (Exception $e){
 				  	Application_Form_FrmMessage::messageError("INSERT_ERROR",$err = $e->getMessage());

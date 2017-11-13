@@ -16,7 +16,6 @@ class Sales_CustomerController extends Zend_Controller_Action
 		}else{
 			$search =array(
 					'text_search'=>'',
-					'branch_id'=>0,
 					'customer_id'=>0,
 					'customer_type'=>0,
 					'start_date'=>date("Y-m-d"),
@@ -26,7 +25,7 @@ class Sales_CustomerController extends Zend_Controller_Action
 		$db = new Sales_Model_DbTable_DbCustomer();
 		$rows = $db->getAllCustomer($search);
 		$list = new Application_Form_Frmlist();
-		$columns=array("BRANCH_NAME","CUSTOMER_NAME","CUSTOMER_TYPE",
+		$columns=array("CUSTOMER_NAME","CUSTOMER_TYPE",
 		"CONTACT_NAME","CONTACT_NUMBER","ADDRESS","CREDIT_TERM","CREDIT_LIMIT","STATUS","BY_USER");
 		$link=array(
 				'module'=>'sales','controller'=>'customer','action'=>'edit',
@@ -54,9 +53,9 @@ class Sales_CustomerController extends Zend_Controller_Action
 				$db->addCustomer($post);
 				if(!empty($post['saveclose']))
 				{
-// 					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS', sel . '/customer/index');
+					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/customer/');
 				}else{
-					Application_Form_FrmMessage::message("INSERT_SUCCESS");
+					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/customer/add');
 				}
 			}catch(Exception $e){
 				Application_Form_FrmMessage::message('INSERT_FAIL');

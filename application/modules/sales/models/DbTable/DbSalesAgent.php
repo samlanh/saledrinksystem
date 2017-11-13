@@ -8,7 +8,6 @@ class Sales_Model_DbTable_DbSalesAgent extends Zend_Db_Table_Abstract
 		$end_date=$search["end_date"];
 		$sql = "SELECT 
 				  sg.id,
-				  l.name AS branch_name,
 				  sg.`code`,
 				  sg.name,
 				  sg.phone,
@@ -32,18 +31,18 @@ class Sales_Model_DbTable_DbSalesAgent extends Zend_Db_Table_Abstract
 		if(!empty($search['text_search'])){
 			$s_where = array();
 			$s_search = trim(addslashes($search['text_search']));
-			$s_where[] = " l.name LIKE '%{$s_search}%'";
-			$s_where[] = " sg.name LIKE '%{$s_search}%'";
-			$s_where[] = " sg.phone LIKE '%{$s_search}%'";
-			$s_where[] = " sg.email LIKE '%{$s_search}%'";
-			$s_where[] = " sg.address LIKE '%{$s_search}%'";
-			$s_where[] = " sg.job_title LIKE '%{$s_search}%'";
-			$s_where[] = " sg.description LIKE '%{$s_search}%'";
+			$s_search = str_replace(' ', '',$s_search);
+			$s_where[] = "REPLACE(l.name,' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(sg.name,' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE( sg.code,' ','') 	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(sg.phone,' ','')  LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(sg.email,' ','')  LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(sg.address,' ','')LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(sg.job_title,' ','')LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(sg.description,' ','')LIKE '%{$s_search}%'";
 			$where .=' AND ('.implode(' OR ',$s_where).')';
 		}
-		if($search['branch_id']>0){
-			$where .= " AND branch_id = ".$search['branch_id'];
-		}
+		 
 		if($search['status']!=-1){
 			$where .= " AND sg.status = ".$search['status'];
 		}
@@ -107,6 +106,8 @@ class Sales_Model_DbTable_DbSalesAgent extends Zend_Db_Table_Abstract
 				$newfilename = "photo".$data["code"]. '.' . end($temp);
 				move_uploaded_file($_FILES['photo']["tmp_name"], $part . $newfilename);
 				$photo_name = $newfilename;
+			}else {
+				$photo_name = "";
 			}
 			
 			$document = $_FILES['document'];
@@ -115,6 +116,8 @@ class Sales_Model_DbTable_DbSalesAgent extends Zend_Db_Table_Abstract
 				$newfilename = "document".$data["code"]. '.' . end($temp);
 				move_uploaded_file($_FILES['document']["tmp_name"], $part . $newfilename);
 				$document_name = $newfilename;
+			}else {
+				$document_name = "";
 			}
 			
 			$signature = $_FILES['signature'];
@@ -123,6 +126,8 @@ class Sales_Model_DbTable_DbSalesAgent extends Zend_Db_Table_Abstract
 				$newfilename = "signature".$data["code"]. '.' . end($temp);
 				move_uploaded_file($_FILES['signature']["tmp_name"], $part . $newfilename);
 				$signature_name= $newfilename;
+			}else {
+				$signature_name = "";
 			}
 			
 			
@@ -141,7 +146,7 @@ class Sales_Model_DbTable_DbSalesAgent extends Zend_Db_Table_Abstract
 					"user_type"				=>	$data["user_type"],
 					"manage_by"				=>	$data["manage_by"],
 					"bank_acc"				=>	$data["bank_acc"],
-					"start_working_date"	=>	$data["start_working_date"],
+					"start_working_date"	=>	date("Y-m-d",strtotime($data['start_working_date'])),
 					"refer_name"			=>	$data["refer_name"],
 					"refer_phone"			=>	$data["refer_phone"],
 					"refer_add"				=>	$data["refer_address"],

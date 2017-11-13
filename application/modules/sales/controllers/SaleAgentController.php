@@ -21,14 +21,13 @@ public function init()
 					'text_search'=>'',
 					'start_date'=>1,
 					'end_date'=>date("Y-m-d"),
-					'branch_id'=>-1,
 					'status'=>-1,
 					);
 		}
 		$db = new Sales_Model_DbTable_DbSalesAgent();
 		$rows= $db->getAllSaleAgent($search);
         $list = new Application_Form_Frmlist();
-    	$columns=array("BRANCH_NAME","AGENT_CODE","SALE_AGENT","CONTACT_NUM","EMAIL","ADDRESS","POSTION","START_WORKING_DATE","DESC_CAP","STATUS");
+    	$columns=array("AGENT_CODE","SALE_AGENT","CONTACT_NUM","EMAIL","ADDRESS","POSTION","START_WORKING_DATE","DESC","STATUS");
     	$link=array(
     		'module'=>'sales','controller'=>'saleagent','action'=>'edit',
     	);
@@ -48,9 +47,9 @@ public function init()
 				$add_agent = new Sales_Model_DbTable_DbSalesAgent();
 				$add_agent ->addSalesAgent($post);
 				if(!empty($post['btnsavenew'])){
-					//Application_Form_FrmMessage::message("Agent Has Been Inserted !");
+					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/saleagent/add");
 				}else{
-					//Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/saleagent/index");
+					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/saleagent/index");
 				}
 			}catch(Exception $e){
 				Application_Form_FrmMessage::message('INSERT_FAIL');
@@ -76,13 +75,14 @@ public function init()
     	if($this->getRequest()->isPost()){
     		$data = $this->getRequest()->getPost();
     		$data["id"] = $id;
+    		$update_agent = new Sales_Model_DbTable_DbSalesAgent();
+    		$update_agent ->editSalesAgent($data);
     		if(isset($data["saveclose"])){
-    			$update_agent = new Sales_Model_DbTable_DbSalesAgent();
-    			$update_agent ->editSalesAgent($data);
-    			$this->_redirect("sales/saleagent/index");
+    			Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/saleagent/index");
     		}
     		else{
-    			$this->_redirect("sales/saleagent/index");    		}
+    			Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/saleagent/index");
+    		}
     	}
     	// show form with value
 		$this->view->id = $id;

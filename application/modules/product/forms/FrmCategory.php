@@ -65,7 +65,7 @@ class Product_Form_FrmCategory extends Zend_Form
 		$parent->setAttribs(array(
 				'class'=>'form-control',
 		));
-		$opt = array(''=>$tr->translate("SEELECT_CATEGORY"));
+		$opt = array(''=>$tr->translate("SELECT_CATEGORY"));
 		$row_cate = $db->getAllCategory();
 		if(!empty($row_cate)){
 			foreach ($row_cate as $rs){

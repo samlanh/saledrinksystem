@@ -46,7 +46,7 @@ class Sales_Form_FrmStock extends Zend_Form
     	$this->addElement($mainStockElement);
     	
     	$user_name = new Zend_Form_Element_Text('user_name');
-    	$user_name->setAttribs(array('placeholder'=>'Enter User Name',"class"=>"form-control",'required'=>'required'));
+    	$user_name->setAttribs(array('placeholder'=>'Enter User Name',"class"=>"form-control",));
     	$this->addElement($user_name);
     	
     	$password = new Zend_Form_Element_Password('password');

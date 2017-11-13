@@ -88,6 +88,7 @@ public function init()
 		$customer_type = new Zend_Form_Element_Select('customer_type');
 		$customer_type->setAttribs(array('class'=>'form-control select2me'));
 		$customer_type->setMultiOptions($opt);
+		$customer_type->setValue($request->getParam("customer_type"));
 		$this->addElement($customer_type);
 		/*$options="";
 		$sql = "SELECT id,name FROM `tb_price_type` WHERE name!='' ";

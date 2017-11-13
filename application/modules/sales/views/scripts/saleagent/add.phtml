@@ -9,11 +9,11 @@ $frm_agent = $this->form_agent;
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="icon-home"></i><?php echo $tr->translate("MENU_SALES_SALE_AGENT_ADD_SALE_AGENT");?>
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_SALE_REP");?>
 				</div>
-				<div class="tools">
+				<div style="float:right;">
 					<label>
-						<a href="<?php echo $this->baseUrl();?>/sales/saleagent"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+						<a style="padding: 10px;" href="<?php echo $this->baseUrl();?>/sales/saleagent"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
 					</label>
 				</div>
 			</div>
@@ -328,6 +328,15 @@ $frm_agent = $this->form_agent;
 	     </form>
  </div>
 <script>
+$('#form_sample_2').submit(function() {
+	var r = confirm("សូមត្រួតពិនិត្យទិន្នន័យ អោយបានត្រឹមត្រូវ !\nតើលោកអ្នកពិតជាចង់រក្សាទុកទិន្នន័យនេះមែនឫទេ?");
+	if (r == true) {
+	    return true;
+	} else {
+	   return false;
+	    
+	}
+});
 
 function AddLocation(){
 	var location_id= $("#main_stock_id").val();
