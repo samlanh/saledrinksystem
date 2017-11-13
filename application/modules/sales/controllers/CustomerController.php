@@ -121,7 +121,13 @@ class Sales_CustomerController extends Zend_Controller_Action
     			);
     		}
     		$rs_rows= $db->getCustomerType($search);//call frome model
-    		$this->view->rs = $rs_rows;
+    		$list = new Application_Form_Frmlist();
+    		$columns=array("ZONE_NAME","ADDRESS","STATUS","BY_USER");
+    		$link=array(
+    				'module'=>'sales','controller'=>'customer','action'=>'editcustomertype',
+    		);
+    		$this->view->list=$list->getCheckList(0, $columns, $rs_rows, array('block_name'=>$link,'remark'=>$link));
+    		
     	}catch (Exception $e){
     		Application_Form_FrmMessage::message("Application Error");
     		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
@@ -138,10 +144,9 @@ class Sales_CustomerController extends Zend_Controller_Action
     		
     		$db = new Sales_Model_DbTable_DbCustomer();
     		try {
-    			$db->addCustomerType($data);
+    			$db->addZone($data);
     			if(isset($data['save_new'])){
-    
-    				Application_Form_FrmMessage::message('ការ​បញ្ចូល​​ជោគ​ជ័យ');
+    				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/addcustomertype");
     			}
     			if(isset($data['save_close'])){
     				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/customertypelist");
@@ -169,8 +174,7 @@ class Sales_CustomerController extends Zend_Controller_Action
     		try {
     			$db->editCustomerType($data);
     			if(isset($data['save_new'])){
-    
-    				Application_Form_FrmMessage::message('ការ​បញ្ចូល​​ជោគ​ជ័យ');
+    				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/customertypelist");
     			}
     			if(isset($data['save_close'])){
     				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/customertypelist");

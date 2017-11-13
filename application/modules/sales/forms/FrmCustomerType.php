@@ -76,17 +76,17 @@ class Sales_Form_FrmCustomerType extends Zend_Form
 				'class'=>'form-control',
 				'required'=>'required'));
 		
+		$addressElement = new Zend_Form_Element_Textarea('txt_address');
+		$addressElement->setAttribs(array('placeholder'=>'Enter Adress','class'=>'validate[required] form-control',"rows"=>3));
+		$this->addElement($addressElement);
 		
 		
 		if($data!=null){
-			$name_en->setValue($data['name_en']);
-			$type->setValue($data["type"]);
+			$name_en->setValue($data['block_name']);
 			$_status->setValue($data['status']);
-			$credit_term->setValue($data['credit_term']);
-			$credit_limit->setValue($data['credit_limit']);
-			
+			$addressElement->setValue($data['remark']);
 		}
-		$this->addElements(array($credit_limit,$credit_term,$status_search,$_title,$name_en,$name_kh,$key_code,$_display,$_status,$type));
+		$this->addElements(array($addressElement,$credit_limit,$credit_term,$status_search,$_title,$name_en,$name_kh,$key_code,$_display,$_status,$type));
 		return $this;
 	}
 	

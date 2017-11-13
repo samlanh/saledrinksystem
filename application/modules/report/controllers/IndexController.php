@@ -1199,20 +1199,20 @@ class report_indexController extends Zend_Controller_Action
 	function rptAlertCustomerPaymentAction(){
     	if($this->getRequest()->isPost()){
     		$search = $this->getRequest()->getPost();
-    		$search['start_date']=date("Y-m-d",strtotime($search['start_date']));
+    		
     		$search['end_date']=date("Y-m-d",strtotime($search['end_date']));
     	}else{
     		$search = array(
+    				'customer_id'=>0,
+    				'saleagent_id'=>-1,
     				'txt_search'=>'',
-    				'start_date'=>date("Y-m-d"),
+    				'txt_search'=>'',
     				'end_date'=>date("Y-m-d"),
-    				'item'=>0,
-    				'category_id'=>0,
     		);
     	}
     	$this->view->rssearch=$search;
     	$query = new report_Model_DbQuery();
-    	$this->view->product_rs =  $query->getSaleProductDetail($search);
+    	$this->view->cus_rs =  $query->getAlertCustomerPayment($search);
     	 
     	$frm = new Application_Form_FrmReport();
     	$form_search=$frm->productDetailReport($search);

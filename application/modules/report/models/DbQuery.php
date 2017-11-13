@@ -1609,54 +1609,50 @@ SUM(vp.paid) AS total_paid
 	function getAlertCustomerPayment($search=null){
 		$db=$this->getAdapter();
 		$_db = new Application_Model_DbTable_DbGlobal();
-		$branch_id = $_db->getAccessPermission('sp.branch_id');
-		$sql="SELECT bd.id,b.phone,b.stu_id,
-		b.borrow_no,(SELECT book_no FROM rms_book WHERE rms_book.id=bd.book_id LIMIT 1) AS bookno,
-		(SELECT title FROM rms_book WHERE rms_book.id=bd.book_id LIMIT 1) AS bookname,
-		b.card_id,b.name,(SELECT name_kh FROM rms_view WHERE rms_view.key_code=b.borrow_type AND rms_view.type=13 LIMIT 1) AS `type`,
-		(SELECT name_en FROM rms_view WHERE rms_view.type=2 AND key_code=(SELECT sex FROM rms_student WHERE rms_student.stu_id=b.stu_id LIMIT 1))AS sex,
-		(SELECT major_enname FROM rms_major WHERE major_id = (SELECT grade FROM rms_student WHERE rms_student.stu_id=b.stu_id LIMIT 1)) AS grade,
-		b.borrow_date,b.return_date,bd.borr_qty
-		FROM rms_borrow AS b,rms_borrowdetails AS bd
-		WHERE b.id=bd.borr_id
-		AND bd.is_full=0
-		AND b.is_completed=0";
+// 		$branch_id = $_db->getAccessPermission('sp.branch_id');
+		$sql="SELECT s.id,s.saleagent_id,s.sale_no,
+			       c.cust_name,c.contact_name,c.contact_phone,c.cu_code,
+			       (SELECT sg.name FROM tb_sale_agent AS sg WHERE sg.id=s.saleagent_id LIMIT 1) AS sal_rep,
+			        s.date_sold,s.payment_date,s.status,
+			         s.net_total,s.discount_value,s.paid,s.balance,s.is_completed,
+			       (SELECT v.name_en FROM tb_view AS v WHERE v.key_code=s.status AND v.type=5 LIMIT 1)AS status_name,
+			       (SELECT u.`fullname` FROM `tb_acl_user` AS u WHERE u.`user_id`=s.`user_mod`) AS user_name
+			       
+				FROM tb_sales_order AS s,tb_salesorder_item AS sd,tb_customer AS c
+				WHERE s.id=sd.saleorder_id
+				AND  c.id=s.customer_id AND s.status
+				AND  s.balance != 0 AND s.is_completed=0 ";
 		$where = '';
-// 		if(!empty($search["title"])){
-// 			$s_where=array();
-// 			$s_search = addslashes(trim($search['title']));
-// 			$s_where[]="  b.borrow_no LIKE '%{$s_search}%'";
-// 			$s_where[]="  b.card_id LIKE '%{$s_search}%'";
-// 			$s_where[]="  b.name LIKE '%{$s_search}%'";
-// 			$s_where[]="  b.phone LIKE '%{$s_search}%'";
-// 			$s_where[]="  bd.borr_qty LIKE '%{$s_search}%'";
-// 			$s_where[]= "(SELECT stu_code FROM rms_student WHERE rms_student.is_subspend=0 AND rms_student.stu_id=b.stu_id LIMIT 1) LIKE '%{$s_search}%'";
-// 			$s_where[]= "(SELECT stu_enname FROM rms_student WHERE rms_student.is_subspend=0 AND rms_student.stu_id=b.stu_id LIMIT 1) LIKE '%{$s_search}%'";
-// 			$where.=' AND ('.implode(' OR ', $s_where).')';
-// 		}
-			
-// 		if($search["status_search"]>-1){
-// 			$where.=' AND b.status='.$search["status_search"];
-// 		}
-	
-// 		if(!empty($search["is_type_bor"])){
-// 			$where.=' AND b.borrow_type='.$search["is_type_bor"];
-// 		}
+		if(!empty($search["txt_search"])){
+			$s_where=array();
+			$s_search = addslashes(trim($search['txt_search']));
+			$s_search = str_replace(' ', '',$s_search);
+			$s_where[]="  REPLACE(s.sale_no,' ','') 	LIKE '%{$s_search}%'";
+			$s_where[]="  REPLACE(c.cust_name,' ','') 	LIKE '%{$s_search}%'";
+			$s_where[]="  REPLACE(c.contact_phone,' ','')LIKE '%{$s_search}%'";
+			$s_where[]="  REPLACE(c.cu_code,' ','') 	LIKE '%{$s_search}%'";
+			$s_where[]="  REPLACE(s.net_total,' ','') 	LIKE '%{$s_search}%'";
+			$s_where[]="  REPLACE(s.paid,' ','') 		LIKE '%{$s_search}%'";
+			$s_where[]="  REPLACE(s.balance,' ','')   	LIKE '%{$s_search}%'";
+			$s_where[]="  REPLACE(c.contact_name,' ','')LIKE '%{$s_search}%'";
+			$where.=' AND ('.implode(' OR ', $s_where).')';
+		}
 		 
-// 		if($search['student_name']>0){
-// 			$where.=' AND b.stu_id='.$search["student_name"];
-// 		}
+		if($search['customer_id']>0){
+			$where.=' AND s.customer_id='.$search["customer_id"];
+		}
+		
+		if($search["saleagent_id"]>0){
+			$where.=' AND s.saleagent_id='.$search["saleagent_id"];
+		}
 	
-// 		if($search["cood_book"]>0){
-// 			$where.=' AND bd.book_id='.$search["cood_book"];
-// 		}
-	
-// 		$order=" ORDER BY b.stu_id DESC ";
-// 		$str_next = '+1 3 days';
-// 		$search['end_date']=date("Y-m-d", strtotime($search['end_date'].$str_next));
-// 		$to_date = (empty($search['end_date']))? '1': " b.return_date <= '".$search['end_date']." 23:59:59'";
-// 		$where .= " AND ".$to_date;
-		return $db->fetchAll($sql.$where);
+		$order=" GROUP BY s.sale_no ORDER BY s.date_sold ASC";
+		$str_next = '+1 day';
+		$search['end_date']=date("Y-m-d", strtotime($search['end_date'].$str_next));
+		$to_date = (empty($search['end_date']))? '1': " s.payment_date <= '".$search['end_date']." 23:59:59'";
+		$where .= " AND ".$to_date;
+		//echo $sql.$where;
+		return $db->fetchAll($sql.$where.$order);
 	}
 }
 

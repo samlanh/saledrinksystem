@@ -1,6 +1,7 @@
 <?php 
 $tr=Application_Form_FrmLanguages::getCurrentlanguage();
 $frm_sales_report = $this->form_search;
+ 
 ?>
 <title>Sale Item Detail Report</title>
 <div class="row">
@@ -27,12 +28,11 @@ $frm_sales_report = $this->form_search;
 					</div>
 			</div>
             <div class="portlet-body form frmfilter">
-				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+				<form method="post" action="">
 					<div class="form-group" style="padding-top: 6px;">
 						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("txt_search");?></label>
-						 <label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('item');?></label>
-						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("category_id");?></label>
-						 <label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('start_date');?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('customer_id');?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('saleagent_id');?></label>
 						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("end_date");?></label>
 						<label class="control-label col-md-1">
 							<input type="submit" value="<?php echo $tr->translate("SEARCH")?>"  class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /> 
@@ -62,7 +62,6 @@ $frm_sales_report = $this->form_search;
 		                	<td width="60%" valign="top">
 		                		<ul>
 		                			<li style="text-align:center; font-size:13px; font-family:'Khmer OS Muol'"><?php echo $tr->translate("REP_ALERT_CUSTOMER_PAYMENT");?></li>
-		                			<li style="text-align:center; font-size:12px;"><?php echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li>
 		                		</ul>
 		                	</td>
 		                    <td width="20%"></td>
@@ -88,65 +87,65 @@ $frm_sales_report = $this->form_search;
 		            <table border="1"  style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
 		                 <tbody><tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 25px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
 		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
+							<td>&nbsp;<?php echo $tr->translate("INVOICE_NUM");?></td>
+							<td>&nbsp;<?php echo $tr->translate("SALE_AGENT");?></td>
 							<td>&nbsp;<?php echo $tr->translate("CUSTOMER_NAME");?></td>
-							<td>&nbsp;<?php echo $tr->translate("SALE_NO");?></td>
-							<td width="10%">&nbsp;<?php echo $tr->translate("ORDER_DATE");?></td>
-							<td><?php echo $tr->translate("CATE_NAME");?></td>
-							<td>&nbsp;<?php echo $tr->translate("BRAND_NAME");?></td>
-							<td><?php echo $tr->translate("ITEM_NAME");?></td>
-							<td>&nbsp;<?php echo $tr->translate("ITEM_CODE");?></td>
-							<td>&nbsp;<?php echo $tr->translate("QTY");?></td>
-							<td width="10%">&nbsp;<?php echo $tr->translate("ITEM_PRICE");?></td>
-							<td><?php echo $tr->translate("TOTAL");?></td>
+							<td><?php echo $tr->translate("Tel");?></td>
+							<td>&nbsp;<?php echo $tr->translate("SUB_TOTAL");?></td>
+							<td>&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
+							<td><?php echo $tr->translate("PAID");?></td>
+							<td>&nbsp;<?php echo $tr->translate("BALANCE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("SALE_DATE");?></td>
+							<td >&nbsp;<?php echo $tr->translate("PAYMENT_DATE");?></td>
+							<td >&nbsp;<?php echo $tr->translate("REMAIN_DATE");?></td>
+							<td><?php echo $tr->translate("STATUS");?></td>
 							<td>&nbsp;<?php echo $tr->translate("BY_USER");?></td>
 		                </tr>
 		                <?php $num=1;$old_saleorder_id='';$discount=0;
 		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
 		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
-		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
-		                if(!empty($this->product_rs))foreach ($this->product_rs AS $index => $rs){?>
+		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;$status='';
+		                
+		                if(!empty($this->cus_rs))foreach ($this->cus_rs AS $index => $rs){
+		                     if($rs['is_completed']==1){
+		                     	$status=$tr->translate("COMPLETED");
+		                     }else{
+		                     	$status=$tr->translate("NOT_COMPLETED");
+		                     }
+		                	  
+		                     $date1=date_create($rs['payment_date']);
+		                     $date2=date_create($this->rssearch['end_date']);
+		                     $diff=date_diff($date1,$date2);
+		                     $day=$diff->format("%R%a");
+		                	?>
 						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
 						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
-						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["customer_name"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["sale_no"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["sal_rep"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["contact_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["contact_phone"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;$&nbsp;<?php echo number_format($rs["net_total"],2);?></td>
+						   <td style="white-space: nowrap; "><?php echo ($rs['discount_value']==0)?"":"&nbsp;$&nbsp;".number_format($rs["discount_value"],2);?></td>
+						   <td style="white-space: nowrap;">&nbsp;$&nbsp;<?php echo number_format($rs["paid"],2);?></td>
+						   <td style="white-space: nowrap;">&nbsp;$&nbsp;<?php echo number_format($rs["balance"],2);?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_sold"]));?></td>
-						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["cate_name"];?></td>
-						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["brand_name"];?></td>
-						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
-						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_code"];?></td>
-						   <td style="white-space: nowrap;">&nbsp;
-						   <?php 
-							   $raw_qty = $rs["qty_order"];
-							   $array = explode(".",$rs["qty_order"]);
-							   $qty = $array[0];
-							   $qty_unit = ($raw_qty*$rs["qty_perunit"]) - ($rs["qty_perunit"]*$array[0]);
-							   $l_qty = 0;
-							   if($raw_qty>0){
-							   	if($qty>0 and $qty_unit>0){
-							   		$l_qty = $qty." ".$rs["measue_name"]." និង ".round($qty_unit)." ".$rs["unit_label"];
-							   	}elseif($qty==0 and $qty_unit>0){
-							   		$l_qty = round($qty_unit)." ".$rs["unit_label"];
-							   	}elseif($qty>0 and $qty_unit==0){
-							   		$l_qty =  $qty." ".$rs["measue_name"];
-							   	}
-							   }else{
-							   	$l_qty = 0;
-							   }
-						echo$l_qty;?>
-						   
-						   </td>
-						   <td>&nbsp;$&nbsp;<?php echo number_format($rs["price"],2);?></td>
-						   <td>&nbsp;$&nbsp;<?php echo number_format($rs["sub_total"],2);?></td>
-						   <td>&nbsp;<?php echo $rs["user_name"];?></td>
+						   <td>&nbsp;<?php echo date("d/m/Y",strtotime($rs["payment_date"]));?></td>
+						  
+  							<?php if($day>=0){
+								$daylate ="Late ".abs($day);
+							}else{
+								$daylate ="Remain ".abs($day);
+							}?>
+							<td align="center" style="border: 1px solid #000;color: red;font-weight: bold;">&nbsp;<?php echo ($daylate);?> days</td>
+						  
+						   <td style="color:red;text-align: center;">&nbsp;<?php echo $status;?></td>
+						   <td>&nbsp; <?php echo $rs["user_name"]?></td>
 						</tr>
 						   <?php 
-						   if($rs['saleorder_id']!=$old_saleorder_id){
-								$d_netotal = $d_netotal+$rs["net_total"];
-								$d_paid = $d_paid+$rs["paid"];
-								$d_balance = $d_balance+$rs["balance"];
-								$discount=$discount+$rs["discount_value"];
-						   }
-							$old_saleorder_id=$rs['saleorder_id'];
+						   $d_netotal=$d_netotal+$rs['net_total'];
+						   $discount=$discount+$rs['discount_value'];
+						   $d_paid=$d_paid+$rs['paid'];
+						   $d_balance=$d_balance+$rs['balance'];
                     	 }?>
 		                </tbody>
 		           </table>
@@ -159,10 +158,10 @@ $frm_sales_report = $this->form_search;
 		                    <td><strong><?php echo $tr->translate("BALANCE");?></strong></td>
 		                </tr>
 		                 <tr class="style" style=" line-height: 24px; font-size:11px;">
-		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
-		                    <td>&nbsp;$&nbsp;<?php echo number_format($discount,2);?>&nbsp;</td>
-		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>
-		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_balance,2);?>&nbsp;</td>
+		                    <td style="font-weight: 900;">&nbsp;$&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
+		                    <td style="font-weight: 900;">&nbsp;$&nbsp;<?php echo number_format($discount,2);?>&nbsp;</td>
+		                    <td style="font-weight: 900;">&nbsp;$&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>
+		                    <td style="font-weight: 900;">&nbsp;$&nbsp;<?php echo number_format($d_balance,2);?>&nbsp;</td>
 		                 </tr>
 		               </tbody>
 		             </table>

@@ -57,6 +57,7 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 					'return_dollar'	 	=> $data["return_amount"],
 					'return_riel'   	=> $data["return_amountriel"],
 					"balance"      		=> $data['balance'],
+					'is_completed'		=> ($data['balance']==0)?1:0,
 					"user_mod"     	=>$GetUserId,
 					"date"     		=> date("Y-m-d"),
 					"branch_id"     => 1,

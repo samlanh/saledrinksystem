@@ -184,27 +184,29 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 	
 	function getCustomerType($data){
     	$db = $this->getAdapter();
-    	$sql = "SELECT v.`id`,v.`name_en`,v.`status`,v.`key_code`,`type`,credit_limit,credit_term FROM `tb_view` AS v WHERE v.`type` IN(6)";
+    	$sql = "SELECT id,block_name,remark,`status`,
+				(SELECT fullname FROM `tb_acl_user` WHERE tb_acl_user.user_id=user_id LIMIT 1) AS user_name
+				FROM tb_zone WHERE `status`=1";
     	$where = '';
-    	if($data["adv_search"]!=""){
-    		$s_where=array();
-    		$s_search = addslashes(trim($data['adv_search']));
-    		$s_where[]= " v.`name_en` LIKE '%{$s_search}%'";
-    		$s_where[]=" v.`key_code` LIKE '%{$s_search}%'";
-    		//$s_where[]= " cate LIKE '%{$s_search}%'";
-    		$where.=' AND ('.implode(' OR ', $s_where).')';
-    	}
-    	if($data["status_search"]!=""){
-    		$where.=' AND v.status='.$data["status_search"];
-    	}
+//     	if($data["adv_search"]!=""){
+//     		$s_where=array();
+//     		$s_search = addslashes(trim($data['adv_search']));
+//     		$s_where[]= " v.`name_en` LIKE '%{$s_search}%'";
+//     		$s_where[]=" v.`key_code` LIKE '%{$s_search}%'";
+//     		//$s_where[]= " cate LIKE '%{$s_search}%'";
+//     		$where.=' AND ('.implode(' OR ', $s_where).')';
+//     	}
+//     	if($data["status_search"]!=""){
+//     		$where.=' AND v.status='.$data["status_search"];
+//     	}
     	//echo $sql.$where;
-		$where.=" ORDER BY v.type DESC";
+		$where.=" ORDER BY id DESC";
     	return $db->fetchAll($sql.$where);
     }
 	
 	function getCustomerTypeId($id){
     	$db = $this->getAdapter();
-    	$sql = "SELECT v.`id`,v.`name_en`,v.`status`,v.`key_code`,`type`,credit_limit,credit_term FROM `tb_view` AS v WHERE v.`id`=$id";
+    	$sql = "SELECT * FROM tb_zone WHERE id=$id";
     	return $db->fetchRow($sql);
     }
     
@@ -225,21 +227,47 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
     	$this->insert($arr);
     }
     function editCustomerType($data){
+    	$session_user=new Zend_Session_Namespace('auth');
+    	$db = new Application_Model_DbTable_DbGlobal();
+    	$userName=$session_user->user_name;
+    	$GetUserId= $session_user->user_id;
     	$db = $this->getAdapter();
 		$db_other = new Product_Model_DbTable_DbOther();
     	$key_code = $db_other->getLastKeycodeByType(6);
     	$arr = array(
-    			'name_en'			=>	$data["title_en"],
-    			//'key_code'			=>	$key_code,
-    			'type'				=>	6,
-    			'status'			=>	$data["status"],
-				'credit_limit'		=>	$data["credit_limit"],
-    			'credit_term'		=>	$data["credit_term"],
+    			'block_name'	=>	$data["title_en"],
+    			//'key_code'	=>	$key_code,
+    			'create_date'	=>  date("Y-m-d"),
+    			'remark'		=>	$data["txt_address"],
+    			'user_id'		=>	$GetUserId,
+    			'status'		=>	$data["status"],
     	);
-    	$this->_name = "tb_view";
+    	$this->_name = "tb_zone";
     	$where = $db->quoteInto("id=?", $data["id"]);
     	$this->update($arr, $where);
     }
+    //add zone name 
+    function addZone($data){
+    	$session_user=new Zend_Session_Namespace('auth');
+    	$db = new Application_Model_DbTable_DbGlobal();
+    	$userName=$session_user->user_name;
+    	$GetUserId= $session_user->user_id;
+    	$db = $this->getAdapter();
+    	$db_other = new Product_Model_DbTable_DbOther();
+    	$key_code = $db_other->getLastKeycodeByType(6);
+    	//echo $key_code;exit();
+    	$arr = array(
+    			'block_name'	=>	$data["title_en"],
+    			//'key_code'	=>	$key_code,
+    			'create_date'	=>  date("Y-m-d"),
+    			'remark'		=>	$data["txt_address"],
+    			'user_id'		=>	$GetUserId,
+    			'status'		=>	$data["status"],
+    	);
+    	$this->_name = "tb_zone";
+    	$this->insert($arr);
+    }
+    
     //Insert Popup=====================================================================
 	
 	function addNewCustomerType($data){

@@ -113,6 +113,19 @@ class Application_Form_FrmReport extends Zend_Form
     	$request = Zend_Controller_Front::getInstance()->getRequest();
     	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
     	
+    	$rs=$db->getGlobalDb('SELECT id,cust_name,`phone`,`contact_phone` FROM tb_customer WHERE cust_name!="" AND status=1 ');
+    	$options=array($tr->translate('Choose Customer'));
+    	$vendorValue = $request->getParam('customer_id');
+    	if(!empty($rs)) foreach($rs as $read) $options[$read['id']]=$read['cust_name']."-".$read['contact_phone'];
+    	$vendor_element=new Zend_Form_Element_Select('customer_id');
+    	$vendor_element->setMultiOptions($options);
+    	$vendor_element->setAttribs(array(
+    			'id'=>'customer_id',
+    			'class'=>'form-control select2me'
+    	));
+    	$vendor_element->setValue($vendorValue);
+    	$this->addElement($vendor_element);
+    	
      	$item = new report_Model_DbQuery();
     	$sql="SELECT p.id, p.item_name,p.item_code FROM tb_product AS p WHERE p.item_name!='' ";
 			$sql.=" ORDER BY p.item_name " ;
