@@ -324,4 +324,22 @@ class Sales_Model_DbTable_DbSalesAgent extends Zend_Db_Table_Abstract
 		$agent_id=$db->addRecord($datainfo,"tb_sale_agent");
 		return $agent_id; 
 	}
+	
+	public function addNewRep($data){
+		$db = new Application_Model_DbTable_DbGlobal();
+		$session_user=new Zend_Session_Namespace('auth');
+		$GetUserId= $session_user->user_id;
+		$datainfo=array(
+				"code"		 =>$data['code'],
+				"name"		 =>$data['name'],
+				"phone"      =>$data['phone'],
+				"email"      =>	$data['email'],
+				"pob"		 =>	$data['pob'],
+				"status"	 =>	$data['status'],
+				"user_id"	 =>$GetUserId
+		);
+		$this->_name='tb_sale_agent';
+		$agent_id=$this->insert($datainfo);
+		return $agent_id;
+	}
 }

@@ -113,6 +113,8 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 						'qty_unit'	  => $data['qty_'.$i],
 						'qty_detail'  => $data['qtydetail_'.$i],
 						'qty_order'	  => $data['qty_sold'.$i],
+						'point'	  	  => $data['qty_'.$i],
+						'point_after' => $data['qty_'.$i],
 						'price'		  => $data['price_'.$i],
 						'old_price'   => $data['price_'.$i],
  						'cost_price'  => $data['cost_price'.$i],
@@ -270,5 +272,21 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 		}catch(Exception $e){
 			$db->rollBack();
 		}
+	}
+	
+	function getSaleByeId($id){
+		$db=$this->getAdapter();
+		$sql="SELECT * FROM tb_sales_order WHERE id=".$id;
+		return $db->fetchRow($sql);
+	}
+	
+	function getSaleDetailByeId($id){
+		$db=$this->getAdapter();
+		$sql="SELECT sd.id,
+		       (SELECT p.item_name FROM tb_product AS p WHERE p.id=sd.pro_id LIMIT 1) AS pro_name,
+		       sd.qty_unit,sd.qty_detail,sd.qty_order,sd.price,sd.disc_type,sd.sub_total
+		       FROM tb_salesorder_item AS sd
+		       WHERE sd.saleorder_id=".$id;
+		return $db->fetchRow($sql);
 	}
 }

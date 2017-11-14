@@ -47,6 +47,54 @@ class Sales_IndexController extends Zend_Controller_Action
 		$this->view->formFilter = $formFilter;
 	    Application_Model_Decorator::removeAllDecorator($formFilter);
 	}	
+	
+	function editAction(){
+		$id=$this->getRequest()->getParam('id');
+		$db = new Sales_Model_DbTable_Dbpos();
+		if($this->getRequest()->isPost()) {
+			$data = $this->getRequest()->getPost();
+			try {
+				if(!empty($data['identity'])){
+					$db->addSaleOrder($data);
+					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
+				}
+				Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
+			}catch (Exception $e){
+				Application_Form_FrmMessage::message('INSERT_FAIL');
+				$err =$e->getMessage();
+				Application_Model_DbTable_DbUserLog::writeMessageError($err);
+			}
+		}
+		$db = new Sales_Model_DbTable_Dbpos();
+		$this->view->rsproduct = $db->getAllProductName();
+		$this->view->rscustomer = $db->getAllCustomerName();
+		$db = new Application_Model_DbTable_DbGlobal();
+		$this->view->term_opt = $db->getAllTermCondition();
+		
+		$sal=new Sales_Model_DbTable_Dbpos();
+		$this->view->sale=$sal->getSaleByeId($id);
+		$this->view->sale_item=$sal->getSaleDetailByeId($id);
+		
+		$formpopup = new Sales_Form_FrmCustomer(null);
+		$formpopup = $formpopup->Formcustomer(null);
+		Application_Model_Decorator::removeAllDecorator($formpopup);
+		$this->view->form_customer = $formpopup;
+		$db = new Application_Model_DbTable_DbGlobal();
+		$this->view->invoice = $db->getSalesNumber(1);
+		
+		$sale_agent=$db->getSaleAgentName();
+		array_unshift($sale_agent,array(
+				'id' => -1,
+				'name' => '---Add New ---',
+		) );
+		$this->view->sale_agen=$sale_agent;
+		//sagle agent form
+		$formAgent = new Sales_Form_FrmStock(null);
+		$formShowAgent = $formAgent->showSaleAgentForm(null);
+		Application_Model_Decorator::removeAllDecorator($formShowAgent);
+		$this->view->form_agent = $formShowAgent;
+	}
+	
 	function addAction(){
 		$db = new Application_Model_DbTable_DbGlobal();
 		if($this->getRequest()->isPost()) {
@@ -85,7 +133,7 @@ class Sales_IndexController extends Zend_Controller_Action
 		
 		$this->view->userinfo = $this->GetuserInfoAction();
 	}
-	function editAction(){
+	function oldeditAction(){
 		$id = ($this->getRequest()->getParam('id'))? $this->getRequest()->getParam('id'): '0';
 		$dbq = new Sales_Model_DbTable_DbSaleOrder();
 		$db = new Application_Model_DbTable_DbGlobal();

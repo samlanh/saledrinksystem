@@ -30,7 +30,7 @@ class Sales_CustomerController extends Zend_Controller_Action
 		$link=array(
 				'module'=>'sales','controller'=>'customer','action'=>'edit',
 		);
-		$this->view->list=$list->getCheckList(0, $columns, $rows, array('branch_name'=>$link,'cust_name'=>$link,'customer_type'=>$link,'level'=>$link));
+		$this->view->list=$list->getCheckList(0, $columns, $rows, array('branch_name'=>$link,'cust_name'=>$link,'contact_name'=>$link,'level'=>$link));
 		
         $formFilter = new Sales_Form_FrmSearch();
 		$this->view->formFilter = $formFilter;
@@ -68,6 +68,12 @@ class Sales_CustomerController extends Zend_Controller_Action
 		$formStockAdd = $formcustomer->Formcustomer(null);
 		Application_Model_Decorator::removeAllDecorator($formcustomer);
 		$this->view->form = $formcustomer;
+		
+		///frm zone name
+		$fm = new Sales_Form_FrmCustomerType();
+		$frm = $fm->add();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->Form = $frm;
 	
 	}	
 	public function editAction() {
@@ -103,6 +109,12 @@ class Sales_CustomerController extends Zend_Controller_Action
 		$formViewControl = $formControl->AllAction(null);
 		Application_Model_Decorator::removeAllDecorator($formViewControl);
 		$this->view->control = $formViewControl;
+		
+		///frm zone name
+		$fm = new Sales_Form_FrmCustomerType();
+		$frm = $fm->add();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->Form = $frm;
 	}
 
 
@@ -120,7 +132,9 @@ class Sales_CustomerController extends Zend_Controller_Action
     					'type' => ''
     			);
     		}
-    		$rs_rows= $db->getCustomerType($search);//call frome model
+    		$rows= $db->getCustomerType($search);//call frome model
+    		$glClass = new Application_Model_GlobalClass();
+    		$rs_rows = $glClass->getImgStatus($rows, BASE_URL, true);
     		$list = new Application_Form_Frmlist();
     		$columns=array("ZONE_NAME","ADDRESS","STATUS","BY_USER");
     		$link=array(
@@ -178,7 +192,6 @@ class Sales_CustomerController extends Zend_Controller_Action
     			}
     			if(isset($data['save_close'])){
     				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/customertypelist");
-    				//Application_Form_FrmMessage::redirectUrl('/other/loantype');
     			}
     		} catch (Exception $e) {
     			Application_Form_FrmMessage::message("INSERT_FAIL");
@@ -237,6 +250,14 @@ class Sales_CustomerController extends Zend_Controller_Action
 		$post=$this->getRequest()->getPost();
 		$get_code = new Sales_Model_DbTable_DbCustomer();
 		$result = $get_code->getCustomerinfo($post["customer_id"]);
+		echo Zend_Json::encode($result);
+		exit();
+	}
+	
+	function addNewZoneAction(){
+		$post=$this->getRequest()->getPost();
+		$get_code = new Sales_Model_DbTable_DbCustomer();
+		$result = $get_code->addZone($post);
 		echo Zend_Json::encode($result);
 		exit();
 	}

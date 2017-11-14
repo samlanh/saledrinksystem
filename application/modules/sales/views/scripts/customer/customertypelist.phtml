@@ -1,7 +1,7 @@
 <?php 					
 	$url_new = $this->url(array('module'=>'sales','controller'=>'customer','action'=>'addcustomertype',));
 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
-	//$formFilter = $this->formFilter;
+	$formFilter = $this->Form;
 ?>
 <meta charset="utf-8" />
 <div class="row">
@@ -16,12 +16,10 @@
 			    </div>
 			</div>
 			<div class="portlet-body form">
-				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+				<form method="post" action="">
 					<div class="form-group" style="padding-top: 6px;">
-						<label class="control-label col-md-3"><?php //echo $formFilter->getElement('text_search');?></label>
-						<label class="control-label col-md-3"><?php //echo $formFilter->getElement('customer_id');?></label>
-						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php //echo $formFilter->getElement('start_date');?></div></label>
-						<label class="control-label col-md-2"><div class="input-icon right"><i class="fa fa-calendar"></i><?php //echo $formFilter->getElement('end_date');?></div></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('adv_search');?></label>
+						<label class="control-label col-md-3"><?php echo $formFilter->getElement('status_search');?></label>
 						<label class="control-label col-md-2">
 							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
 						</label>

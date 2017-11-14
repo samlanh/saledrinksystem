@@ -79,8 +79,8 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 																	<tr>
 																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("SALE_AGENT")?></td>
 																		<td colspan="11" id="lbl_termcondition" align="center">
-																		<select class="fullside"  name="saleagent_id" id="saleagent_id" dojoType="dijit.form.FilteringSelect" queryExpr="*${0}*" autoComplete="false" >
-																			<option value="-1"><?php echo $tr->translate("SELECT_SALE_RAP")?></option>
+																		<select  class="fullside"  name="saleagent_id" id="saleagent_id" dojoType="dijit.form.FilteringSelect" queryExpr="*${0}*" autoComplete="false" onchange="getPopupSaleRep()">
+																			<option value=""><?php echo $tr->translate("SELECT_SALE_RAP")?></option>
 																			<?php if(!empty($this->sale_agen)){ foreach($this->sale_agen as $rs){?>
 																				<option value="<?php echo $rs['id']?>"><?php echo $rs['name']?></option>
 																			<?php }}?>
@@ -111,7 +111,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 																	<tr>
 																		<td colspan="11" id="lbl_termcondition" align="center"><?php echo $tr->translate("SAVING")?></td>
 																		<td colspan="11" id="lbl_termcondition" align="center">
-																		<select class="fullside"  name="saving_id" id="saving_id" dojoType="dijit.form.FilteringSelect" >
+																		<select   class="fullside"  name="saving_id" id="saving_id" dojoType="dijit.form.FilteringSelect" >
 																			<option value="1"><?php echo $tr->translate("Yes")?></option>
 																			<option value="0"><?php echo $tr->translate("No")?></option>
 														    			</select>
@@ -120,7 +120,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 																	<tr>
 																		<td colspan="11"  align="center"><?php echo $tr->translate("STATUS")?></td>
 																		<td colspan="11"  align="center">
-																		<select class="fullside"  name="status" id="status" dojoType="dijit.form.FilteringSelect" >
+																		<select  class="fullside"  name="status" id="status" dojoType="dijit.form.FilteringSelect" >
 																			<option value="1"><?php echo $tr->translate("ACTIVE")?></option>
 																			<option value="0"><?php echo $tr->translate("DEACTIVE")?></option>
 														    			</select>
@@ -163,9 +163,9 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 														<tr id="head-title" class="table table-bordered" align="right" style="">
 															<th class="aligncenter">ល.រ</th>
 															<th class="aligncenter">ឈ្មោះមុខទំនិញ</th>
-															<th class="aligncenter">បរិមាណ</th>
-															<th class="aligncenter">បរិមាណបន្ថែម</th>
-															<th class="aligncenter">បរិមាណ</th>
+															<th class="aligncenter">ចំនួន</th>
+															<th class="aligncenter">ចំនួនបន្ថែម</th>
+															<th class="aligncenter">ចំនួនទិញ</th>
 															<th class="aligncenter">តម្លៃលក់</th>
 															<th class="aligncenter">បញ្ចុះតម្លៃ</th>
 															<th class="aligncenter">សរុប</th>
@@ -663,6 +663,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 
 var product_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->rsproduct));?> );
 var client_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->rscustomer));?> );
+var agent_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::encode($this->sale_agen));?> );
 
 require(["dojo/ready"], function(ready){
 	 ready(function(){
@@ -746,7 +747,7 @@ function checkTime(i) {
 	startTime();
 function showReceipt(){
 	if(dijit.byId('office_receipt').validate()){
-		if(dijit.byId("saleagent_id").get("value")==-1){
+		if(dijit.byId("saleagent_id").get("value")==''){
 			alert("Please Select Sale Agent Name!!!");
 			dijit.byId("saleagent_id").focus();
 			return false;
@@ -1005,11 +1006,10 @@ function calCualtePrice(index){
 	
 	price = dijit.byId("price_"+index).get("value");
 	dijit.byId("qty_sold"+index).attr("value",qty_sold);
-
 	discount = dijit.byId("discount_"+index).get("value");
 	discount = isNaN(tax)?0:discount;
 
-	total = (price*qty_sold)-discount;
+	total = (price*main_qty)-discount;
 	dijit.byId("sub_total"+index).attr("value",total);
 	
 	netTotal();
@@ -1124,4 +1124,118 @@ function getProductinfo(index,product_id){
 		});
 }
 
+//popup sale agen
+function getPopupSaleRep(){
+	val = dijit.byId("saleagent_id").get("value");
+	if(val==-1){
+		$('#salerep_popup').modal('show');
+	}
+}
+
+<?php $url_add_salerep=  $this->url(array('module'=>'sales','controller'=>'possale','action'=>'add-new-salerep')); ?>
+function addNewSaleRep(){
+	var cat_name  = $("#name").val();
+	$.ajax({
+		url: "<?php echo $url_add_salerep;?>",
+		type: "post",
+		data: $('#frm_sale_rep').serialize(),
+		success: function(data){
+			var Itemcat = { 
+			    	 id:data,
+				     name: cat_name
+				   };
+			addDataToSelectbox(dijit.byId('saleagent_id'), agent_store, Itemcat, data);
+			 $("#frm_sale_rep").trigger('reset');
+			 $('#salerep_popup').modal('hide');
+		},
+		error:function(err){
+			alert("faile insert");
+		   
+		}
+	});
+}
+
+function cancel(){
+	 $("#frm_sale_rep").trigger('reset');
+	 $('#salerep_popup').modal('hide');
+}
+
 </script>
+
+<!-- Zone  Popup -->
+<?php $frm_agent = $this->form_agent; ?>
+<div id="salerep_popup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_SALE_REP");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php //echo $url_new;?>" >
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frm_sale_rep" name="frm_sale_rep" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					 		<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("AGENT_CODE");?></label>
+								<div class="col-md-8">
+									<?php echo $frm_agent->getElement("code");?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("AGENT_NAME");?></label>
+								<div class="col-md-8">
+									<?php echo $frm_agent->getElement("name");?>
+								</div>
+							</div>
+							
+							
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("PHONE");?></label>
+								<div class="col-md-8">
+									<?php echo $frm_agent->getElement("phone");?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("EMAIL");?></label>
+								<div class="col-md-8">
+									<?php echo $frm_agent->getElement("email");?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("POB");?></label>
+								<div class="col-md-8">
+									<?php echo $frm_agent->getElement("pob");?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-8">
+									<?php echo $frm_agent->getElement('status');?>
+								</div>
+								 
+							</div>
+							<div class="form-group">
+								<label  class="col-md-12 col-md-offset-4 col-md-8">
+								    <button type="button" name="save_close" onclick="cancel()" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i><?php echo $tr->translate("CANCEL")?></button>
+									<button type="button" name="btnsavenew" onclick="addNewSaleRep();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+								</label>
+							</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+          </div>
+        </div>
+    </div>
+ </div>	

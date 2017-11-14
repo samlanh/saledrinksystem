@@ -125,6 +125,18 @@ $db=new Application_Model_DbTable_DbGlobal();
     	$status->setMultiOptions($opt);
     	$this->addElement($status);
     	
+    	///zone name controll 
+    	$rows= $db->getGlobalDb("SELECT id,block_name AS name FROM tb_zone WHERE block_name!='' AND STATUS=1");
+    	$opt= array(''=>"Select Zone Name",'-1'=>"Add New");
+    	if(count($rows) > 0) {
+    		foreach($rows as $readStock) $opt[$readStock['id']]=$readStock['name'];
+    	}
+    	$zone_name = new Zend_Form_Element_Select('zone_name');
+    	$zone_name->setAttribs(array('class'=>'form-control select2me',
+    			          'onclick'=>'getPopupZone()'
+    			 ));
+    	$zone_name->setMultiOptions($opt);
+    	$this->addElement($zone_name);
     	
     	if($data != null) {
 			

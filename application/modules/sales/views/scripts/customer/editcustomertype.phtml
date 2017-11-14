@@ -8,12 +8,12 @@ $frm = $this->Form;
 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
 	$formFilter = $this->frmAdd;
 ?>
-<title> <?php echo $tr->translate("CUSTOMER_TYPE")?></title>
+<title> <?php echo $tr->translate("EDIT_ZONE")?></title>
 	<div class="col-md-12">
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
-						<i class="fa fa-globe"></i><?php echo $tr->translate("EDIT_CUSTOMER_TYPE");?>
+						<i class="fa fa-globe"></i><?php echo $tr->translate("EDIT_ZONE");?>
 				</div>
 				<div class="tools">
 					<a href="<?php echo $url_cencel;?>"><button type="button" name="calcel" class="btn red"><?php echo $tr->translate("GO_BACK");?></button></a>
@@ -50,8 +50,7 @@ $frm = $this->Form;
 								
 							<div class="form-group">
 	                           <label  class="col-md-12 col-md-offset-4 col-md-8">
-									<a href="<?php echo $this->baseUrl();?>/product/other/index"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
-	                                <button type="submit" name="save_new" class="btn btn-primary"><?php echo $tr->translate("SAVE_NEW");?></button>
+									<a href="<?php echo $this->baseUrl();?>/sales/customer/customertypelist"><button type="button" class="btn red"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
 	                                <button type="submit" name="save_close" class="btn btn-primary"><?php echo $tr->translate("SAVE_CLOSE");?></button>
 	                            </label>
 							</div>

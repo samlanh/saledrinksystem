@@ -41,7 +41,17 @@ class Sales_PossaleController extends Zend_Controller_Action
 		$db = new Application_Model_DbTable_DbGlobal();
 		$this->view->invoice = $db->getSalesNumber(1);
 		
-		$this->view->sale_agen=$db->getSaleAgentName();
+		$sale_agent=$db->getSaleAgentName();
+		array_unshift($sale_agent,array(
+				'id' => -1,
+				'name' => '---Add New ---',
+		) );
+		$this->view->sale_agen=$sale_agent;
+		//sagle agent form 
+		$formAgent = new Sales_Form_FrmStock(null);
+		$formShowAgent = $formAgent->showSaleAgentForm(null);
+		Application_Model_Decorator::removeAllDecorator($formShowAgent);
+		$this->view->form_agent = $formShowAgent;
 	}
 	public function editAction()
 	{
@@ -119,7 +129,8 @@ class Sales_PossaleController extends Zend_Controller_Action
 		if(empty($rs)){
 			$this->_redirect("/sales/");
 		}
-	}		
+	}	
+		
 	function getproductAction(){
 		if($this->getRequest()->isPost()){
 			$post=$this->getRequest()->getPost();
@@ -129,5 +140,16 @@ class Sales_PossaleController extends Zend_Controller_Action
 			exit();
 		}
 	}
+	
+	function addNewSalerepAction(){
+		if($this->getRequest()->isPost()){
+			$post=$this->getRequest()->getPost();
+			$db = new Sales_Model_DbTable_DbSalesAgent();
+			$rs =$db->addNewRep($post);
+			print_r(Zend_Json::encode($rs));
+			exit();
+		}
+	}
+	
 		
 }

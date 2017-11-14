@@ -108,7 +108,8 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 				'date'			=> date("Y-m-d"),
 				'branch_id'		=> $post['branch_id'],
 				'customer_level'=> $post['customer_level'],
-				'cu_type'		=>	$post["customer_type"],
+				//'cu_type'		=>	$post["customer_type"],
+				'zone_id'		=>	$post["zone_name"],
 				'credit_limit'	=>	$post["credit_limit"],
 				'credit_team'	=>	$post["credit_tearm"],
 		);
@@ -136,7 +137,8 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 				'date'			=> date("Y-m-d"),
 				'branch_id'		=> $post['branch_id'],
 				'customer_level'=> $post['customer_level'],
-				'cu_type'		=>	$post["customer_type"],
+				//'cu_type'		=>	$post["customer_type"],
+				'zone_id'		=>	$post["zone_name"],
 				'credit_limit'	=>	$post["credit_limit"],
 				'credit_team'	=>	$post["credit_tearm"],
 				'status'	=>	$post["status"],
@@ -188,14 +190,15 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 				(SELECT fullname FROM `tb_acl_user` WHERE tb_acl_user.user_id=user_id LIMIT 1) AS user_name
 				FROM tb_zone WHERE `status`=1";
     	$where = '';
-//     	if($data["adv_search"]!=""){
-//     		$s_where=array();
-//     		$s_search = addslashes(trim($data['adv_search']));
-//     		$s_where[]= " v.`name_en` LIKE '%{$s_search}%'";
-//     		$s_where[]=" v.`key_code` LIKE '%{$s_search}%'";
-//     		//$s_where[]= " cate LIKE '%{$s_search}%'";
-//     		$where.=' AND ('.implode(' OR ', $s_where).')';
-//     	}
+    	if($data["adv_search"]!=""){
+    		$s_where=array();
+    		$s_search = addslashes(trim($data['adv_search']));
+    		$s_search = str_replace(' ', '',$s_search);
+    		$s_where[]="REPLACE(block_name,' ','')  LIKE '%{$s_search}%'";
+    		$s_where[]="REPLACE(remark,' ','')  	LIKE '%{$s_search}%'";
+    		 
+    		$where.=' AND ('.implode(' OR ', $s_where).')';
+    	}
 //     	if($data["status_search"]!=""){
 //     		$where.=' AND v.status='.$data["status_search"];
 //     	}
@@ -265,7 +268,8 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
     			'status'		=>	$data["status"],
     	);
     	$this->_name = "tb_zone";
-    	$this->insert($arr);
+    	$id=$this->insert($arr);
+    	return $id;
     }
     
     //Insert Popup=====================================================================
