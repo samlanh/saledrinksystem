@@ -169,6 +169,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 															<th class="aligncenter">តម្លៃលក់</th>
 															<th class="aligncenter">បញ្ចុះតម្លៃ</th>
 															<th class="aligncenter">សរុប</th>
+															<th class="aligncenter">សម្គាល់</th>
 															<th class="aligncenter">លុប</th>
 														</tr>
 														<tr>
@@ -354,14 +355,14 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 						<tr>
 							<td width="40%" valign="top" align="center">
 								<img style="height:45px" alt="<?php ?>" src="<?php echo $this->baseUrl().'/images/logo.jpg'?>"><br />
-								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;">លីហុង ផ្គត់ផ្គង់សម្ភារៈសំណង់</div>
+								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;"><?php echo $tr->translate("COMPANY_CUSTOMER"); ?></div>
 								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;margin-top:-5px;">គ្រប់ប្រភេទ</div>
 							</td>
 							<td width="20%" align="center" valign="top" style=""><div style="font-size: 14px;font-family:'Khmer MEF2';">វិក្កយបត្រ</div>INVOICE
 							</td>
 							<td width="40%" valign="top">
-								<div style="white-space: nowrap;">ភូមិ ព្រៃទំពូង ឃុំពើក ស្រុក អង្គស្នូល ខេត្តកណ្តាល</div>
-								លេខទូរសព្ទ 012 92 69 71 <br />087 500 158 / 069 266 657
+								<div style="white-space: nowrap;"><?php echo $tr->translate("ADDRESS_COMPANY"); ?></div>
+								លេខទូរសព្ទ<?php echo $tr->translate("TEL_COMPANY"); ?>
 							</td>
 						</tr>
 					</table>
@@ -769,7 +770,9 @@ function showReceipt(){
 		  temp+='<thead><tr class="hearder_table" style="font-family:khmer os battambang;text-align:center;background:#f2f2f2 !important;font-weight:bold;">';
 		  temp+='<td style="border:1px solid #000;font-size:12px;">លរ</td>';
 	      temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">ឈ្មោះមុខទំនិញ</strong></td>';
-		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">ចំនួន</strong></td>';
+		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">ចំនួនលក់</strong></td>';
+		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">ចំនួនថែម</strong></td>';
+		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">ចំនួនសរុប</strong></td>';
 		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">តម្លៃរាយ</strong></td>';
 		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">សរុប</strong></td>';
 		  temp+='</tr></thead>';
@@ -781,9 +784,12 @@ function showReceipt(){
 			  temp+='<tr style=" font-size:12px !important; text-align:center;font-weight:bold;">';
 			  temp+='<td style="border:1px solid #000;">'+i+'</td>';
 			  temp+='<td style="border:1px solid #000;text-align:left;"><strong style="color:#000;">&nbsp;'+$('#product_name'+rowIDArray[n]).val();+'</strong></td>';
-			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+$('#qty_sold'+rowIDArray[n]).val();+'</strong></td>';
-			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format($('#price_'+rowIDArray[n]).val(),{places:3});+'</strong></td>';
-			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format($('#sub_total'+rowIDArray[n]).val(),{places:3});+'</strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qty_sold'+rowIDArray[n]).get('value');+'</strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qtydetail_'+rowIDArray[n]).get('value');+'</strong></td>';
+			   temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qty_sold'+rowIDArray[n]).get('value');+'</strong></td>';
+			  
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('price_'+rowIDArray[n]).get('value'),{places:3});+'</strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('sub_total'+rowIDArray[n]).get('value'),{places:3});+'</strong></td>';
 		  temp+='</tr>';
 		}
 		  transport_fee = dijit.byId("transport_fee").get("value");
@@ -805,11 +811,13 @@ function showReceipt(){
 			 temp+='<td style="border:1px solid #000;">&nbsp;</td>';
 			 temp+='<td style="border:1px solid #000;" ></td>';
 			 temp+='<td style="border:1px solid #000;"></td>';
+			  temp+='<td style="border:1px solid #000;" ></td>';
+			 temp+='<td style="border:1px solid #000;"></td>';
 			 temp+='<td style="border:1px solid #000;" ></td>';
 		     temp+='</tr>';
 		     }
 			 temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="3"> '+dojo.number.format(dijit.byId('total_riel').get("value"),{places:0})+' រៀល&nbsp;</td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="5"> '+dojo.number.format(dijit.byId('total_riel').get("value"),{places:0})+' រៀល&nbsp;</td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">សរុប</strong>&nbsp;</td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('sub_total').get('value')+transport_fee,{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
@@ -819,26 +827,26 @@ function showReceipt(){
 			  temp+='<td style="border:1px solid #000;><strong style="color:#000;">'+transport_fee+'</strong></td>';
 		     temp+='</tr>';*/
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="3">- សូមពិនិត្យទំនិញអោយបានត្រឹមត្រូវ</td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="5">- សូមពិនិត្យទំនិញអោយបានត្រឹមត្រូវ</td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">បញ្ចុះតម្លៃ&nbsp;</strong></td>';
 			 discount = dijit.byId('discount').get('value');
 			 discount = isNaN(discount)?0:discount;
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">$ '+dojo.number.format(discount,{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="3">- ទំនិញដែលទិញហើយមិនអាចប្តូរវិញបានទេ</td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="5">- ទំនិញដែលទិញហើយមិនអាចប្តូរវិញបានទេ</td>';
 			 temp+='<td style="border:1px solid #000;font-size:12px !important;"><strong style="color:#000;">សរុបដុល&nbsp;</strong></td>';
 			 temp+='<td style="border:1px solid #000;font-size:14px !important;"><strong style="color:#000;font-family:arial;font-weight:bold;">$ '+dojo.number.format(dijit.byId('total_dollar').get('value'),{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="3"></td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="5"></td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">ប្រាក់កក់&nbsp;</strong></td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('total_paid').get('value'),{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="3"></td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="5"></td>';
 			 temp+='<td style="border:1px solid #000;font-size:12px !important;"><strong style="color:#000;">នៅខ្វះ&nbsp;</strong></td>';
-			 temp+='<td style="border:1px solid #000;font-size:14px !important;"><strong style="color:#000;font-family:arial;font-weight:bold;">$ '+dojo.number.format($('#balance').val(),{places:3})+'</strong>&nbsp;</td>';
+			 temp+='<td style="border:1px solid #000;font-size:14px !important;"><strong style="color:#000;font-family:arial;font-weight:bold;">$ '+dojo.number.format(dijit.byId('balance').get('value'),{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
 		     
 	temp+='</table>';
@@ -977,6 +985,7 @@ function addProductRow(){
 		template+='<td style="min-width:50px"><input required="1" type="text" tabindex="'+col+'"  onkeyup="calCualtePrice('+col+');" name="price_'+col+'" class="fullblog" id="price_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder=""/><input type="hidden" name="cost_price'+col+'" id="cost_price'+col+'" dojoType="dijit.form.TextBox" /></td>';
 		template+='<td style="min-width:50px"><input type="text"  onkeyup="calCualtePrice('+col+');"  name="discount_'+col+'" class="fullblog" id="discount_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="" value="0"/></td>';
 		template+='<td style="min-width:60px"><input type="text" name="sub_total'+col+'" class="fullblog" id="sub_total'+col+'" dojoType="dijit.form.NumberTextBox" readonly/></td>';
+		template+='<td width="60px"><input type="text" name="remark'+col+'" class="fullblog" id="remark'+col+'" dojoType="dijit.form.TextBox" /></td>';
 		template+='<td width="60px"><button style="height:30px" type="button" onclick="deleteRecord('+col+')" name="save_close" class="btn default red">លុប</button></td>';
 		tmp='<tr id="row'+col+'" class="hover">';
 		tmp+="</tr>";

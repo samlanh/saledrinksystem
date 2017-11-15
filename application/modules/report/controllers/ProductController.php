@@ -26,16 +26,11 @@ class report_ProductController extends Zend_Controller_Action
     	}else{
     		$data = array(
     				'ad_search'	=>	'',
-    				'branch'	=>	'',
-    				'brand'		=>	'',
     				'category'	=>	'',
-    				'model'		=>	'',
-    				'color'		=>	'',
-    				'size'		=>	'',
     				'status'	=>	1
     		);
     	}
-		$this->view->search = $db->getBranch($data["branch"]);
+		//$this->view->search = $db->getBranch($data["branch"]);
     	$this->view->product = $db->getAllProduct($data);
     	$formFilter = new Product_Form_FrmProduct();
     	$this->view->formFilter = $formFilter->productFilter();

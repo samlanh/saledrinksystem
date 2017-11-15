@@ -13,7 +13,7 @@ class Rsvacl_AclController extends Zend_Controller_Action
     	//$this->_helper->layout()->disableLayout();
     	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
         $getAcl = new Rsvacl_Model_DbTable_DbAcl();
-        $aclQuery = "SELECT `acl_id`,`module`,`controller`,`action`,`status` FROM tb_acl_acl";
+        $aclQuery = "SELECT `acl_id`,label,`module`,`controller`,`action`,`status` FROM tb_acl_acl";
         $rows = $getAcl->getAclInfo($aclQuery);
         if($rows){        	
         	$imgnone='<img src="'.BASE_URL.'/images/icon/none.png"/>';
@@ -29,7 +29,7 @@ class Rsvacl_AclController extends Zend_Controller_Action
         	}
         	
         	$list=new Application_Form_Frmlist();
-        	$columns=array($tr->translate('MODULE'),$tr->translate('CONTROLLER'),$tr->translate('ACTION'), $tr->translate('STATUS'));
+        	$columns=array($tr->translate('LABEL'),$tr->translate('MODULE'),$tr->translate('CONTROLLER'),$tr->translate('ACTION'), $tr->translate('STATUS'));
         	
         	$link = array("rsvAcl","acl","view-acl");
         	$links = array('module'=>$link,'controller'=>$link,"action"=>$link);

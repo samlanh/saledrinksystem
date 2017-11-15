@@ -35,37 +35,14 @@ $formFilter = $this->formFilter;
 								<label class="control-label col-md-3">
 									<?php echo $formFilter->getElement('ad_search');?>
 								</label>
-								
-								<label class="control-label col-md-3">
-									<?php echo $formFilter->getElement('branch');?>
-								</label>
-								
-								<label class="control-label col-md-3">
-									<?php echo $formFilter->getElement('brand');?>
-								</label>
-								
 								<label class="control-label col-md-3">
 									<?php echo $formFilter->getElement('category');?>
 								</label>
-								
-							</div>
-							<div class="form-group">
-								<label class="control-label col-md-3">
-									<?php echo $formFilter->getElement('model');?>
-								</label>
-								<label class="control-label col-md-3">
-									<?php echo $formFilter->getElement('size');?>
-								</label>
-								
-								<label class="control-label col-md-3">
-									<?php echo $formFilter->getElement('color');?>
-								</label>
-								
 								<label class="control-label col-md-3">
 									<?php echo $formFilter->getElement('status');?>
 								</label>
-								
 							</div>
+							 
 							<div class="form-group">
 								<label class="control-label col-md-2  pull-right">
 									<button type="submit" class="btn btn-primary col-md-12"><?php echo $tr->translate("SEARCH");?></button>
@@ -125,14 +102,13 @@ $formFilter = $this->formFilter;
 		            <table class="table2excel" border="1" &#8203;="" style="border-collapse:collapse;border:1px solid #000; font-size:10px;" width="100%" cellspacing="0">
 		                 <tbody><tr bgcolor="#ccc" class="style" align="center" style="font-weight:bold; line-height: 20px; font-size:12px; padding:1px 0px; white-space: nowrap; ">
 		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
-									<td><?php echo $tr->translate("BRANCH");?></td>
 									<td><?php echo $tr->translate("ITEM_CODE");?></ts>
 									<td><?php echo $tr->translate("ITEM_NAME");?></td>
 									<td><?php echo $tr->translate("BARCODE");?></td>
 									<td><?php echo $tr->translate("BRAND");?></td>
 									<td><?php echo $tr->translate("CATEGORY");?></td>
 									<td><?php echo $tr->translate("MEASURE");?></td>
-									<td><?php echo $tr->translate("QTY");?></td>
+									 
 									<!--<td><?php echo $tr->translate("COST_PRICE");?></td>
 									<td><?php echo $tr->translate("STATUS");?></td>-->
 		                </tr>
@@ -141,33 +117,17 @@ $formFilter = $this->formFilter;
 		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
 		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
 		                if(!empty($this->product))foreach ($this->product AS $index => $row){
-							$raw_qty = $row["qty"];
-							$array = explode(".",$row["qty"]);
-							$qty = $array[0];
-							$qty_unit = ($raw_qty*$row["qty_perunit"]) - ($row["qty_perunit"]*$array[0]);
-							$l_qty = 0;
-							if(abs($raw_qty)>0){
-								if(abs($qty)>0 and abs($qty_unit)>0){
-									$l_qty = $qty." ".$row["measure"]." & ".round($qty_unit)." ".$row["unit_label"];
-								}elseif(abs($qty)==0 and abs($qty_unit)>0){
-									$l_qty = round($qty_unit)." ".$row["unit_label"];
-								}elseif(abs($qty)>0 and abs($qty_unit)==0){
-									$l_qty =  $qty." ".$row["measure"];
-								}
-							}else{
-								$l_qty = 0;
-							}
+							 
 						?>
 						<tr class='row-format<?php echo $num; ?>' id="item_<?php echo $index; ?>">
 									<td align="center" style="width:3% !important">&nbsp;<?php echo $index+1 ?></td>
-									<td style="white-space: nowrap;" class="center"><?php echo $row["branch"]?></td>
 									<td style="white-space: nowrap;">&nbsp;&nbsp;<?php echo $row["item_code"]?>&nbsp;&nbsp;</td>
 									<td style="">&nbsp;&nbsp;<?php echo $row["item_name"]?>&nbsp;&nbsp;</td>
 									<td style="width:8% !important">&nbsp;&nbsp;<?php echo $row["barcode"]?>&nbsp;&nbsp;</td>
 									<td style="width:8% !important">&nbsp;&nbsp;<?php echo $row["brand"]?>&nbsp;&nbsp;</td>
 									<td style="width:10% !important" class="center"><?php echo $row["cat"]?></td>
 									<td style="width:5% !important" class="center"><?php echo $row["measure"]?></td>
-									<td style="width:8% !important" class="center"><?php echo $l_qty;?></td>
+									 
 									<!--<td style="width:8% !important" class="center"><?php echo $row["price"];?></td>
 									<td style="white-space:nowrap"class="center">
 										<?php //if($row["status"] == 1){?>

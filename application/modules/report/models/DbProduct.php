@@ -14,7 +14,7 @@ Class report_Model_DbProduct extends Zend_Db_Table_Abstract{
 	function getAllProduct($data){
 		$db = $this->getAdapter();
 		$db_globle = new Application_Model_DbTable_DbGlobal();
-		$sql ="SELECT
+		$sql =" SELECT
 				  p.`id`,
 				  p.`barcode`,
 				  p.`item_code`,
@@ -24,60 +24,55 @@ Class report_Model_DbProduct extends Zend_Db_Table_Abstract{
 	  			  p.`unit_label`,
 				  p.`qty_perunit`,
 				   p.`price`,
-				  pl.`location_id`,
-				   (SELECT b.`name` FROM `tb_sublocation` AS b WHERE b.`id`=pl.`location_id` LIMIT 1) AS branch,
-				  (SELECT b.`name` FROM `tb_brand` AS b WHERE b.`id`=p.`brand_id` LIMIT 1) AS brand,
+				   
+				   (SELECT b.`name` FROM `tb_brand` AS b WHERE b.`id`=p.`brand_id` LIMIT 1) AS brand,
 				  (SELECT c.name FROM `tb_category` AS  c WHERE c.id=p.`cate_id` LIMIT 1) AS cat,
 				  (SELECT m.name FROM `tb_model` AS m WHERE m.id=p.`model_id` LIMIT 1) AS model,
 				  (SELECT s.name FROM `tb_size` AS s WHERE s.id=p.`size_id` LIMIT 1) AS size,
 				  (SELECT c.name FROM `tb_color` AS c WHERE c.id=p.`color_id` LIMIT 1) AS color,
 				  (SELECT m.name FROM `tb_measure` AS m WHERE m.id = p.`measure_id` LIMIT 1) AS measure,
 				  (SELECT pp.`price` FROM `tb_product_price` AS pp WHERE pp.`pro_id`=p.`id` AND `type_id`=1 LIMIT 1) AS master_price,
-				(SELECT pp.`price` FROM `tb_product_price` AS pp WHERE pp.`pro_id`=p.`id` AND `type_id`=2 LIMIT 1) AS dealer_price,
-				  SUM(pl.`qty`) AS qty
+				(SELECT pp.`price` FROM `tb_product_price` AS pp WHERE pp.`pro_id`=p.`id` AND `type_id`=2 LIMIT 1) AS dealer_price
+				   
 				FROM
-				  `tb_product` AS p ,
-				  `tb_prolocation` AS pl
-				WHERE p.`id`=pl.`pro_id` ";
-		$where = '';
+				  `tb_product` AS p   ";
+		$where = ' where 1 ';
 		if($data["ad_search"]!=""){
 			$s_where=array();
 			$s_search = addslashes(trim($data['ad_search']));
 			$s_where[]= " p.item_name LIKE '%{$s_search}%'";
-			$s_where[]=" p.barcode LIKE '%{$s_search}%'";
+			$s_where[]="  p.barcode LIKE '%{$s_search}%'";
 			$s_where[]= " p.item_code LIKE '%{$s_search}%'";
 			$s_where[]= " p.serial_number LIKE '%{$s_search}%'";
 			//$s_where[]= " cate LIKE '%{$s_search}%'";
 			$where.=' AND ('.implode(' OR ', $s_where).')';
 		}
-		if($data["branch"]!=""){
-			$where.=' AND pl.`location_id`='.$data["branch"];
-		}
-		if($data["brand"]!=""){
-			$where.=' AND p.brand_id='.$data["brand"];
-		}
+		 
+// 		if($data["brand"]!=""){
+// 			$where.=' AND p.brand_id='.$data["brand"];
+// 		}
+// 		if($data["category"]!=""){
+// 			$where.=' AND p.cate_id='.$data["category"];
+// 		}
 		if($data["category"]!=""){
 			$where.=' AND p.cate_id='.$data["category"];
 		}
-		if($data["category"]!=""){
-			$where.=' AND p.cate_id='.$data["category"];
-		}
-		if($data["model"]!=""){
-			$where.=' AND p.model_id='.$data["model"];
-		}
-		if($data["size"]!=""){
-			$where.=' AND p.size_id='.$data["size"];
-		}
-		if($data["color"]!=""){
-			$where.=' AND p.color_id='.$data["color"];
-		}
+// 		if($data["model"]!=""){
+// 			$where.=' AND p.model_id='.$data["model"];
+// 		}
+// 		if($data["size"]!=""){
+// 			$where.=' AND p.size_id='.$data["size"];
+// 		}
+// 		if($data["color"]!=""){
+// 			$where.=' AND p.color_id='.$data["color"];
+// 		}
 		if($data["status"]!=-1){
 			$where.=' AND p.status='.$data["status"];
 		}
-		$location = $db_globle->getAccessPermission('pl.`location_id`');
+		//$location = $db_globle->getAccessPermission('pl.`location_id`');
 		//echo $location;
 		$group = " GROUP BY p.`id` ORDER BY p.`item_name`";
-		return $db->fetchAll($sql.$where.$location.$group);
+		return $db->fetchAll($sql.$where.$group);
 		 
 	}
 	

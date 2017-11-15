@@ -102,6 +102,11 @@ class Rsvacl_Model_DbTable_DbAcl extends Zend_Db_Table_Abstract
 		$data['module']=$arr['module'];   
 		$data['controller']=$arr['controller'];   
 		$data['action']=$arr['action'];
+		
+		$data['label']=$arr['label'];   
+		$data['rank']=$arr['order'];   
+		$data['is_menu']=$arr['is_menu'];
+		
      	$data['status']='1';
     	return $this->insert($data); 
 	}

@@ -120,7 +120,7 @@ class report_indexController extends Zend_Controller_Action
     		$search = array(
     				'txt_search'=>'',
     				'customer_id'=>'0',
-    				'point'    =>'',
+    				'point'    =>-1,
     				'start_date'=>date("Y-m-d"),
     				'end_date'=>date("Y-m-d"),
     				'item'=>0,

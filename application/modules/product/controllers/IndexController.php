@@ -36,7 +36,7 @@ public function init()
     		);
     	}
 		$rows = $db->getAllProductForAdmin($data);
-		$columns=array("BARCODE","ITEM_CODE","ITEM_NAME","PRODUCT_CATEGORY","COST_PRICE","USER","STATUS");
+		$columns=array("BARCODE","ITEM_CODE","ITEM_NAME","PRODUCT_CATEGORY","SOLD_PRICE","USER","STATUS");
 		$link=array(
 				'module'=>'product','controller'=>'index','action'=>'edit',
 		);
