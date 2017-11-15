@@ -1,6 +1,8 @@
 <?php 
 $tr=Application_Form_FrmLanguages::getCurrentlanguage();
 $frm_sales_report = $this->form_search;
+
+$frm=$this->form_purchase;
 ?>
 <title>Sale Item Detail Report</title>
 <div class="row">
@@ -30,10 +32,12 @@ $frm_sales_report = $this->form_search;
 				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
 					<div class="form-group" style="padding-top: 6px;">
 						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("txt_search");?></label>
-						 <label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('item');?></label>
-						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("category_id");?></label>
-						 <label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('start_date');?></label>
-						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("end_date");?></label>
+						<label class="control-label col-md-3"><?php echo $frm->getElement("customer_id");?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('item');?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("category_id");?></label>
+						<label class="control-label col-md-3"><?php echo $frm->getElement("point");?></label>
+						 <label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('start_date');?></label>
+						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("end_date");?></label>
 						<label class="control-label col-md-1">
 							<input type="submit" value="<?php echo $tr->translate("SEARCH")?>"  class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /> 
 						</label>
@@ -95,16 +99,23 @@ $frm_sales_report = $this->form_search;
 							<td>&nbsp;<?php echo $tr->translate("BRAND_NAME");?></td>
 							<td><?php echo $tr->translate("ITEM_NAME");?></td>
 							<td>&nbsp;<?php echo $tr->translate("ITEM_CODE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("POINT");?></td>
 							<td>&nbsp;<?php echo $tr->translate("QTY");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ចំនួនបន្ថែម");?></td>
 							<td width="10%">&nbsp;<?php echo $tr->translate("ITEM_PRICE");?></td>
 							<td><?php echo $tr->translate("TOTAL");?></td>
 							<td>&nbsp;<?php echo $tr->translate("BY_USER");?></td>
 		                </tr>
-		                <?php $num=1;$old_saleorder_id='';$discount=0;
+		                <?php $num=1;$old_saleorder_id='';$discount=0;$point=0;$points=0;
 		                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
 		                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
 		                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
-		                if(!empty($this->product_rs))foreach ($this->product_rs AS $index => $rs){?>
+		                if(!empty($this->product_rs))foreach ($this->product_rs AS $index => $rs){
+		                	if($rs['saving_id']==1){
+		                		$point=$rs['qty_unit'];
+		                		$points=$points+$rs['qty_unit'];
+		                	}
+		                	?>
 						<tr class='row-format<?php echo $num; $num=1-$num;?> hover' style="border:1px solid #000;">
 						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["customer_name"];?></td>
@@ -114,27 +125,9 @@ $frm_sales_report = $this->form_search;
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["brand_name"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_code"];?></td>
-						   <td style="white-space: nowrap;">&nbsp;
-						   <?php 
-							   $raw_qty = $rs["qty_order"];
-							   $array = explode(".",$rs["qty_order"]);
-							   $qty = $array[0];
-							   $qty_unit = ($raw_qty*$rs["qty_perunit"]) - ($rs["qty_perunit"]*$array[0]);
-							   $l_qty = 0;
-							   if($raw_qty>0){
-							   	if($qty>0 and $qty_unit>0){
-							   		$l_qty = $qty." ".$rs["measue_name"]." និង ".round($qty_unit)." ".$rs["unit_label"];
-							   	}elseif($qty==0 and $qty_unit>0){
-							   		$l_qty = round($qty_unit)." ".$rs["unit_label"];
-							   	}elseif($qty>0 and $qty_unit==0){
-							   		$l_qty =  $qty." ".$rs["measue_name"];
-							   	}
-							   }else{
-							   	$l_qty = 0;
-							   }
-						echo$l_qty;?>
-						   
-						   </td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo ($point==0)?"":"".number_format($point,2);?> </td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo number_format($rs["qty_unit"],2);?>  </td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo ($rs['qty_detail']==0)?"":"".number_format($rs["qty_detail"],2);?>  </td>
 						   <td>&nbsp;$&nbsp;<?php echo number_format($rs["price"],2);?></td>
 						   <td>&nbsp;$&nbsp;<?php echo number_format($rs["sub_total"],2);?></td>
 						   <td>&nbsp;<?php echo $rs["user_name"];?></td>
@@ -154,12 +147,14 @@ $frm_sales_report = $this->form_search;
 		             <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
 		                <tbody><tr height="30px;" bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:2px 0px; ">
 		                    <td><strong><?php echo $tr->translate("PURCHASE_AMOUNT");?></strong></td>
-		                     <td><strong><?php echo $tr->translate("DISCOUNT");?></strong></td>
+		                    <td><strong><?php echo $tr->translate("POINT");?></strong></td>
+		                    <td><strong><?php echo $tr->translate("DISCOUNT");?></strong></td>
 		                    <td><strong><?php echo $tr->translate("PAID");?></strong></td>
 		                    <td><strong><?php echo $tr->translate("BALANCE");?></strong></td>
 		                </tr>
 		                 <tr class="style" style=" line-height: 24px; font-size:11px;">
 		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
+		                     <td>&nbsp;<?php echo ($points==0)?"":"".number_format($points,2);?>&nbsp;</td>
 		                    <td>&nbsp;$&nbsp;<?php echo number_format($discount,2);?>&nbsp;</td>
 		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>
 		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_balance,2);?>&nbsp;</td>

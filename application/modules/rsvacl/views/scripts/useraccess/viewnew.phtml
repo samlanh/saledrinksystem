@@ -1,0 +1,179 @@
+<title>Detail User Right</title>
+<style>
+fieldset.fifthy {	border-right: 0px;width: 30%;}
+fieldset.fifthy table{padding-right: 1px;}
+table.user td{vertical-align: top;}
+</style>       
+<?php $rs=$this->rs;
+	$cancel_url=$this->url(array(
+		'module'=>'rsvacl',
+		'controller'=>'useraccess',
+		'action'=>'index',
+	));
+	  $acl=($this->acl=='')? array():$this->acl;
+	  $acl_name=($this->acl_name=='')? array(): $this->acl_name;
+	  $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	 
+	 $module_str = array(
+	  		'home'=>'HOME_PAGE',
+	  		'rsvacl'=>'ACL',
+	  		'setting'=>'SETTING',
+	  		'accounting'=>'ACCOUNTING',
+	  		'foundation'=>'ADMINISTRATION',
+	  		'global'=>'OTHER_INFOMATION',
+	  		'registrar'=>'REGISTRAR',
+	  		'allreport'=>'ALL_REPORT',
+	  		'library'=>'LIBRARY',
+	  );
+	 
+?>
+<?php $df = $this->datafiter;?>
+<style>
+	.pointer{
+		cursor: pointer;	
+	}
+</style>
+<script>
+	$(function(){		
+		$('#fmod').val('<?php echo $df['fmod']?>');
+		$('#fcon').val('<?php echo $df['fcon']?>');
+		$('#fact').val('<?php echo $df['fact']?>');
+		$('#fstatus').val('<?php echo $df['fstatus']?>');
+	});
+
+	function changeStatus(id, user_type){
+		
+		url = "<?php echo BASE_URL;?>/rsvacl/useraccess/update-status";
+		status = "no";
+		none_src = "<?php echo BASE_URL?>/images/icon/none.png";
+		tick_src = "<?php echo BASE_URL?>/images/icon/tick.png";
+
+		if( $("#img_" + id).attr("src") == tick_src){
+			status = "yes";
+		}
+		//alert("id"+id+"user type"+user_type+"status"+status);
+		
+		$.post( url, { 'acl_id': id, 'status': status, 'user_type_id':user_type},
+	      function( data ) {
+		     
+			 img_src = none_src;
+	         if(data == "yes"){
+				img_src = tick_src;
+	         }	         
+	         $("#img_" + id).attr("src", img_src);
+	      }
+	    );
+	}
+</script>
+<meta charset="utf-8" />
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-globe"></i><?php echo $tr->translate("USER_ACCESS");?>
+				</div>
+				<a href="<?php echo $cancel_url;?>" class="btn btn-sm black  pull-right">
+					<i class="fa fa-plus"></i>&nbsp;<?php echo $tr->translate("GO_BACK");?>
+				</a>
+			</div>
+			<div class="portlet-body form">
+				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
+					<div class="form-group" style="padding-top: 6px;">
+					    <label class="control-label col-md-2"><?php echo $rs[0]['user_type'];?></label>
+						<label class="control-label col-md-2"><select  name="fmod" id="fmod" class="form-control select2me"><?php echo $this->optoin_mod;?></select></label>
+						<label class="control-label col-md-2"><select  class='demo-code-language form-control select2me' name="fcon" id="fcon"><?php echo $this->optoin_con;?></select></label>
+						<label class="control-label col-md-2"><select name="fact" class='demo-code-language form-control select2me' id="fact"><?php echo $this->optoin_act;?></select></label>
+						<label class="control-label col-md-2"><select name="fstatus" id="fstatus" class="form-control select2me"><?php echo $this->optoin_status;?></select></label>
+						<label class="control-label col-md-2"><input class="btn btn-primary col-md-12" type="submit" value="<?php echo $tr->translate('SEARCH');?>" title="<?php echo $tr->translate('SEARCH');?>"/></label>
+					</div>		
+				</form> 
+				<?php /*/?>	
+				<div class="contain_form" style="clear: both;">
+					<?php echo $this->acl_name;?>	
+				</div>
+				<?php */?>
+		   </div>
+		   
+	<?php ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
+		   <?php 
+				$old_module = "";
+			?>
+			
+			<div data-dojo-type="dijit/layout/TabContainer" style="width: 98%; height: 400px;clear:both;" tabPosition="left-h" tabStrip="true">
+				
+				<?php if(!empty($this->rows)){foreach ($this->rows as $key=>$rs){ ?>
+					<?php if($old_module != $rs['module']){
+					   if($key==0){
+					?>
+						<div data-dojo-type="dijit/layout/ContentPane" title="<?php echo $tr->translate($rs['module']);?>" >
+							<table width="100%" border="1" style="white-space: nowrap;border: 1px solid #ccc;border-collapse: collapse;">
+								<tr align="center" style="background: #bcd5f0;">
+									<td width="45%">
+										<?php echo $tr->translate("USER_ACCESS");?>
+									</td>
+									<td width="45%">
+										<?php echo $tr->translate("URL");?>
+									</td>
+									<td width="10%">
+										<?php echo $tr->translate("STATUS");?>
+									</td>
+								</tr>
+							
+						<?php }?>
+					<?php  if($key>0){?>
+							</table>
+					 	</div>
+					 	<div data-dojo-type="dijit/layout/ContentPane" title="<?php echo $tr->translate($module_str[$rs['module']]);?>" >
+					 	<table width="100%" border="1" style="white-space: nowrap;border: 1px solid #ccc;border-collapse: collapse;">
+					 		<tr align="center" style="background: #bcd5f0;">
+								<td width="45%">
+									<?php echo $tr->translate("LABEL");?>
+								</td>
+								<td width="45%">
+									<?php echo $tr->translate("URL");?>
+								</td>
+								<td width="10%">
+									<?php echo $tr->translate("STATUS");?>
+								</td>
+							</tr>
+					<?php }}?>
+							
+							<?php if($rs['is_menu'] == 1){
+										$space="";
+										$style="style='font-weight:bold;'";
+									}else{
+										$space="&nbsp;&nbsp;&nbsp;";
+										$style="";
+									}
+							?>
+							<style>
+								.hover:hover{background: #ccc;}
+							</style>
+							<tr class="hover">
+								<td <?php echo $style;?>>
+									&nbsp;&nbsp; <?php echo $space.$tr->translate($rs['label']);?>
+								</td>
+								<td>
+									&nbsp;&nbsp; <?php echo $rs['url']?>
+								</td>
+								<td align="center">
+									<?php echo $rs['img']?>
+								</td>
+							</tr>
+						
+					<?php 
+						
+						//echo $rs['url'].$rs['img']."<br />";
+						$old_module = $rs['module'];
+					?>
+				<?php }}?>
+					</table>
+				</div>
+			</div>
+		   
+	<?php ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>	   
+		   
+		</div>
+	</div>
+</div>

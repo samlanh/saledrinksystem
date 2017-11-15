@@ -47,13 +47,15 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 	
 	function getAllCustomer($search){
 		$db = $this->getAdapter();
-		$sql=" SELECT id,cust_name,(SELECT name_en FROM `tb_view` WHERE type=6 AND key_code=cu_type LIMIT 1) customer_type,
-		 contact_name,contact_phone,address,
-		 credit_team,credit_limit,
-		( SELECT name_en FROM `tb_view` WHERE type=5 AND key_code=tb_customer.status LIMIT 1) status,
-		( SELECT fullname FROM `tb_acl_user` WHERE tb_acl_user.user_id=tb_customer.user_id LIMIT 1) AS user_name
-		 FROM `tb_customer` WHERE cust_name!='' ";
-		
+		$sql=" SELECT id,cust_name,(SELECT name_en FROM `tb_view` WHERE TYPE=6 AND key_code=cu_type LIMIT 1) customer_type,
+				 contact_name,contact_phone,address,
+				 (SELECT block_name FROM tb_zone WHERE tb_zone.id=zone_id LIMIT 1) AS zone,
+				 (SELECT p.province_en_name FROM ln_province AS p WHERE p.province_id=tb_customer.province_id LIMIT 1)AS province,
+				 credit_team,credit_limit,
+				( SELECT name_en FROM `tb_view` WHERE TYPE=5 AND key_code=tb_customer.status LIMIT 1) STATUS,
+				( SELECT fullname FROM `tb_acl_user` WHERE tb_acl_user.user_id=tb_customer.user_id LIMIT 1) AS user_name
+				 FROM `tb_customer` WHERE cust_name!=''
+				 ";
 		$from_date =(empty($search['start_date']))? '1': " date >= '".$search['start_date']." 00:00:00'";
 		$to_date = (empty($search['end_date']))? '1': " date <= '".$search['end_date']." 23:59:59'";
 		$where = " AND ".$from_date." AND ".$to_date;

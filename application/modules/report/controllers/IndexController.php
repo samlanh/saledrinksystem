@@ -73,6 +73,7 @@ class report_indexController extends Zend_Controller_Action
     	Application_Model_Decorator::removeAllDecorator($form_search);
     	$this->view->form_search = $form_search;
     }
+    
     public function rptSalesAction()//purchase report
     {
     	if($this->getRequest()->isPost()){
@@ -82,6 +83,9 @@ class report_indexController extends Zend_Controller_Action
     	}else{
     		$data = array(
     				'text_search'=>'',
+    				'province_id'=>'0',
+    				'zone_id'	 =>'0',
+    				'saleagent_id'=>'-1',
     				'start_date'=>date("Y-m-d"),
     				'end_date'=>date("Y-m-d"),
     				'customer_id'=>0,
@@ -90,10 +94,11 @@ class report_indexController extends Zend_Controller_Action
     	$this->view->rssearch = $data;
     	$query = new report_Model_DbQuery();
     	$this->view->repurchase =  $query->getAllSaleOrderReport($data);
-			$formFilter = new Sales_Form_FrmSearch();
+		$formFilter = new Sales_Form_FrmSearch();
     	$this->view->form_purchase = $formFilter;
     	Application_Model_Decorator::removeAllDecorator($formFilter);
     }
+    
     public function salesdetailAction(){
     	$id = ($this->getRequest()->getParam('id'))? $this->getRequest()->getParam('id'): '0';
     	if(empty($id)){
@@ -114,6 +119,8 @@ class report_indexController extends Zend_Controller_Action
     	}else{
     		$search = array(
     				'txt_search'=>'',
+    				'customer_id'=>'0',
+    				'point'    =>'',
     				'start_date'=>date("Y-m-d"),
     				'end_date'=>date("Y-m-d"),
     				'item'=>0,
@@ -128,6 +135,10 @@ class report_indexController extends Zend_Controller_Action
     	$form_search=$frm->productDetailReport($search);
     	Application_Model_Decorator::removeAllDecorator($form_search);
     	$this->view->form_search = $form_search;
+    	
+    	$formFilter = new Sales_Form_FrmSearch();
+    	$this->view->form_purchase = $formFilter;
+    	Application_Model_Decorator::removeAllDecorator($formFilter);
     	
     }
     public function rptCustomerAction()//purchase report

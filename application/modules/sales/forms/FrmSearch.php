@@ -28,6 +28,47 @@ public function init()
 		$vendor_element->setValue($vendorValue);
 		$this->addElement($vendor_element);
 		
+		//control province 
+		$rs=$db->getGlobalDb("SELECT province_id AS id,province_en_name AS `name` FROM ln_province WHERE `status`=1 and province_en_name!=''");
+		$options=array($tr->translate('Choose Province'));
+		$province_value = $request->getParam('province_id');
+		if(!empty($rs)) foreach($rs as $read) $options[$read['id']]=$read['name'];
+		$province_id=new Zend_Form_Element_Select('province_id');
+		$province_id->setMultiOptions($options);
+		$province_id->setAttribs(array(
+				'id'=>'province_id',
+				'class'=>'form-control select2me'
+		));
+		$province_id->setValue($province_value);
+		$this->addElement($province_id);
+		
+		//control Zone
+		$rs=$db->getGlobalDb("SELECT id,block_name AS `name` FROM tb_zone WHERE `status`=1 AND block_name!=''");
+		$options=array($tr->translate('Choose Zone Name'));
+		$zone_value = $request->getParam('zone_id');
+		if(!empty($rs)) foreach($rs as $read) $options[$read['id']]=$read['name'];
+		$zone_id=new Zend_Form_Element_Select('zone_id');
+		$zone_id->setMultiOptions($options);
+		$zone_id->setAttribs(array(
+				'id'=>'zone_id',
+				'class'=>'form-control select2me'
+		));
+		$zone_id->setValue($zone_value);
+		$this->addElement($zone_id);
+		
+		//point
+		$options=array( ''=>$tr->translate('Choose Point'),'1'=>$tr->translate('Yes'),'0'=>$tr->translate('No'));
+		$point_value = $request->getParam('point');
+		$point=new Zend_Form_Element_Select('point');
+		$point->setMultiOptions($options);
+		$point->setAttribs(array(
+				'id'=>'point',
+				'class'=>'form-control select2me'
+		));
+		$point->setValue($point_value);
+		$this->addElement($point);
+		
+		
 		$startDateValue = $request->getParam('start_date');
 		$endDateValue = $request->getParam('end_date');
 		

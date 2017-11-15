@@ -6,6 +6,12 @@
 	$controller=$request->getControllerName();
 	$module=$request->getModuleName();
 ?>
+
+	
+
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/js/dojo-1.6.1/dijit/themes/soria/soria.css"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
 <link type="text/css" href="<?php echo BASE_URL;?>/css/style.css" rel="stylesheet"/>
 <link rel="stylesheet" media="print" href="<?php echo $this->baseUrl()?>/assets/global/plugins/bootstrap/css/bootstrap.css" />
@@ -159,6 +165,10 @@
 body {-webkit-print-color-adjust: exact;}
 }
 </style>
+
+<script src="/saledrinksystem/trunk/public/js/dojo-1.6.1/dojo/dojo.js"  djConfig="isDebug: true,parseOnLoad: true"></script>
+<script>dojoConfig = {parseOnLoad: true}</script>
+
 <body class="page-header-fixed page-quick-sidebar-over-content soria ">
 	<?php if($controller!='possale'){?>
 	<div class="page-header navbar navbar-fixed-top">
@@ -181,6 +191,9 @@ body {-webkit-print-color-adjust: exact;}
 	<?php }?>
 </body>
 <script>
+
+
+
 $(document).ready(function() { 
    $("#frm").validationEngine();
     Metronic.init(); // init metronic core components

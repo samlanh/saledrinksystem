@@ -26,7 +26,7 @@ class Sales_CustomerController extends Zend_Controller_Action
 		$rows = $db->getAllCustomer($search);
 		$list = new Application_Form_Frmlist();
 		$columns=array("CUSTOMER_NAME","CUSTOMER_TYPE",
-		"CONTACT_NAME","CONTACT_NUMBER","ADDRESS","CREDIT_TERM","CREDIT_LIMIT","STATUS","BY_USER");
+		"CONTACT_NAME","CONTACT_NUMBER","ADDRESS","ZONE","PROVINCE","CREDIT_TERM","CREDIT_LIMIT","STATUS","BY_USER");
 		$link=array(
 				'module'=>'sales','controller'=>'customer','action'=>'edit',
 		);

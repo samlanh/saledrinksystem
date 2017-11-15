@@ -163,6 +163,7 @@ $db=new Application_Model_DbTable_DbGlobal();
     		$mainStockElement->setValue($data["branch_id"]);
 			$province->setValue($data["province_id"]);
 			$status->setValue($data["status"]);
+			$zone_name->setValue($data["zone_id"]);
     		//$balancelement->setValue($data['balance']);
     	}
     	return $this;

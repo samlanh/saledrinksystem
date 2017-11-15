@@ -149,17 +149,21 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 	}
 	public function getAllSaleOrderReport($search){//4
 		$db= $this->getAdapter();
-		$sql=" SELECT id,
-		(SELECT name FROM `tb_sublocation` WHERE tb_sublocation.id = s.branch_id AND status=1 AND name!='' LIMIT 1) AS branch_name,
-		(SELECT CONCAT(cust_name,' ',contact_name) FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
-		(SELECT name FROM `tb_sale_agent` WHERE id=s.saleagent_id LIMIT 1) AS agent_name,
-		s.sale_no,s.date_sold,s.all_total,s.tax,s.discount_value,
-		(s.net_total+s.transport_fee) as net_total,s.paid,s.balance,
-		(SELECT u.username FROM tb_acl_user AS u WHERE u.user_id = s.user_mod LIMIT 1 ) AS user_name
-		FROM `tb_sales_order` AS s ";
+		$sql="  SELECT s.id,
+				(SELECT NAME FROM `tb_sublocation` WHERE tb_sublocation.id = s.branch_id AND STATUS=1 AND NAME!='' LIMIT 1) AS branch_name,
+				(SELECT CONCAT(cust_name,' ',contact_name) FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
+				(SELECT NAME FROM `tb_sale_agent` WHERE id=s.saleagent_id LIMIT 1) AS agent_name,
+				s.sale_no,s.date_sold,s.all_total,s.tax,s.discount_value,
+				(s.net_total+s.transport_fee) AS net_total,s.paid,s.balance,
+				(SELECT block_name FROM tb_zone WHERE tb_zone.id=c.zone_id LIMIT 1) AS zone,
+				(SELECT p.province_en_name FROM ln_province AS p WHERE p.province_id=c.province_id LIMIT 1)AS province,
+				(SELECT u.username FROM tb_acl_user AS u WHERE u.user_id = s.user_mod LIMIT 1 ) AS user_name
+				FROM `tb_sales_order` AS s,tb_customer AS c
+				WHERE s.customer_id=c.id
+				";
 		$from_date =(empty($search['start_date']))? '1': " s.date_sold >= '".$search['start_date']." 00:00:00'";
 		$to_date = (empty($search['end_date']))? '1': " s.date_sold <= '".$search['end_date']." 23:59:59'";
-		$where = " WHERE ".$from_date." AND ".$to_date;
+		$where = " AND ".$from_date." AND ".$to_date;
 		if(!empty($search['text_search'])){
 			$s_where = array();
 			$s_search = trim(addslashes($search['text_search']));
@@ -173,9 +177,19 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['customer_id']>0){
 			$where .= " AND s.customer_id = ".$search['customer_id'];
 		}
-// 		if($search['branch_id']>0){
-// 			$where .= " AND branch_id =".$search['branch_id'];
-// 		}
+		
+		if($search['province_id']>0){
+			$where .= " AND c.province_id = ".$search['province_id'];
+		}
+		
+		if($search['zone_id']>0){
+			$where .= " AND c.zone_id = ".$search['zone_id'];
+		}
+		
+		if($search['saleagent_id']>0){
+			$where .= " AND s.saleagent_id = ".$search['saleagent_id'];
+		}
+ 
 		$dbg = new Application_Model_DbTable_DbGlobal();
 		$where.=$dbg->getAccessPermission();
 		$order=" ORDER BY id DESC ";
@@ -205,7 +219,7 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 	}
 	function getSaleProductDetail($search){//6
 		$db = $this->getAdapter();
-		$sql=" SELECT
+		$sql=" SELECT s.saving_id,
 		(SELECT name FROM `tb_sublocation` WHERE id=s.branch_id) AS branch_name,
 		it.item_name,
 		it.item_code,
@@ -220,7 +234,7 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		(SELECT email FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS email,
 		
 		(SELECT u.username FROM tb_acl_user AS u WHERE u.user_id = s.user_mod LIMIT 1 ) AS user_name,
-		so.qty_order,so.price,so.sub_total,s.net_total,
+		so.qty_unit,so.qty_detail,so.qty_order,so.price,so.sub_total,s.net_total,
 		s.id,s.sale_no,s.date_sold,s.remark,
 		s.paid,s.tax,s.discount_value,
 		s.balance,so.saleorder_id
@@ -248,8 +262,14 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['item']>0){
 			$where .= " AND it.id =".$search['item'];
 		}
+		if($search['point']>-1){
+			$where .= " AND s.saving_id =".$search['point'];
+		}
 		if($search['category_id']>0){
 			$where .= " AND it.cate_id =".$search['category_id'];
+		}
+		if($search['customer_id']>0){
+			$where .= " AND s.customer_id =".$search['customer_id'];
 		}
 		$dbg = new Application_Model_DbTable_DbGlobal();
 		$where.=$dbg->getAccessPermission();
