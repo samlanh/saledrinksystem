@@ -151,6 +151,144 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 			Application_Model_DbTable_DbUserLog::writeMessageError($err);
 		}
 	}
+	
+	function updateSaleOrder($data){
+		$db = $this->getAdapter();
+		$db->beginTransaction();
+		try{
+			$db_global = new Application_Model_DbTable_DbGlobal();
+			$session_user=new Zend_Session_Namespace('auth');
+			$userName=$session_user->user_name;
+			$GetUserId= $session_user->user_id;
+			$dbc=new Application_Model_DbTable_DbGlobal();
+			$so = $data['invoice'];
+		
+			$info_purchase_order=array(
+					"sale_no"		=>$data['txt_order'],
+					"saleagent_id"	=>$data['saleagent_id'],
+					"remark"		=>$data['note'],
+					"date_sold"		=>$data['order_date'],
+					"payment_date"	=>$data['payment_date'],
+					"saving_id"		=>$data['saving_id'],
+					"status"		=>$data['status'],
+					"customer_id"   	=> $data['customer_id'],
+					"exchange_rate" 	=> $data['exchange_rate'],
+					"net_total"     	=> $data['sub_total'],
+					"discount_value" 	=> $data['discount'],
+					"transport_fee"		=> $data["transport_fee"],
+					"all_total"     	=> $data['total_dollar'],
+					"all_total_riel"	=> $data['total_riel'],
+					"paid_dollar"   	=> $data['receive_dollar'],
+					"paid_riel"	    	=> $data["receive_riel"],
+					"paid"	        	=> $data["total_paid"],
+					'return_dollar'	 	=> $data["return_amount"],
+					'return_riel'   	=> $data["return_amountriel"],
+					"balance"      		=> $data['balance'],
+					'is_completed'		=> ($data['balance']==0)?1:0,
+					"user_mod"     	=>$GetUserId,
+					"date"     		=> date("Y-m-d"),
+					"branch_id"     => 1,
+					"tax"			=> $data["tax"],
+			);
+			$this->_name="tb_sales_order";
+			$where=" id=".$data['id'];
+			$sale_id=$data['id'];
+			$this->update($info_purchase_order, $where);
+			
+			$reciept_id=$this->getReceiptId($sale_id);
+			$data['receipt'] = $db_global->getReceiptNumber(1);
+			$info_purchase_order=array(
+					"branch_id"   	=> 	1,//$branch_id['branch_id'],
+					"customer_id"   => 	$data["customer_id"],
+					"payment_type"  => 	1,//payment by customer/invoice
+					"payment_id"    => 	1,	//payment by cash/paypal/cheque
+					"receipt_no"    => 	$data['receipt'],
+					"receipt_date"  =>  date("Y-m-d"),
+					"date_input"    =>  date("Y-m-d"),
+					"total"         => 	$data['total_dollar'],
+					"paid"          => 	$data["total_paid"],
+					"paid_dollar"   => 	$data['receive_dollar'],
+					"paid_riel"     => 	$data['receive_riel'],
+					"balance"       => 	$data['balance'],
+					// 					"remark"        => 	$data['remark'],
+					"user_id"       => 	$GetUserId,
+					'status'        =>1,
+					"bank_name"     => 	'',
+					"cheque_number" => 	'',
+					"exchange_rate" => 	$data['exchange_rate'],
+			);
+			$this->_name="tb_receipt";
+			if(!empty($reciept_id)){
+				$where=" id=".$reciept_id;
+				 $this->update($info_purchase_order, $where);
+			}
+				
+			$data_item= array(
+					'receipt_id'  => $reciept_id,
+					'invoice_id'  => $sale_id,
+					'total'		  => $data['total_dollar'],
+					'paid'	      => $data["total_paid"],
+					'balance'	  => $data['balance'],
+					'is_completed'=> ($data['balance']==0)?1:0,
+					'status'      => 1,
+					'date_input'  => date("Y-m-d"),
+			);
+			$this->_name='tb_receipt_detail';
+			$where=" invoice_id=".$data['id'];
+			$this->update($data_item, $where);
+		
+			$sql =" DELETE FROM tb_salesorder_item WHERE saleorder_id=".$data["id"];
+			$db->query($sql);
+			$ids=explode(',',$data['identity']);
+			foreach ($ids as $i)
+			{
+				$data_item= array(
+						'saleorder_id'=> $sale_id,
+						'pro_id'	  => $data['product_id'.$i],
+						'qty_unit'	  => $data['qty_'.$i],
+						'qty_detail'  => $data['qtydetail_'.$i],
+						'qty_order'	  => $data['qty_sold'.$i],
+						'point'	  	  => $data['qty_'.$i],
+						'point_after' => $data['qty_'.$i],
+						'price'		  => $data['price_'.$i],
+						'old_price'   => $data['price_'.$i],
+						'cost_price'  => $data['cost_price'.$i],
+						'disc_value'  => $data['discount_'.$i],
+						// 						'disc_value'  => str_replace("%",'',$data['dis_value'.$i]),//check it
+				// 						'disc_type'	  => $data['discount_type'.$i],//check it
+						'sub_total'	  => $data['sub_total'.$i],
+				);
+				$this->_name='tb_salesorder_item';
+				$this->insert($data_item);
+			}
+		
+			$sql = "DELETE FROM tb_quoatation_termcondition WHERE quoation_id=".$data["id"];
+			$db->query($sql);
+			$ids=explode(',',$data['identity_term']);
+			if(!empty($data['identity_term'])){
+				foreach ($ids as $i)
+				{
+					$data_item= array(
+							'quoation_id'=> $sale_id,
+							'condition_id'=> $data['term_id'.$i],
+							"user_id"   => 	$GetUserId,
+							"date"      => 	date("Y-m-d"),
+							'term_type'=>1
+		
+					);
+					$this->_name='tb_quoatation_termcondition';
+					$this->insert($data_item);
+				}
+			}
+			$db->commit();
+		}catch(Exception $e){
+			$db->rollBack();
+			Application_Form_FrmMessage::message('INSERT_FAIL');
+			$err =$e->getMessage();
+			Application_Model_DbTable_DbUserLog::writeMessageError($err);
+		}
+	}
+	
 	function getInvoiceById($id){
 		$sql=" SELECT s.*,
 				(net_total+transport_fee) AS net_total,
@@ -282,11 +420,17 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 	
 	function getSaleDetailByeId($id){
 		$db=$this->getAdapter();
-		$sql="SELECT sd.id,
+		$sql="SELECT sd.id,sd.pro_id,
 		       (SELECT p.item_name FROM tb_product AS p WHERE p.id=sd.pro_id LIMIT 1) AS pro_name,
 		       sd.qty_unit,sd.qty_detail,sd.qty_order,sd.price,sd.disc_type,sd.sub_total
 		       FROM tb_salesorder_item AS sd
 		       WHERE sd.saleorder_id=".$id;
-		return $db->fetchRow($sql);
+		return $db->fetchAll($sql);
+	}
+	
+	function getReceiptId($id){
+		$db=$this->getAdapter();
+		$sql="SELECT receipt_id FROM tb_receipt_detail WHERE invoice_id=$id";
+		return $db->fetchOne($sql);
 	}
 }

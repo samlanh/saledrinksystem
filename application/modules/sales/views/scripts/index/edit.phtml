@@ -3,7 +3,6 @@
 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
 	$base_url = $this->baseUrl();
 	$row=$this->sale;
-	print_r($this->sale_item);
 ?>
 <style>
 table.calculate td,table.calculate th{padding:0px 3px !important; line-height: 20px; }
@@ -644,6 +643,12 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 <iframe name=print_frame width=0 height=0 frameborder=0 src=about:blank></iframe>			
 <script src="<?php echo $this->baseUrl();?>/js/help.js"  type="text/javascript"></script>
 <script>
+
+$(document).ready(function() {
+   
+   oldProductRow();
+});
+
 function getSuppliyer(){
 	$('#save_customer').attr("disabled", false);
 	$('#customerpopup').modal('show');
@@ -669,7 +674,7 @@ var agent_store  = getDataStorefromJSON('id','name',<?php print_r(Zend_Json::enc
 
 require(["dojo/ready"], function(ready){
 	 ready(function(){
-		 oldProductRow();
+		 
 		 dijit.byId("product_id").attr("value",'');
 			dijit.byId("product_id").focus();
 			dijit.byId("customer_id").attr("value",1);
@@ -722,6 +727,7 @@ require(["dojo/ready"], function(ready){
 						  num=0;
 					  }
                     dijit.byId("qty_"+rowIDArray[n]).attr("value",parseFloat(num)+1);
+                    dijit.byId("discount_"+rowIDArray[n]).attr("value",0);
                     calCualtePrice(rowIDArray[n]);
 					return false;
 					}
@@ -984,10 +990,9 @@ title=0;
 temp='';
 
 function oldProductRow(){
-	<?php if(!empty($this->sale_detail)) foreach($this->sale_detail As $key=>$rs){?>
-	product_name = dijit.byId("product_id").attr("displayedValue");
-	product_id = dijit.byId("product_id").get('value');
-	if(product_name=='' ){return false;}
+	<?php if(!empty($this->sale_item)) foreach($this->sale_item As $key=>$rs){?>
+	 product_name = '<?php echo $rs['pro_name']?>';
+	 product_id = '<?php echo $rs['pro_id']?>';
 		col++;no++;
 		template='';
 		if(title!=1){    
@@ -1016,10 +1021,16 @@ function oldProductRow(){
 		     parseContent: true,
 		});
 		//dijit.byId("product_id").attr("value",'');
-		dijit.byId("product_id").focus();
-		getProductinfo(col,product_id);
+		dijit.byId("qty_"+col).attr("value",'<?php echo $rs['qty_unit']?>');
+		dijit.byId("qtydetail_"+col).attr("value",'<?php echo $rs['qty_detail']?>');
+		dijit.byId("qty_sold"+col).attr("value",'<?php echo $rs['qty_order']?>');
+		dijit.byId("price_"+col).attr("value",'<?php echo $rs['price']?>');
+		dijit.byId("discount_"+col).attr("value",'<?php echo $rs['disc_type']?>');
+		dijit.byId("sub_total"+col).attr("value",'<?php echo $rs['sub_total']?>');
 		
 		<?php }?> 
+		dijit.byId("product_id").focus();
+		getProductinfo(col,product_id);
 }
 
 function addProductRow(){
@@ -1055,6 +1066,7 @@ function addProductRow(){
 		});
 		//dijit.byId("product_id").attr("value",'');
 		dijit.byId("product_id").focus();
+		dijit.byId("discount_"+col).attr("value",0);
 		getProductinfo(col,product_id);
 		 
 }

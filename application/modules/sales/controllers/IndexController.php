@@ -53,12 +53,13 @@ class Sales_IndexController extends Zend_Controller_Action
 		$db = new Sales_Model_DbTable_Dbpos();
 		if($this->getRequest()->isPost()) {
 			$data = $this->getRequest()->getPost();
+			$data['id']=$id;
 			try {
 				if(!empty($data['identity'])){
-					$db->addSaleOrder($data);
-					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
+					$db->updateSaleOrder($data);
+					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/index");
 				}
-				Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
+				Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/index");
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message('INSERT_FAIL');
 				$err =$e->getMessage();
