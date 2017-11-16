@@ -30,13 +30,14 @@ $brach_name =  $this->branch;
 				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
 					<div class="form-group" style="padding-top: 6px;">
 						<?php $formFilter = $this->form_purchase; ?>
-						<label class="control-label col-md-3"><?php echo $formFilter->getElement('text_search');?></label>
-						<label class="control-label col-md-3"><?php echo $formFilter->getElement('customer_id');?></label>
-						<label class="control-label col-md-3"><?php echo $formFilter->getElement('province_id');?></label>
-						<label class="control-label col-md-3"><?php echo $formFilter->getElement('zone_id');?></label>
-						<label class="control-label col-md-3"><?php echo $formFilter->getElement('saleagent_id');?></label>
-						<label class="control-label col-md-3"><?php echo $formFilter->getElement('start_date');?></label>
-						<label class="control-label col-md-3"><?php echo $formFilter->getElement('end_date');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('text_search');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('customer_id');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('province_id');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('zone_id');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('saleagent_id');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('payment_balance');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('start_date');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement('end_date');?></label>
 						<label class="control-label col-md-2">
 							<button class="btn btn-primary col-md-12" value="" ><i class="fa fa-save"></i>&nbsp;<?php echo $tr->translate("REFRESH");?></button>
 						</label>
@@ -98,6 +99,7 @@ $brach_name =  $this->branch;
 							<td>&nbsp;<?php echo $tr->translate("PROVINCE_NAME");?></td>
 							<td>&nbsp;<?php echo $tr->translate("ZONE_NAME");?></td>
 							<td><?php echo $tr->translate("SALE_DATE");?></td>
+							<td><?php echo $tr->translate("PAYMENT_DATE");?></td>
 							<td>&nbsp;<?php echo $tr->translate("AMOUNT");?></td>
 							<td>&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
 							<td>&nbsp;<?php echo $tr->translate("GRAND_TOTAL");?></td>
@@ -117,11 +119,10 @@ $brach_name =  $this->branch;
 						   <td style="white-space: nowrap;"><a style="color:#000;text-decoration: none;" target="_blank" href="<?php echo $this->baseUrl()."/report/index/salesdetail/id/".$rs["id"];?>">&nbsp;<?php echo $rs["customer_name"];?></a></td>
 						   <td style="white-space: nowrap;"><a style="color:#000;text-decoration: none;" target="_blank" href="<?php echo $this->baseUrl()."/report/index/salesdetail/id/".$rs["id"];?>">&nbsp;<?php echo $rs["sale_no"];?></a></td>
 						   <td style="white-space: nowrap;"><a style="color:#000;text-decoration: none;" target="_blank" href="<?php echo $this->baseUrl()."/report/index/salesdetail/id/".$rs["id"];?>">&nbsp;<?php echo $rs["agent_name"];?></a></td>
-						   
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["province"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["zone"];?></td>
-						   
 						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_sold"]));?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["payment_date"]));?></td>
 						   <td style="white-space: nowrap;"> <?php echo ($rs['net_total']==0)?"":"&nbsp;$&nbsp;".number_format($rs["net_total"],2);?></td>
 						   <td style="white-space: nowrap;"> <?php echo ($rs['discount_value']==0)?"":"&nbsp;$&nbsp;".number_format($rs["discount_value"],2);?></td>
 						   <td style="white-space: nowrap;"> <?php echo ($rs['all_total']==0)?"":"&nbsp;$&nbsp;".number_format($rs["all_total"],2);?></td>

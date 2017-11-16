@@ -83,7 +83,7 @@ class Rsvacl_Form_FrmUser extends Zend_Form
     	$email=new Zend_Form_Element_Text('email');
     	$email->setAttribs(array(
     		'id'=>'email',
-    		'class'=>'validate[required] form-control centerRight',
+    		'class'=>'form-control centerRight',
     	));
     	$this->addElement($email);
     	 
@@ -93,6 +93,7 @@ class Rsvacl_Form_FrmUser extends Zend_Form
     	$password->setAttribs(array(
     		'id'=>'password',
     		'class'=>'validate[required] form-control',
+    		'style'=>'width:100% !important'
     	));
     	$this->addElement($password);
 //confirm password    	

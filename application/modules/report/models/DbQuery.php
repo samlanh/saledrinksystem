@@ -153,7 +153,7 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 				(SELECT NAME FROM `tb_sublocation` WHERE tb_sublocation.id = s.branch_id AND STATUS=1 AND NAME!='' LIMIT 1) AS branch_name,
 				(SELECT CONCAT(cust_name,' ',contact_name) FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
 				(SELECT NAME FROM `tb_sale_agent` WHERE id=s.saleagent_id LIMIT 1) AS agent_name,
-				s.sale_no,s.date_sold,s.all_total,s.tax,s.discount_value,
+				s.sale_no,s.date_sold,s.payment_date,s.all_total,s.tax,s.discount_value,
 				(s.net_total+s.transport_fee) AS net_total,s.paid,s.balance,
 				(SELECT block_name FROM tb_zone WHERE tb_zone.id=c.zone_id LIMIT 1) AS zone,
 				(SELECT p.province_en_name FROM ln_province AS p WHERE p.province_id=c.province_id LIMIT 1)AS province,
@@ -177,6 +177,15 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['customer_id']>0){
 			$where .= " AND s.customer_id = ".$search['customer_id'];
 		}
+		if($search['payment_balance']>0){
+			if($search['payment_balance']==1){//payoff
+				$where .= " AND s.balance = 0";
+			}else{//remain
+				$where .= " AND s.balance>0";
+			}
+			
+		}
+		
 		
 		if($search['province_id']>0){
 			$where .= " AND c.province_id = ".$search['province_id'];
@@ -229,14 +238,14 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		(SELECT name FROM `tb_category` WHERE id=it.cate_id LIMIT 1) AS cate_name,
 		(SELECT name FROM `tb_brand` WHERE id=it.brand_id LIMIT 1) AS brand_name,
 		(SELECT (CASE WHEN contact_name IS NULL THEN cust_name ELSE contact_name END) FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
-
+		(SELECT name FROM `tb_sale_agent` WHERE tb_sale_agent.id =s.saleagent_id  LIMIT 1 ) AS staff_name,
 		(SELECT phone FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS phone,
 		(SELECT contact_name FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS contact_name,
 		(SELECT email FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS email,
 		
 		(SELECT u.username FROM tb_acl_user AS u WHERE u.user_id = s.user_mod LIMIT 1 ) AS user_name,
 		so.qty_unit,so.qty_detail,so.qty_order,so.price,so.sub_total,s.net_total,
-		s.id,s.sale_no,s.date_sold,s.remark,
+		s.id,s.sale_no,s.date_sold,s.payment_date,s.remark,
 		s.paid,s.tax,s.discount_value,
 		s.balance,so.saleorder_id
 		FROM `tb_sales_order` AS s,
@@ -266,6 +275,10 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['point']>-1 && $search['point']!=''){
 			$where .= " AND s.saving_id =".$search['point'];
 		}
+		if($search['saleagent_id']>0){
+			$where .= " AND s.saleagent_id =".$search['saleagent_id'];
+		}
+		
 		if($search['category_id']>0){
 			$where .= " AND it.cate_id =".$search['category_id'];
 		}

@@ -67,6 +67,17 @@ public function init()
 		$point->setValue($point_value);
 		$this->addElement($point);
 		
+		$options=array(-1=>$tr->translate('ជ្រើសរើសការបង់'),'1'=>$tr->translate('បង់ដាច់'),'2'=>$tr->translate('ជំពាក់'));
+		$point_value = $request->getParam('payment_balance');
+		$payment_balance=new Zend_Form_Element_Select('payment_balance');
+		$payment_balance->setMultiOptions($options);
+		$payment_balance->setAttribs(array(
+				'id'=>'point',
+				'class'=>'form-control select2me'
+		));
+		$payment_balance->setValue($point_value);
+		$this->addElement($payment_balance);
+		
 		
 		$startDateValue = $request->getParam('start_date');
 		$endDateValue = $request->getParam('end_date');
