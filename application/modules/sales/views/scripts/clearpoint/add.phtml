@@ -69,43 +69,23 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="control-label col-md-2"><?php echo $tr->translate("COMPANY_NAME");?> <span class="required">
-								</span>
-							</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<i class="fa"></i>
-									<?php echo $form->getElement('txt_name'); ?>
-								</div>
-							</div>
-							<label class="control-label col-md-2">
-							<?php echo $tr->translate("COMPANY_NUMBER");?><span class="required">
-								</span>
-							</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<i class="fa"></i>
-									<?php echo $form->getElement('txt_phone'); ?>
-								</div>
-							</div>
-						</div>
+						 
 					<div class="form-group">
-							<label class="control-label col-md-2"><?php echo $tr->translate("CON_NAME");?><span class="required">
+							<label class="control-label col-md-2"><?php echo $tr->translate("NOTE");?><span class="required">
 								</span>
 							</label>
 							<div class="col-md-4">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<?php echo $form->getElement('txt_contact_name'); ?>
+									<?php echo $form->getElement('remark'); ?>
 								</div>
 							</div>
 							<label class="control-label col-md-2">
-							<?php echo $tr->translate("CON_NUMBER");?><span class="required"></span>
+							<?php echo $tr->translate("STATUS");?><span class="required"></span>
 							</label>
 							<div class="col-md-4">
 								<div class="input-icon right">
-									<i class="fa"></i><?php echo $form->getElement('contact_phone'); ?>
+									<i class="fa"></i><?php echo $form->getElement('status'); ?>
 								</div>
 							</div>
 					</div>
@@ -168,7 +148,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 							</label>
 							<div class="col-md-4">
 								<div class="input-icon right">
-								<?php echo $frm_pay->getElement("balance");?>
+								<?php echo $frm_pay->getElement("balance_point");?>
 								</div>
 							</div>
 						</div>
@@ -442,6 +422,20 @@ function doRemain() {
 	   $('#balance').val(remain.toFixed(2));
 	}	
 }
+
+function checkControll(){
+	$("#table_order").html("");
+	$('#balance').val(0);$('#all_total').val(0);$('#paid').val(0);
+	payment_method = $("#payment_method").val();
+	if(payment_method==1){
+		$( "#invoice_id" ).attr( "readOnly", true );
+		$( "#customer_id" ).attr( "readOnly", false );
+	}else{
+		$( "#customer_id" ).attr( "readOnly", true );
+		$( "#invoice_id" ).attr( "readOnly", false );
+    }
+}
+
 </script>
 
 
