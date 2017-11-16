@@ -24,6 +24,11 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 		$sql=" SELECT * FROM tb_prolocation WHERE pro_id = $product_id AND location_id = $location ";
 		return $this->getAdapter()->fetchRow($sql);
 	 }
+	 function getExchangeRate(){
+	 	$db= $this->getAdapter();
+	 	$sql="SELECT key_value FROM `tb_setting` WHERE code='exchange_rate' ";
+	 	return $db->fetchOne($sql);
+	 }
 	public function addSaleOrder($data)
 	{
 		$db = $this->getAdapter();
@@ -33,6 +38,14 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 			$session_user=new Zend_Session_Namespace('auth');
 			$userName=$session_user->user_name;
 			$GetUserId= $session_user->user_id;
+			
+			$arr = array(
+					'key_value'=>$data['exchange_rate']
+			);
+			$this->_name='tb_setting';
+			$where ="code='exchange_rate'";
+			$this->update($arr, $where);
+			
 			$dbc=new Application_Model_DbTable_DbGlobal();
 			$so = $data['invoice'];
 	

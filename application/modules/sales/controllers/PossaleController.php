@@ -19,18 +19,21 @@ class Sales_PossaleController extends Zend_Controller_Action
 			try {
 				if(!empty($data['identity'])){
 					$db->addSaleOrder($data);
-					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
+					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/possale");
 				}
-				Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/sales/possale");
+				Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/possale");
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message('INSERT_FAIL');
 				$err =$e->getMessage();
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
- 		$db = new Sales_Model_DbTable_Dbpos();
+ 		//$db = new Sales_Model_DbTable_Dbpos();
 		$this->view->rsproduct = $db->getAllProductName();
 		$this->view->rscustomer = $db->getAllCustomerName();
+		
+		$this->view->rsrate= $db->getExchangeRate();
+		
 		$db = new Application_Model_DbTable_DbGlobal();
 		$this->view->term_opt = $db->getAllTermCondition();
 		
@@ -52,6 +55,7 @@ class Sales_PossaleController extends Zend_Controller_Action
 		$formShowAgent = $formAgent->showSaleAgentForm(null);
 		Application_Model_Decorator::removeAllDecorator($formShowAgent);
 		$this->view->form_agent = $formShowAgent;
+		
 	}
 	public function editAction()
 	{

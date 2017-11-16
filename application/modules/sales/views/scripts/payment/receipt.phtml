@@ -1,6 +1,7 @@
 <center>
 <?php 
 	$rs = $this->rs;
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
 ?>
 <div id="PrintReceipt" style="border:1px dashed #ccc;width:18cm !important; padding: 0px; margin-bottom:30px; ">
 			<style>
@@ -27,21 +28,20 @@
 		<table class="print" cellspacing="0" cellpadding="0" style="width:98%;font-family: 'Khmer OS Battambang' !important; font-size:11px !important; margin-top:0 auto;white-space:nowrap;">
 			<tbody><tr height="40px;">
 			    <td colspan="10" style="" align="center" valign="top">
-					<table width="100%" style="font-size: 10px;margin-bottom: 0px;">
-						<tbody><tr>
+					<table width="100%" style="font-size: 10px;margin-bottom: 0px;"   >
+						<tr>
 							<td width="40%" valign="top" align="center">
-								<img style="height:45px" alt="" src="/stockdemo/public/images/logo.jpg"><br>
-								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;">លីហុង ផ្គត់ផ្គង់សម្ភារៈសំណង់</div>
-								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;margin-top:-5px;">គ្រប់ប្រភេទ</div>
+								<img style="height:45px" alt="<?php ?>" src="<?php echo $this->baseUrl().'/images/logo.jpg'?>"><br />
+								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;"><?php echo $tr->translate("COMPANY_CUSTOMER"); ?></div>
 							</td>
-							<td width="20%" align="center" valign="top" style=""><div style="font-size: 14px;font-family:'Khmer MEF2';">បង្កាន់ដៃបង់ប្រាក់</div>RECEIPT
+							<td width="20%" align="center" valign="top" style=""><div style="font-size: 14px;font-family:'Khmer MEF2';">វិក្កយបត្រ</div>INVOICE
 							</td>
 							<td width="40%" valign="top">
-								<div style="white-space: nowrap;">ភូមិ ព្រៃទំពូង ឃុំពើក ស្រុក អង្គស្នូល ខេត្តកណ្តាល</div>
-								លេខទូរសព្ទ 012 92 69 71 <br>087 500 158 / 069 266 657
+								<div style="white-space: nowrap;"><?php echo $tr->translate("ADDRESS_COMPANY"); ?></div>
+								លេខទូរសព្ទ<?php echo $tr->translate("TEL_COMPANY"); ?>
 							</td>
 						</tr>
-					</tbody></table>
+					</table>
 			    </td>
 			</tr>
 			<style>

@@ -96,11 +96,23 @@ $request=Zend_Controller_Front::getInstance()->getRequest();
 									$dbtable = new Product_Model_DbTable_DbGetBranch();
 									$branchs = $dbtable->getBranchbyUser($session_user->user_id);
 									echo count($branchs);
+									
+									$search = array(
+											'customer_id'=>0,
+											'saleagent_id'=>-1,
+											'txt_search'=>'',
+											'txt_search'=>'',
+											'end_date'=>date("Y-m-d"),
+									);
+									
+									$query = new report_Model_DbQuery();
+									$cus_nearly =  $query->getAlertCustomerPayment($search);
+									$url = $this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-alert-customer-payment'));
 						?></span>
 					</a>
 					<ul class="dropdown-menu extended tasks">
-						<li class="external">
-							<h3>You can access <span class="bold"><?php echo count($branchs);?></span> Location(s)</h3>
+						<li class="external" >
+							<a href="<?php echo $url;?>" style="line-height:4px;color:red;font-size: 12px;font-family:'Khmer os battambang';">អតិថិជនជិតដល់ថ្ងៃបង់<span class="bold"><?php echo count($cus_nearly);?></span> នាក់</a>
 						</li>
 						<li>
 							<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
