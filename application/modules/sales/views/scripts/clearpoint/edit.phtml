@@ -1,0 +1,373 @@
+
+<?php 
+$baseurl = Zend_Controller_Front::getInstance()->getBaseUrl();//new
+$url_new =  $this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'index'));
+$url_submit =  $this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'edit'));
+$url_edit =  $this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'index'));
+$form=$this->form;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+
+$user_info = new Application_Model_DbTable_DbGetUserInfo();
+$result = $user_info->getUserInfo();
+$level = $result["level"];
+?>
+<title><?php echo $tr->translate("EDIT_CLEAR_POINT");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("EDIT_CLEAR_POINT");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php echo $url_new;?>" class="btn btn-sm green  ">
+						<i class="fa fa-undo"></i>&nbsp;<?php echo $tr->translate("GO_BACK");?>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="form_sample_2"  class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("Branch Name");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("branch_id");?>
+									<?php echo $form->getElement("id");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("COMCUSTOMER_CODE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('cu_code'); ?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("COMPANY_NAME");?> <span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_name'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("COMPANY_NUMBER");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_phone'); ?>
+								</div>
+							</div>
+						</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("CON_NAME");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_contact_name'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("CON_NUMBER");?><span class="required"></span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i><?php echo $form->getElement('contact_phone'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("ZONE_NAME");?> <span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+									<div class="input-icon right">
+										<i class="fa"></i>
+										<?php echo $form->getElement('zone_name'); ?>
+									</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("Customer Level");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('customer_level'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("Customer Address");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("txt_address");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("EMAIL");?>
+							<span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_mail'); ?>
+									<?php echo $form->getElement('province'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("FAX");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_fax'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2"><?php echo $tr->translate("WEBSITE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_website'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2"><?php echo $tr->translate("CREDIT_LIMIT");?> <span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('credit_limit'); ?>
+								</div>
+						</div>
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("CREDIT_TEARM");?><span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("credit_tearm");?>
+								</div>
+						</div>
+						
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("STATUS");?><span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("status");?>
+								</div>
+						</div>
+						<label class="control-label col-md-2">
+							<?php echo $tr->translate("REMARK");?><span class="required">
+								</span>
+						</label>
+						<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("remark");?>
+								</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+					<div class="col-md-4">
+								&nbsp;</div>
+							<div class="col-md-4">
+								<a href="<?php echo $this->baseUrl();?>/sales/customer"><button type="button" class="btn blue btn-block btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+							</div>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<button type="submit" name="saveclose" value="saveclose" class="btn blue btn-block btn-lg" ><i class="fa fa-close"></i> <?php echo $tr->translate("GO_EDIT")?></button>
+								</div>
+							</div>
+							
+					</div>
+				</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+<script>
+
+$('#frm').submit(function() {
+	zone_name = $("#zone_name").val();
+    if(zone_name==''){
+        alert("Please Select Zone Name!!!");
+        $('#zone_name').select2('open');
+        return false;
+    }
+	var r = confirm("សូមត្រួតពិនិត្យទិន្នន័យ អោយបានត្រឹមត្រូវ !\nតើលោកអ្នកពិតជាចង់រក្សាទុកទិន្នន័យនេះមែនឫទេ?");
+	if (r == true) {
+	    return true;
+	} else {
+	   return false;
+	}
+});
+
+$(document).ready(function() {
+	user_level = <?php echo $level;?>;
+	//alert(1);
+	if(user_level!=1 && user_level!=2){
+		$('#credit_limit').attr('readOnly',true);
+		$("#credit_tearm").attr('readOnly',true);
+	}
+});
+<?php $url_customer_limit =  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'getcustomerlimit')); ?>
+function getCustomerLimit(){
+				id=$("#customer_type").val();
+				$.ajax({
+						url:"<?php echo $url_customer_limit;?>",
+						type:"post",
+						data:{'id':id},
+						success: function(data){
+							value = $.parseJSON(data);
+							//alert(value);
+							if(value!=""){
+								$('#credit_limit').val(value.credit_limit);
+								$("#credit_tearm").val(value.credit_term);
+							}
+						},
+						error:function(e){
+							//alert(e);
+						}
+					});
+}
+<?php $url_code =  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'get-cu-code')); ?>
+function getCustomerCode(){
+				id=$("#branch_id").val();
+				$.ajax({
+						url:"<?php echo $url_code;?>",
+						type:"post",
+						data:{'id':id},
+						success: function(data){
+							value = $.parseJSON(data);
+								$("#cu_code").val(value);
+						},
+						error:function(e){
+							alert(e);
+						}
+					});
+}
+
+function getPopupZone(){
+	val = $('#zone_name').val();
+	if(val==-1){
+		$('#zone_popup').modal('show');
+	}
+}
+
+<?php $url_add_zone=  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'add-new-zone')); ?>
+function addNewZone(){
+	var cat_name  = $("#title_en").val();
+	$.ajax({
+		url: "<?php echo $url_add_zone;?>",
+		type: "post",
+		data: $('#frm_zone').serialize(),
+		success: function(data){
+			rs = $.parseJSON(data);
+			 $('#zone_name').append($("<option></option>").attr("value",rs['cat_id']).attr("selected",true).text(cat_name));                       
+			 $("#zone_name").select2();
+			 $("#frm_zone").trigger('reset');
+			 $('#zone_popup').modal('hide');
+		},
+		error:function(err){
+			alert("faile insert");
+		   
+		}
+	});
+}
+
+</script>
+
+<!-- Zone  Popup -->
+<?php $frm = $this->Form; ?>
+<div id="zone_popup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_PRODUCT_CATEGORY");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php echo $url_new;?>" >
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frm_zone" name="frm_zone" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					 		<div class="form-group">
+					 		    
+								<label class="col-md-3 control-label"><?php echo $tr->translate("TITLE");?></label>
+								<div class="col-md-8">
+									<?php echo $frm->getElement('title_en');?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("ADDRESS");?></label>
+								<div class="col-md-8">
+									<?php echo $frm->getElement('txt_address');?>
+								</div>
+							</div>
+							<div class="form-group">
+								 				
+								<label class="col-md-3 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-8">
+									<?php echo $frm->getElement('status');?>
+								</div>
+								 
+							</div>
+							<div class="form-group">
+								<label  class="col-md-12 col-md-offset-4 col-md-8">
+									<button type="button" name="btnsavenew" onclick="addNewZone();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+								</label>
+							</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+          </div>
+        </div>
+    </div>
+ </div>	

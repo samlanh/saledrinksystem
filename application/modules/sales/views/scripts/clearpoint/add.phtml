@@ -1,0 +1,464 @@
+
+<?php 
+$baseurl = Zend_Controller_Front::getInstance()->getBaseUrl();//new
+$url_new =  $this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'index'));
+$url_submit =  $this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'add'));
+$url_edit =  $this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'index'));
+$form=$this->form;
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<title><?php echo $tr->translate("ADD_CLEAR_POINT");?></title>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_CLEAR_POINT");?>
+				</div>
+				<div class="caption" style="float:right">
+					<a href="<?php echo $url_new;?>" class="btn btn-bg blue  ">
+						<i class="fa fa-undo"></i>&nbsp;<?php echo $tr->translate("GO_BACK");?>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frm" action="<?php echo $url_submit; ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("Branch Name");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("branch_id");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("CU_CODE");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('cu_code'); ?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("COMPANY_NAME");?> <span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_name'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("COMPANY_NUMBER");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_phone'); ?>
+								</div>
+							</div>
+						</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("CON_NAME");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('txt_contact_name'); ?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("CON_NUMBER");?><span class="required"></span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i><?php echo $form->getElement('contact_phone'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("ZONE_NAME");?> <span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+									<div class="input-icon right">
+										<i class="fa"></i>
+										<?php echo $form->getElement('zone_name'); ?>
+									</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("Customer Level");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement('customer_level'); ?>
+								</div>
+							</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-md-2"><?php echo $tr->translate("ADDRESS");?><span class="required">
+								</span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $form->getElement("txt_address");?>
+								</div>
+							</div>
+							<label class="control-label col-md-2">
+							<?php echo $tr->translate("Province");?><span class="required">
+								</span>
+								<div><?php //echo $tr->translate("DISTRICT");?><span class="required">
+								</span></div>
+							</label>
+							<label class="col-md-4">
+									<i class="fa"></i>
+									<?php echo $form->getElement('province'); ?>
+									<div class="col-md-6">
+									<?php //echo $form->getElement('district'); ?>
+									</div>
+									<div class="col-md-6">
+									<?php //echo $form->getElement('commune'); ?>
+									</div>
+							</label>
+					</div>
+					
+					<div class="portlet-body">
+							<table class="table table-striped table-bordered table-hover" id="table_order" style="font-size:12px;">
+								<tr height="33px">
+									<th><?php echo $tr->translate("DEL");?></th>
+									<th><?php echo $tr->translate("NUM");?></th>
+									<th style="white-space:nowrap;"><?php echo $tr->translate("ថ្ងៃ/ខែ/ឆ្នាំ");?></th>
+									<th><?php echo $tr->translate("វិក័យបត្រ");?></th>
+									<th><?php echo $tr->translate("ចំនួនទឹកប្រាក់");?></th>
+									<th><?php echo $tr->translate("បញ្ចុះតម្លៃ");?></th>
+									<th><?php echo $tr->translate("ទឹកប្រាក់បានបង់");?></th>
+									<th><?php echo $tr->translate("ទឹកប្រាក់នៅខ្វះ");?></th>
+							</tr>
+						 </table>
+						 <input type="hidden" id="identity" name="identity" />
+					</div>
+						<div class="form-group">
+							<label class="control-label col-md-2"><?php //echo $tr->translate("PAYMENT_METHOD");?><span class="required">
+								 </span>
+							</label>
+							<label class="control-label col-md-2">
+									<?php echo $tr->translate("EXCHANGE_RATE");?>
+							</label>
+							<div class="col-md-2">
+								<div class="input-icon right">
+									<?php //echo $form->getElement("exchange_rate");?>
+								</div>
+							</div>
+								<label class="control-label col-md-2"><?php //echo $tr->translate("ជំពាក់សរុប​ :");?> Total<span class="required">
+							* </span>
+							</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+								<?php //echo $form->getElement("all_total");?>
+								</div>
+							</div>
+						</div>
+					 
+					 
+					<?php 
+						$session_user=new Zend_Session_Namespace('auth');
+						$level=$session_user->level;
+						$str_display="hidden";
+						if($level==1){ 
+							$str_display="visible";
+						}
+					?>
+					
+					<div class="form-group">
+						<div class="form-group">
+							<div class="col-md-3"></div>
+							<div class="col-md-2">
+								<a href="<?php echo $this->baseUrl();?>/sales/customer"><button type="button" class="btn red btn-block btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+							</div>
+							<div class="col-md-2">
+								<div class="input-icon right">
+									<button type="submit" name="saveclose" value="saveclose" class="btn blue btn-block btn-lg" ><i class="fa fa-close"></i> <?php echo $tr->translate("SAVE_CLOSE")?></button>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<button type="submit" name="btnsavenew"  name="btnsavenew" class="btn blue btn-block btn-lg"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+							</div>
+							<div class="col-md-3"></div>
+						</div>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+ <script>
+$('#frm').submit(function() {
+		zone_name = $("#zone_name").val();
+	    if(zone_name==''){
+	        alert("Please Select Zone Name!!!");
+	        $('#zone_name').select2('open');
+	        return false;
+	    }
+		var r = confirm("សូមត្រួតពិនិត្យទិន្នន័យ អោយបានត្រឹមត្រូវ !\nតើលោកអ្នកពិតជាចង់រក្សាទុកទិន្នន័យនេះមែនឫទេ?");
+		if (r == true) {
+		    return true;
+		} else {
+		   return false;
+		}
+});
+	
+ $(document).ready(function() {
+	getCustomerLimit();
+});
+ <?php $url_customer_limit =  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'getcustomerlimit')); ?>
+function getCustomerLimit(){
+				id=$("#customer_type").val();
+				$.ajax({
+						url:"<?php echo $url_customer_limit;?>",
+						type:"post",
+						data:{'id':id},
+						success: function(data){
+							value = $.parseJSON(data);
+							if(value!=""){
+								$('#credit_limit').val(value.credit_limit);
+								$("#credit_tearm").val(value.credit_term);
+							}
+						},
+						error:function(e){
+							//alert(e);
+						}
+					});
+}
+$('#frm').submit(function() {
+//aa = $("#frm").validationEngine();
+//alert(JSON.stringify(aa));
+//return false;
+	customer_id=$("#customer_type").val();
+	if(customer_id=='' || customer_id==-1){
+		alert("Please select customer type");
+		$('#customer_type').select2('open');
+		return false;	
+	}
+	identity =$("#identity").val();
+	if(identity=='' || identity==-1){
+		alert("Please add product row");
+		$('#add_item').select2('open');
+		return false;
+	}
+});
+</script>
+<script>
+<?php $url_code =  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'get-cu-code')); ?>
+function getCustomerCode(){
+				id=$("#branch_id").val();
+				$.ajax({
+						url:"<?php echo $url_code;?>",
+						type:"post",
+						data:{'id':id},
+						success: function(data){
+							value = $.parseJSON(data);
+								$("#cu_code").val(value);
+						},
+						error:function(e){
+							alert(e);
+						}
+					});
+}
+<?php $url_getdistrict=  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'getdistrict')); ?>
+function getDistrict(){
+	distict_id = $("#district").val();
+	$.ajax({
+		url:"<?php echo $url_getdistrict;?>",
+		type:"post",
+		data:{'distict_id':distict_id},
+		success: function(data){
+			value = $.parseJSON(data);
+				$("#cu_code").val(value);
+		},
+		error:function(e){
+			//alert(e);
+		}
+	});
+}
+<?php $url_getcommune=  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'getcommune')); ?>
+function getCommune(){
+	distict_id = $("#district").val();
+	$.ajax({
+		url:"<?php echo $url_code;?>",
+		type:"post",
+		data:{'id':id},
+		success: function(data){
+			value = $.parseJSON(data);
+				$("#cu_code").val(value);
+		},
+		error:function(e){
+			alert(e);
+		}
+	});
+}
+
+function getPopupZone(){
+	val = $('#zone_name').val();
+	if(val==-1){
+		$('#zone_popup').modal('show');
+	}
+}
+
+<?php $url_add_zone=  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'add-new-zone')); ?>
+function addNewZone(){
+	var cat_name  = $("#title_en").val();
+	$.ajax({
+		url: "<?php echo $url_add_zone;?>",
+		type: "post",
+		data: $('#frm_zone').serialize(),
+		success: function(data){
+			rs = $.parseJSON(data);
+			 $('#zone_name').append($("<option></option>").attr("value",rs['cat_id']).attr("selected",true).text(cat_name));                       
+			 $("#zone_name").select2();
+			 $("#frm_zone").trigger('reset');
+			 $('#zone_popup').modal('hide');
+		},
+		error:function(err){
+			alert("faile insert");
+		   
+		}
+	});
+}
+
+<?php $urlgetinvoice =  $this->url(array('module'=>'sales','controller'=>'payment','action'=>'getinvoice')); ?>
+function getInvoice(type){
+	if(type==1){
+		post_id=$("#customer_id").val();
+		$( "#invoice_id" ).attr( "readonly", true );
+		$( "#customer_id" ).attr( "readOnly", false );
+	}else{
+		post_id=$("#invoice_id").val();
+		$( "#customer_id" ).attr( "readonly", true );
+		$( "#invoice_id" ).attr( "readOnly", false );
+	}
+	$.ajax({
+			url:"<?php echo $urlgetinvoice;?>",
+			type:"post",
+			data:{'post_id':post_id,'type_id':type},
+			success: function(data){	
+				$("#table_order").html("");
+				template='<tr height="33px">';
+					template+='<th><?php echo $tr->translate("DEL");?></th>';
+					template+='<th><?php echo $tr->translate("NUM");?></th>';
+					template+='<th style="white-space:nowrap;"><?php echo $tr->translate("ថ្ងៃ/ខែ/ឆ្នាំ");?></th>';
+					template+='<th><?php echo $tr->translate("វិក័យបត្រ");?></th>';
+					template+='<th><?php echo $tr->translate("ចំនួនទឹកប្រាក់");?></th>';
+					template+='<th><?php echo $tr->translate("បញ្ចុះតម្លៃ");?></th>';
+					template+='<th><?php echo $tr->translate("ទឹកប្រាក់បានបង់");?></th>';
+					template+='<th><?php echo $tr->translate("ទឹកប្រាក់នៅខ្វះ");?></th>';
+				template+='</tr>';
+				
+				$('#identity').val("");
+				data = $.parseJSON(data);
+				
+				for(i=0;i<data.length;i++){
+					if(i==0){
+						$("#customer_id").val(data[i].customer_id);
+						$("#customer_id").select2();
+					}
+					index=i+1;
+					template+='<tr style="height:30px;">';
+			            template+='<td ><img onClick="deleteRecord('+index+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
+						template+='<td >'+index+'</td>';
+						template+='<td >'+data[i].date_sold+'</td>';
+						template+='<td >'+data[i].sale_no+'<input type="hidden" value='+data[i].id+' id="invoice_no'+index+'" name="invoice_no'+index+'"/></td>';
+						template+='<td >'+data[i].net_total+'<input type="hidden" value='+data[i].net_total+' id="subtotal'+index+'" name="subtotal'+index+'"/></td>';
+						template+='<td >'+data[i].discount_value+'<input type="hidden" value='+data[i].discount_value+' id="discount'+index+'" name="discount'+index+'"/></td>';
+						template+='<td >'+data[i].paid+'<input type="hidden" value='+data[i].paid+' id="paid_amount'+index+'" name="paid_amount'+index+'"/></td>';
+						template+='<td >'+data[i].balance+'<input type="hidden" value='+data[i].balance+' id="balance_after'+index+'" name="balance_after'+index+'"/></td>';
+				    template+="</tr>";
+					
+					if($('#identity').val()!="") {
+						var identity = $('#identity').val();
+						$('#identity').val(identity+','+index);
+					} else {$('#identity').val(index);}
+				}
+				$('#table_order').append(template);
+				if(data.length>0){netTotal();}else{$('#balance').val(0);$('#all_total').val(0);$('#paid').val(0); alert("No invoice to make payment");}
+			},
+			error:function(e){
+				alert("error"+e);
+			}
+		});	
+}
+</script>
+
+
+<!-- Zone  Popup -->
+<?php $frm = $this->Form; ?>
+<div id="zone_popup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_PRODUCT_CATEGORY");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php echo $url_new;?>" >
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frm_zone" name="frm_zone" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					 		<div class="form-group">
+					 		    
+								<label class="col-md-3 control-label"><?php echo $tr->translate("TITLE");?></label>
+								<div class="col-md-8">
+									<?php echo $frm->getElement('title_en');?>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><?php echo $tr->translate("ADDRESS");?></label>
+								<div class="col-md-8">
+									<?php echo $frm->getElement('txt_address');?>
+								</div>
+							</div>
+							<div class="form-group">
+								 				
+								<label class="col-md-3 control-label"><?php echo $tr->translate("STATUS");?></label>
+								<div class="col-md-8">
+									<?php echo $frm->getElement('status');?>
+								</div>
+								 
+							</div>
+							<div class="form-group">
+								<label  class="col-md-12 col-md-offset-4 col-md-8">
+									<button type="button" name="btnsavenew" onclick="addNewZone();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+								</label>
+							</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+          </div>
+        </div>
+    </div>
+ </div>	

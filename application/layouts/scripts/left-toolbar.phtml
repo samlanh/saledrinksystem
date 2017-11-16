@@ -45,6 +45,7 @@
 	$url_cust_list = array($this->url(array('module'=>'sales','controller'=>'customer','action'=>'index'),null, true), "MENU_SALES_CUSTOMER_INDEX");
 	$url_add_cust = array($this->url(array('module'=>'sales','controller'=>'customer','action'=>'add'),null, true), "MENU_SALES_CUSTOMER_ADD");
 	$url_sals_agent = array($this->url(array('module'=>'sales','controller'=>'saleagent','action'=>'index')), "MENU_SALES_AGENT");
+	$url_clear_point = array($this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'index')), "CLEAR_POINT");
 	$url_return_in = array($this->url(array('module'=>'sales','controller'=>'return','action'=>'index'),null, true), "MENU_SALES_RETURN_INT");
 	$url_return_out = array($this->url(array('module'=>'sales','controller'=>'return','action'=>'return-out'),null, true), "MENU_SALES_RETURN_OUT");
 	$url_termcondiction= array($this->url(array('module'=>'sales','controller'=>'termcondiction','action'=>'index'),null, true), "MENU_SALES_TERMCONDICTION");
@@ -261,8 +262,6 @@
 		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_customer_type[1])?>
 		            		</a>
 	            		</li>
-	            		
-	            		
 	            		<li>
 	            			<a href="<?php echo $url_termcondiction[0]; ?>">
 		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_termcondiction[1]);?>
@@ -271,6 +270,11 @@
 	            		<li>
 	            			<a href="<?php echo $url_sals_agent[0]; ?>">
 		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_sals_agent[1]);?>
+		            		</a>
+	            		</li>
+	            		<li>
+	            			<a href="<?php echo $url_clear_point[0]; ?>">
+		            			<i class="icon-arrow-right"></i><?php echo $tr->translate($url_clear_point[1]);?>
 		            		</a>
 	            		</li>
 					</ul>

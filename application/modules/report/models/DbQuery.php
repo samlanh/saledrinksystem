@@ -262,7 +262,7 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['item']>0){
 			$where .= " AND it.id =".$search['item'];
 		}
-		if($search['point']>-1){
+		if($search['point']>-1 && $search['point']!=''){
 			$where .= " AND s.saving_id =".$search['point'];
 		}
 		if($search['category_id']>0){
@@ -271,10 +271,11 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['customer_id']>0){
 			$where .= " AND s.customer_id =".$search['customer_id'];
 		}
-		$dbg = new Application_Model_DbTable_DbGlobal();
-		$where.=$dbg->getAccessPermission();
-		$order=" ORDER BY so.saleorder_id DESC";
-		return $db->fetchAll($sql.$where.$order);
+// 		$dbg = new Application_Model_DbTable_DbGlobal();
+// 		$where.=$dbg->getAccessPermission();
+		//$order=" ORDER BY so.saleorder_id DESC";
+		//echo $sql.$where;exit();
+		return $db->fetchAll($sql.$where);
 	}
 	function getAllCustomer($search){//7
 		$db = $this->getAdapter();
