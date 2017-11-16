@@ -18,7 +18,7 @@ $frm_agent = $this->form_agent;
 				</div>
 			</div>
 			<div class="portlet-body form">
-				<form id="form_sample_2" action="<?php echo $url_save;?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<form id="frm" autocomplete="off" action="<?php echo $url_save;?>" class="form-horizontal" enctype="multipart/form-data" method="post">
 				<div class="form-body">
 					<h3 class="form-section"><?php echo $tr->translate("MENU_SALES_SALE_AGENT_ADD_SALE_AGENT_INFO");?></h3>
 						<div class="form-group">
@@ -86,19 +86,17 @@ $frm_agent = $this->form_agent;
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-2">
-							<?php echo $tr->translate("CURRENT_ADD");?><span class="required"></span>
+							<?php echo $tr->translate("CURRENT_ADD");?>
 							</label>
 							<div class="col-md-4">
-								<div class="input-icon right">
-									<i class="fa"></i><?php echo $frm_agent->getElement("address");?>
+								<div class="input-icon"><?php echo $frm_agent->getElement("address");?>
 								</div>
 							</div>
-						<label class="control-label col-md-2"><?php echo $tr->translate("EMAIL_ADD");?><span class="required">
-								</span>
+						<label class="control-label col-md-2"><?php echo $tr->translate("EMAIL_ADD");?>
 							</label>
 							<div class="col-md-4">
-								<div class="input-icon right">
-									<i class="fa"></i>
+								<div class="input-icon">
+								
 									<?php echo $frm_agent->getElement("email");?>
 								</div>
 							</div>

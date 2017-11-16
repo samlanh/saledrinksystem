@@ -25,8 +25,8 @@ class Sales_CustomerController extends Zend_Controller_Action
 		$db = new Sales_Model_DbTable_DbCustomer();
 		$rows = $db->getAllCustomer($search);
 		$list = new Application_Form_Frmlist();
-		$columns=array("CUSTOMER_NAME","CUSTOMER_TYPE",
-		"CONTACT_NAME","CONTACT_NUMBER","ADDRESS","ZONE","PROVINCE","CREDIT_TERM","CREDIT_LIMIT","STATUS","BY_USER");
+		$columns=array("COMPANY_NAME",
+		"CONTACT_NAME","CONTACT_NUMBER","ADDRESS","ZONE","PROVINCE","STATUS","BY_USER");
 		$link=array(
 				'module'=>'sales','controller'=>'customer','action'=>'edit',
 		);
@@ -35,12 +35,6 @@ class Sales_CustomerController extends Zend_Controller_Action
         $formFilter = new Sales_Form_FrmSearch();
 		$this->view->formFilter = $formFilter;
 		Application_Model_Decorator::removeAllDecorator($formFilter);
-		
-		//$db = new Application_Model_DbTable_DbGlobal();
- 	   // $db->getUpdatetermcustomer();
-		
-		//$db = new Sales_Model_DbTable_DbCustomer();
- 	   // $db->updatecustomerId();
 		
 	}
 	public function addAction()

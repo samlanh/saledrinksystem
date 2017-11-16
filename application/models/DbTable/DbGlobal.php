@@ -768,6 +768,19 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
    	}
    	return  $db->fetchAll($sql);
    }
+   function getZone($option=1){
+	   	$sql="SELECT id,block_name AS name FROM tb_zone WHERE block_name!='' AND status=1";
+	   	$rows = $this->getAdapter()->fetchAll($sql);
+	   	if($option!=null){
+	   		$opt= array(''=>"Select Zone Name",'-1'=>"Add New");
+		   	if(count($rows) > 0) {
+		   		foreach($rows as $readStock) $opt[$readStock['id']]=$readStock['name'];
+		   	}
+		   	return $opt;
+	   	}else{
+	   		return $rows;
+	   	}
+   }
    	
 }
 ?>

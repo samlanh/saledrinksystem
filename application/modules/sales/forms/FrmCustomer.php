@@ -12,7 +12,7 @@ $db=new Application_Model_DbTable_DbGlobal();
 		$code = $db_cu->getCustomerCode(1);
 		
 		$nameElement = new Zend_Form_Element_Text('txt_name');
-		$nameElement->setAttribs(array('required'=>1,'class'=>'form-control','placeholder'=>'Enter Name'));
+		$nameElement->setAttribs(array('class'=>'form-control','placeholder'=>'Enter Name'));
     	$this->addElement($nameElement);
     	
     	
@@ -80,7 +80,7 @@ $db=new Application_Model_DbTable_DbGlobal();
     	$this->addElement($remarkElement);
     	         
     	$addressElement = new Zend_Form_Element_Textarea('txt_address');
-    	$addressElement->setAttribs(array('placeholder'=>'Enter Adress','class'=>'validate[required] form-control',"rows"=>3));
+    	$addressElement->setAttribs(array('placeholder'=>'Enter Adress','class'=>'form-control',"rows"=>3));
     	$this->addElement($addressElement);
     	
     	$balancelement = new Zend_Form_Element_Text('txt_balance');
@@ -126,11 +126,12 @@ $db=new Application_Model_DbTable_DbGlobal();
     	$this->addElement($status);
     	
     	///zone name controll 
-    	$rows= $db->getGlobalDb("SELECT id,block_name AS name FROM tb_zone WHERE block_name!='' AND STATUS=1");
-    	$opt= array(''=>"Select Zone Name",'-1'=>"Add New");
-    	if(count($rows) > 0) {
-    		foreach($rows as $readStock) $opt[$readStock['id']]=$readStock['name'];
-    	}
+//     	$rows= $db->getGlobalDb("SELECT id,block_name AS name FROM tb_zone WHERE block_name!='' AND STATUS=1");
+//     	$opt= array(''=>"Select Zone Name",'-1'=>"Add New");
+//     	if(count($rows) > 0) {
+//     		foreach($rows as $readStock) $opt[$readStock['id']]=$readStock['name'];
+//     	}
+		$opt = $db->getZone();
     	$zone_name = new Zend_Form_Element_Select('zone_name');
     	$zone_name->setAttribs(array('class'=>'form-control select2me',
     			          'onclick'=>'getPopupZone()'

@@ -325,7 +325,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 
 <!--show save print -->
 <div class="dijitHidden" style="width: 20cm !important; height: 12cm ; padding: 0px; margin: 0px;">
-<div id="invoice" data-dojo-type="dijit.Dialog" style="width:24cm;height: 18cm ;" align="center" data-dojo-props="title:'<?php echo $tr->translate("OFFICIAL_RECEIPT");?>'"  >
+<div id="invoice" data-dojo-type="dijit.Dialog" style="width:24cm;height: 18cm ;" align="center" data-dojo-props="title:'<?php echo $tr->translate("INVOICE");?>'"  >
 	<div id="PrintReceipt" style="border:1px dashed #ccc;width:18cm !important; padding: 0px; margin-bottom:30px; ">
 			<style>
 		.hearder_table{height:25px !important;}
@@ -356,7 +356,6 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 							<td width="40%" valign="top" align="center">
 								<img style="height:45px" alt="<?php ?>" src="<?php echo $this->baseUrl().'/images/logo.jpg'?>"><br />
 								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;"><?php echo $tr->translate("COMPANY_CUSTOMER"); ?></div>
-								<div style="font-size: 10px;font-family:'Khmer MEF2';text-align: center;width:100%;margin-top:-5px;">គ្រប់ប្រភេទ</div>
 							</td>
 							<td width="20%" align="center" valign="top" style=""><div style="font-size: 14px;font-family:'Khmer MEF2';">វិក្កយបត្រ</div>INVOICE
 							</td>
@@ -504,13 +503,13 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 						<form id="frmcustomer" name="frmcustomer" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" enctype="multipart/form-data" method="post">
 						<div class="form-body">
 								<div class="form-group">
-									<label class="control-label col-md-2"><?php echo $tr->translate("Branch Name");?><span class="required">
+									<label class="control-label col-md-2"><?php //echo $tr->translate("Branch Name");?><span class="required">
 										</span>
 									</label>
 									<div class="col-md-4">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<?php echo $form->getElement("branch_id");?>
+											<?php //echo $form->getElement("branch_id");?>
 										</div>
 									</div>
 									<label class="control-label col-md-2">
@@ -545,34 +544,46 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 									</div>
 								</div>
 							<div class="form-group">
-									<label class="control-label col-md-2"><?php echo $tr->translate("CON_NAME");?><span class="required">
+								<label class="control-label col-md-2"><?php echo $tr->translate("CON_NAME");?><span class="required">
+									</span>
+								</label>
+								<div class="col-md-4">
+									<div class="input-icon right">
+										<i class="fa"></i>
+										<?php echo $form->getElement('txt_contact_name'); ?>
+									</div>
+								</div>
+								<label class="control-label col-md-2">
+								<?php echo $tr->translate("CON_NUMBER");?><span class="required"></span>
+								</label>
+								<div class="col-md-4">
+									<div class="input-icon right">
+										<i class="fa"></i><?php echo $form->getElement('contact_phone'); ?>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+									<label class="control-label col-md-2">
+									<?php echo $tr->translate("Province");?><span class="required">
 										</span>
 									</label>
 									<div class="col-md-4">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<?php echo $form->getElement('txt_contact_name'); ?>
+											<?php echo $form->getElement('province'); ?>
 										</div>
 									</div>
-									<label class="control-label col-md-2">
-									<?php echo $tr->translate("CON_NUMBER");?><span class="required"></span>
+									<label class="control-label col-md-2"><?php echo $tr->translate("CUSTOMER_ZONE");?> <span class="required">
+										</span>
 									</label>
 									<div class="col-md-4">
 										<div class="input-icon right">
-											<i class="fa"></i><?php echo $form->getElement('contact_phone'); ?>
+											<i class="fa"></i>
+											<?php echo $form->getElement('zone_name'); ?>
 										</div>
 									</div>
 							</div>
 							<div class="form-group">
-									<label class="control-label col-md-2"><?php echo $tr->translate("CUSTOMER_TYPE");?> <span class="required">
-										</span>
-									</label>
-									<div class="col-md-4">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<?php echo $form->getElement('customer_type'); ?>
-										</div>
-									</div>
 									<label class="control-label col-md-2">
 									<?php echo $tr->translate("Customer Level");?><span class="required">
 										</span>
@@ -583,8 +594,6 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 											<?php echo $form->getElement('customer_level'); ?>
 										</div>
 									</div>
-							</div>
-							<div class="form-group">
 									<label class="control-label col-md-2"><?php echo $tr->translate("ADDRESS");?><span class="required">
 										</span>
 									</label>
@@ -592,16 +601,6 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 										<div class="input-icon right">
 											<i class="fa"></i>
 											<?php echo $form->getElement("txt_address");?>
-										</div>
-									</div>
-									<label class="control-label col-md-2">
-									<?php echo $tr->translate("Province");?><span class="required">
-										</span>
-									</label>
-									<div class="col-md-4">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<?php echo $form->getElement('province'); ?>
 										</div>
 									</div>
 							</div>
@@ -775,6 +774,7 @@ function showReceipt(){
 		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">ចំនួនសរុប</strong></td>';
 		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">តម្លៃរាយ</strong></td>';
 		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">សរុប</strong></td>';
+		  temp+='<td style="border:1px solid #000;font-size:12px;"><strong style="color:#000;">សម្គាល់</strong></td>';
 		  temp+='</tr></thead>';
 		  var rowId = $('#identity').val();
 		  var rowIDArray = rowId.split(',');
@@ -785,11 +785,13 @@ function showReceipt(){
 			  temp+='<td style="border:1px solid #000;">'+i+'</td>';
 			  temp+='<td style="border:1px solid #000;text-align:left;"><strong style="color:#000;">&nbsp;'+$('#product_name'+rowIDArray[n]).val();+'</strong></td>';
 			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qty_sold'+rowIDArray[n]).get('value');+'</strong></td>';
-			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qtydetail_'+rowIDArray[n]).get('value');+'</strong></td>';
+			  qtydetail= dijit.byId('qtydetail_'+rowIDArray[n]).get('value');
+			  qtydetail = isNaN(qtydetail)?0:qtydetail;
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+qtydetail+'</strong></td>';
 			   temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qty_sold'+rowIDArray[n]).get('value');+'</strong></td>';
-			  
 			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('price_'+rowIDArray[n]).get('value'),{places:3});+'</strong></td>';
 			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('sub_total'+rowIDArray[n]).get('value'),{places:3});+'</strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('remark'+rowIDArray[n]).get('value');+'</strong></td>';
 		  temp+='</tr>';
 		}
 		  transport_fee = dijit.byId("transport_fee").get("value");
@@ -801,7 +803,10 @@ function showReceipt(){
 			  temp+='<td style="border:1px solid #000;text-align:left"><strong style="color:#000;">ថ្លៃសេវាដឹកជញ្ជូន</strong></td>';
 			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">1</strong></td>';
 			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format(transport_fee,{places:3})+'</strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;"></strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;"></strong></td>';
 			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">$ '+dojo.number.format(transport_fee,{places:3})+'</strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;"></strong></td>';
 		  	  temp+='</tr>';
 			 }
 		 for(j=i;i<=13;i++){
@@ -814,10 +819,11 @@ function showReceipt(){
 			  temp+='<td style="border:1px solid #000;" ></td>';
 			 temp+='<td style="border:1px solid #000;"></td>';
 			 temp+='<td style="border:1px solid #000;" ></td>';
+			 temp+='<td style="border:1px solid #000;" ></td>';
 		     temp+='</tr>';
 		     }
 			 temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="5"> '+dojo.number.format(dijit.byId('total_riel').get("value"),{places:0})+' រៀល&nbsp;</td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="6"> '+dojo.number.format(dijit.byId('total_riel').get("value"),{places:0})+' រៀល&nbsp;</td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">សរុប</strong>&nbsp;</td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('sub_total').get('value')+transport_fee,{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
@@ -827,24 +833,24 @@ function showReceipt(){
 			  temp+='<td style="border:1px solid #000;><strong style="color:#000;">'+transport_fee+'</strong></td>';
 		     temp+='</tr>';*/
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="5">- សូមពិនិត្យទំនិញអោយបានត្រឹមត្រូវ</td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="6">- សូមពិនិត្យទំនិញអោយបានត្រឹមត្រូវ</td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">បញ្ចុះតម្លៃ&nbsp;</strong></td>';
 			 discount = dijit.byId('discount').get('value');
 			 discount = isNaN(discount)?0:discount;
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">$ '+dojo.number.format(discount,{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="5">- ទំនិញដែលទិញហើយមិនអាចប្តូរវិញបានទេ</td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000;text-align:left;" colspan="6">- ទំនិញដែលទិញហើយមិនអាចប្តូរវិញបានទេ</td>';
 			 temp+='<td style="border:1px solid #000;font-size:12px !important;"><strong style="color:#000;">សរុបដុល&nbsp;</strong></td>';
 			 temp+='<td style="border:1px solid #000;font-size:14px !important;"><strong style="color:#000;font-family:arial;font-weight:bold;">$ '+dojo.number.format(dijit.byId('total_dollar').get('value'),{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="5"></td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="6"></td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">ប្រាក់កក់&nbsp;</strong></td>';
 			 temp+='<td style="border:1px solid #000;><strong style="color:#000;">$ '+dojo.number.format(dijit.byId('total_paid').get('value'),{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
 		     temp+='<tr style=" font-size:12px; text-align:right;font-weight:bold;">';
-			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="5"></td>';
+			 temp+='<td style="border:1px solid #fff;border-right:1px solid #000" colspan="6"></td>';
 			 temp+='<td style="border:1px solid #000;font-size:12px !important;"><strong style="color:#000;">នៅខ្វះ&nbsp;</strong></td>';
 			 temp+='<td style="border:1px solid #000;font-size:14px !important;"><strong style="color:#000;font-family:arial;font-weight:bold;">$ '+dojo.number.format(dijit.byId('balance').get('value'),{places:3})+'</strong>&nbsp;</td>';
 		     temp+='</tr>';
@@ -984,8 +990,8 @@ function addProductRow(){
 		template+='<td style="min-width:50px"><input required="1" readonly name="qty_sold'+col+'" class="fullblog" id="qty_sold'+col+'" dojoType="dijit.form.NumberTextBox" placeholder=""/></td>';
 		template+='<td style="min-width:50px"><input required="1" type="text" tabindex="'+col+'"  onkeyup="calCualtePrice('+col+');" name="price_'+col+'" class="fullblog" id="price_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder=""/><input type="hidden" name="cost_price'+col+'" id="cost_price'+col+'" dojoType="dijit.form.TextBox" /></td>';
 		template+='<td style="min-width:50px"><input type="text"  onkeyup="calCualtePrice('+col+');"  name="discount_'+col+'" class="fullblog" id="discount_'+col+'" dojoType="dijit.form.NumberTextBox" placeholder="" value="0"/></td>';
-		template+='<td style="min-width:60px"><input type="text" name="sub_total'+col+'" class="fullblog" id="sub_total'+col+'" dojoType="dijit.form.NumberTextBox" readonly/></td>';
-		template+='<td width="60px"><input type="text" name="remark'+col+'" class="fullblog" id="remark'+col+'" dojoType="dijit.form.TextBox" /></td>';
+		template+='<td style="min-width:50px"><input type="text" name="sub_total'+col+'" class="fullblog" id="sub_total'+col+'" dojoType="dijit.form.NumberTextBox" readonly/></td>';
+		template+='<td style="min-width:200px"><input type="text" name="remark'+col+'" class="fullblog" id="remark'+col+'" dojoType="dijit.form.TextBox" /></td>';
 		template+='<td width="60px"><button style="height:30px" type="button" onclick="deleteRecord('+col+')" name="save_close" class="btn default red">លុប</button></td>';
 		tmp='<tr id="row'+col+'" class="hover">';
 		tmp+="</tr>";
@@ -1171,7 +1177,6 @@ function cancel(){
 
 </script>
 
-<!-- Zone  Popup -->
 <?php $frm_agent = $this->form_agent; ?>
 <div id="salerep_popup" class="modal fade" tabindex="-1" data-width="1200">
        <div class="modal-dialog">
