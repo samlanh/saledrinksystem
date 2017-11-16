@@ -785,7 +785,7 @@ function showReceipt(){
 			  temp+='<tr style=" font-size:12px !important; text-align:center;font-weight:bold;">';
 			  temp+='<td style="border:1px solid #000;">'+i+'</td>';
 			  temp+='<td style="border:1px solid #000;text-align:left;"><strong style="color:#000;">&nbsp;'+$('#product_name'+rowIDArray[n]).val();+'</strong></td>';
-			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qty_sold'+rowIDArray[n]).get('value');+'</strong></td>';
+			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+dijit.byId('qty_'+rowIDArray[n]).get('value');+'</strong></td>';
 			  qtydetail= dijit.byId('qtydetail_'+rowIDArray[n]).get('value');
 			  qtydetail = isNaN(qtydetail)?0:qtydetail;
 			  temp+='<td style="border:1px solid #000;"><strong style="color:#000;">'+qtydetail+'</strong></td>';
@@ -1012,7 +1012,7 @@ function addProductRow(){
 		 
 }
 function calCualtePrice(index){
-	main_qty= $("#qty_"+index).val();
+	main_qty= dijit.byId("qty_"+index).get('value');
 	if(main_qty==''){main_qty=0;}
 	detail_qty= $("#qtydetail_"+index).val();//ចំនួនរាយ
 	if(detail_qty==''){detail_qty=0;}
@@ -1025,10 +1025,9 @@ function calCualtePrice(index){
 	dijit.byId("qty_sold"+index).attr("value",qty_sold);
 	discount = dijit.byId("discount_"+index).get("value");
 	discount = isNaN(tax)?0:discount;
-
-	total = (price*main_qty)-discount;
-	dijit.byId("sub_total"+index).attr("value",total);
 	
+	total = (price*main_qty)-discount;
+	dijit.byId("sub_total"+index).attr("value",total);	
 	netTotal();
 }
 function netTotal() {//use
