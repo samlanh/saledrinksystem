@@ -64,10 +64,15 @@ class Sales_ClearpointController extends Zend_Controller_Action
 			}
 		}
 		/////////////////for veiw form
-		$formcustomer = new Sales_Form_FrmCustomer(null);
+		$formcustomer = new Sales_Form_FrmClearpoint(null);
 		$formStockAdd = $formcustomer->Formcustomer(null);
 		Application_Model_Decorator::removeAllDecorator($formcustomer);
 		$this->view->form = $formcustomer;
+		
+		$formcustomer = new Sales_Form_FrmPayment(null);
+		$formStockAdd = $formcustomer->Payment(null);
+		Application_Model_Decorator::removeAllDecorator($formcustomer);
+		$this->view->form_payment = $formcustomer;
 		
 		///frm zone name
 		$fm = new Sales_Form_FrmCustomerType();
@@ -115,144 +120,7 @@ class Sales_ClearpointController extends Zend_Controller_Action
 		$frm = $fm->add();
 		Application_Model_Decorator::removeAllDecorator($frm);
 		$this->view->Form = $frm;
-	}
-
-
-	public function customertypelistAction()
-    {
-    	try{
-    		$db = new Sales_Model_DbTable_DbCustomer();
-    		if($this->getRequest()->isPost()){
-    			$search = $this->getRequest()->getPost();
-    		}
-    		else{
-    			$search = array(
-    					'adv_search' => '',
-    					'status_search' => '',
-    					'type' => ''
-    			);
-    		}
-    		$rows= $db->getCustomerType($search);//call frome model
-    		$glClass = new Application_Model_GlobalClass();
-    		$rs_rows = $glClass->getImgStatus($rows, BASE_URL, true);
-    		$list = new Application_Form_Frmlist();
-    		$columns=array("ZONE_NAME","ADDRESS","STATUS","BY_USER");
-    		$link=array(
-    				'module'=>'sales','controller'=>'customer','action'=>'editcustomertype',
-    		);
-    		$this->view->list=$list->getCheckList(0, $columns, $rs_rows, array('block_name'=>$link,'remark'=>$link));
-    		
-    	}catch (Exception $e){
-    		Application_Form_FrmMessage::message("Application Error");
-    		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
-    	}
-    	$fm = new Product_Form_FrmOther();
-    	$frm = $fm->search();
-    	Application_Model_Decorator::removeAllDecorator($frm);
-    	$this->view->Form = $frm;
-    }
-    public function addcustomertypeAction()
-    {
-    	if($this->getRequest()->isPost()){
-    		$data=$this->getRequest()->getPost();
-    		
-    		$db = new Sales_Model_DbTable_DbCustomer();
-    		try {
-    			$db->addZone($data);
-    			if(isset($data['save_new'])){
-    				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/addcustomertype");
-    			}
-    			if(isset($data['save_close'])){
-    				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/customertypelist");
-    				//Application_Form_FrmMessage::redirectUrl('/other/loantype');
-    			}
-    		} catch (Exception $e) {
-    			Application_Form_FrmMessage::message("INSERT_FAIL");
-    			$err = $e->getMessage();
-    			Application_Model_DbTable_DbUserLog::writeMessageError($err);
-    		}
-    	}
-    	$fm = new Sales_Form_FrmCustomerType();
-    	$frm = $fm->add();
-    	Application_Model_Decorator::removeAllDecorator($frm);
-    	$this->view->Form = $frm;
-    }
-
-	public function editcustomertypeAction()
-    {
-    	$id = $this->getRequest()->getParam("id");
-    	$db = new Sales_Model_DbTable_DbCustomer();
-    	if($this->getRequest()->isPost()){
-    		$data=$this->getRequest()->getPost();
-    		$data["id"] = $id;
-    		try {
-    			$db->editCustomerType($data);
-    			if(isset($data['save_new'])){
-    				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/customertypelist");
-    			}
-    			if(isset($data['save_close'])){
-    				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer/customertypelist");
-    			}
-    		} catch (Exception $e) {
-    			Application_Form_FrmMessage::message("INSERT_FAIL");
-    			$err = $e->getMessage();
-    			Application_Model_DbTable_DbUserLog::writeMessageError($err);
-    		}
-    	}
-    	$rs = $db->getCustomerTypeId($id);
-    	$fm = new Sales_Form_FrmCustomerType();
-    	$frm = $fm->add($rs);
-    	Application_Model_Decorator::removeAllDecorator($frm);
-    	$this->view->Form = $frm;
-    }
-	
-	public function addCustomerAction(){
-		if($this->getRequest()->isPost()){
-			try {
-			$post=$this->getRequest()->getPost();
-			$add_customer = new Sales_Model_DbTable_DbCustomer();
-			$customer_id = $add_customer->addNewCustomer($post);
-			$result = array('cus_id'=>$customer_id);
-			echo Zend_Json::encode($result);
-			exit();
-			}catch (Exception $e){
-				$result = array('err'=>$e->getMessage());
-				echo Zend_Json::encode($result);
-				exit();
-			}
-		}
-	}
-	public function deleteCustomerAction() {
-		$id = ($this->getRequest()->getParam('id'));
-		$sql = "DELETE FROM tb_customer WHERE customer_id IN ($id)";
-		$deleteObj = new Application_Model_DbTable_DbGlobal();
-		$deleteObj->deleteRecords($sql);
-		$this->_redirect('/sales/customer/index');
-	}
-	
-	public function getCuCodeAction(){//dynamic by customer
-	
-		$post=$this->getRequest()->getPost();
-		$get_code = new Sales_Model_DbTable_DbCustomer();
-		$result = $get_code->getCustomerCode($post["id"]);
-		echo Zend_Json::encode($result);
-		exit();
-	}
-	
-	function getcustomerlimitAction(){
-		$post=$this->getRequest()->getPost();
-		$get_code = new Sales_Model_DbTable_DbCustomer();
-		$result = $get_code->getCustomerLimit($post["id"]);
-		echo Zend_Json::encode($result);
-		exit();
-	}
-	function getCustomerinfoAction(){
-		$post=$this->getRequest()->getPost();
-		$get_code = new Sales_Model_DbTable_DbCustomer();
-		$result = $get_code->getCustomerinfo($post["customer_id"]);
-		echo Zend_Json::encode($result);
-		exit();
-	}
+	} 
 	
 	function addNewZoneAction(){
 		$post=$this->getRequest()->getPost();

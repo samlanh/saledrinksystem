@@ -91,6 +91,14 @@ class Sales_Form_FrmPayment extends Zend_Form
     	$paid_dollar->setAttribs(array("class"=>"validate[required] form-control","onkeyup"=>"paidtotal(1);",'require'=>true,"placeHolder"=>"Paid in Dollar"));
     	$this->addElement($paid_dollar);
     	
+    	$clear_point = new Zend_Form_Element_Text('clear_point');
+    	$clear_point->setAttribs(array("class"=>"validate[required] form-control","onkeyup"=>"paidtotal(1);",'require'=>true,"placeHolder"=>"Clear Point"));
+    	$this->addElement($clear_point);
+    	
+    	$balance_point = new Zend_Form_Element_Text('balance_point');
+    	$balance_point->setAttribs(array("class"=>" form-control","placeHolder"=>"Balance Point"));
+    	$this->addElement($balance_point);
+    	
     	$paid_riel = new Zend_Form_Element_Text('paid_riel');
     	$paid_riel->setAttribs(array("class"=>"form-control","onkeyup"=>"paidtotal(2);","placeHolder"=>"Paid in Riel"));
     	$this->addElement($paid_riel);

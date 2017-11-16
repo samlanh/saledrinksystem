@@ -5,7 +5,6 @@ public function init()
 	{
 		$request=Zend_Controller_Front::getInstance()->getRequest();
 		$db=new Application_Model_DbTable_DbGlobal();
-		
 		$tr=Application_Form_FrmLanguages::getCurrentlanguage();
 		$nameValue = $request->getParam('text_search');
 		$nameElement = new Zend_Form_Element_Text('text_search');
@@ -15,7 +14,7 @@ public function init()
 		$nameElement->setValue($nameValue);
 		$this->addElement($nameElement);
 		
-		$rs=$db->getGlobalDb('SELECT id,cust_name,`phone`,`contact_phone` FROM tb_customer WHERE cust_name!="" AND status=1 ');
+		$rs=$db->getGlobalDb('SELECT id,contact_name As cust_name,`phone`,`contact_phone` FROM tb_customer WHERE contact_name!="" AND status=1 ');
 		$options=array($tr->translate('Choose Customer'));
 		$vendorValue = $request->getParam('customer_id');
 		if(!empty($rs)) foreach($rs as $read) $options[$read['id']]=$read['cust_name']."-".$read['contact_phone'];
