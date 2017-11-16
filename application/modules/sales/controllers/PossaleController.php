@@ -56,6 +56,12 @@ class Sales_PossaleController extends Zend_Controller_Action
 		Application_Model_Decorator::removeAllDecorator($formShowAgent);
 		$this->view->form_agent = $formShowAgent;
 		
+		//form add zonen popup
+		$fm = new Sales_Form_FrmCustomerType();
+		$frm = $fm->add();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->form_zone = $frm;
+		
 	}
 	public function editAction()
 	{
@@ -150,6 +156,16 @@ class Sales_PossaleController extends Zend_Controller_Action
 			$post=$this->getRequest()->getPost();
 			$db = new Sales_Model_DbTable_DbSalesAgent();
 			$rs =$db->addNewRep($post);
+			print_r(Zend_Json::encode($rs));
+			exit();
+		}
+	}
+	
+	function addNewzoneAction(){
+		if($this->getRequest()->isPost()){
+			$post=$this->getRequest()->getPost();
+			$db = new Sales_Model_DbTable_DbCustomer();
+			$rs =$db->addZone($post);
 			print_r(Zend_Json::encode($rs));
 			exit();
 		}

@@ -118,8 +118,10 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 			$this->insert($data_item);
 	
 			$ids=explode(',',$data['identity']);
+			$total_point=0;
 			foreach ($ids as $i)
 			{
+				$total_point=$total_point+$data['qty_'.$i];
 				$data_item= array(
 						'saleorder_id'=> $sale_id,
 						'pro_id'	  => $data['product_id'.$i],
@@ -139,6 +141,17 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 				$this->_name='tb_salesorder_item';
 				$this->insert($data_item);
 			}
+			
+			
+			//update point in sale order
+			$this->_name="tb_sales_order";
+			$data_point= array(
+					'total_point'		=> $total_point,
+					'total_pointafter'	=> $total_point,
+					"is_pointclear"   	=> 	1,
+			);
+			$where=" id=".$sale_id;
+			$this->update($data_point,$where);
 
 			$ids=explode(',',$data['identity_term']);
 			if(!empty($data['identity_term'])){

@@ -626,6 +626,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 							</div>
 							<div class="form-group">
 								<label  class="col-md-12 col-md-offset-4 col-md-8">
+									<button type="button" name="save_closes" onclick="cancel2()" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i><?php echo $tr->translate("CANCEL")?></button>
 									<button type="button" id="save_customer" name="btnsavenew" onclick="addNewCustomer();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
 								</label>
 							</div>
@@ -878,6 +879,7 @@ function addNewCustomer(){
 	   form: dojo.byId("frmcustomer"),
 	   handleAs:"json", 
 	   load: function(data) {
+		   $('#save_customer').attr("disabled", false);
 		   var itemcustomer = { 
 			    	 id: data.cus_id,
 				     name: txt_name
@@ -1146,15 +1148,27 @@ function getPopupSaleRep(){
 		$('#salerep_popup').modal('show');
 	}
 }
+//popup zone 
+function getPopupZone(){
+	val = $("#zone_name").val();
+	if(val==-1){
+		$('#zone_popup').modal('show');
+	}
+}
+
 
 <?php $url_add_salerep=  $this->url(array('module'=>'sales','controller'=>'possale','action'=>'add-new-salerep')); ?>
 function addNewSaleRep(){
+	txt_name = $("#name").val();
+	if(txt_name==''){alert("សូមបញ្ជូលឈ្មោះអ្នកលក់!"); $("#name").focus();return false;} 
+	$('#btnsavenew').attr("disabled", true);
 	var cat_name  = $("#name").val();
 	$.ajax({
 		url: "<?php echo $url_add_salerep;?>",
 		type: "post",
 		data: $('#frm_sale_rep').serialize(),
 		success: function(data){
+			$('#btnsavenew').attr("disabled", false);
 			var Itemcat = { 
 			    	 id:data,
 				     name: cat_name
@@ -1170,11 +1184,46 @@ function addNewSaleRep(){
 	});
 }
 
+<?php $url_add_zone=  $this->url(array('module'=>'sales','controller'=>'possale','action'=>'add-newzone')); ?>
+function addNewZone(){
+	txt_name = $("#title_en").val();
+	if(txt_name==''){alert("សូមបញ្ជូលឈ្មោះតំបន់!"); $("#title_en").focus();return false;} 
+	$('#btnsave_zone').attr("disabled", true);
+	
+	var name  = $("#title_en").val();
+	$.ajax({
+		url: "<?php echo $url_add_zone;?>",
+		type: "post",
+		data: $('#frm_zone').serialize(),
+		success: function(data){
+			$('#btnsave_zone').attr("disabled", false);
+			rs = $.parseJSON(data);
+			 $('#zone_name').append($("<option></option>").attr("value",rs['id']).attr("selected",true).text(name));                       
+			 $("#zone_name").select2();
+			 $("#frm_zone").trigger('reset');
+			 $('#zone_popup').modal('hide');
+		},
+		error:function(err){
+			alert("faile insert");
+		   
+		}
+	});
+}
+
 function cancel(){
 	 $("#frm_sale_rep").trigger('reset');
 	 $('#salerep_popup').modal('hide');
 }
 
+function cancel1(){
+	 $("#frm_zone").trigger('reset');
+	 $("#zone_popup").modal('hide');
+}
+
+function cancel2(){
+	 $("#frmcustomer").trigger('reset');
+	 $("#customerpopup").modal('hide');
+}
 </script>
 
 <?php $frm_agent = $this->form_agent; ?>
@@ -1240,7 +1289,7 @@ function cancel(){
 							<div class="form-group">
 								<label  class="col-md-12 col-md-offset-4 col-md-8">
 								    <button type="button" name="save_close" onclick="cancel()" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i><?php echo $tr->translate("CANCEL")?></button>
-									<button type="button" name="btnsavenew" onclick="addNewSaleRep();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+									<button type="button"​​ name="btnsavenew" id="btnsavenew" onclick="addNewSaleRep();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
 								</label>
 							</div>
 				</div>
@@ -1253,3 +1302,62 @@ function cancel(){
         </div>
     </div>
  </div>	
+ 
+ <!-- form popup add new zone  -->
+ <?php $frm_zone = $this->form_zone; ?>
+<div id="zone_popup" class="modal fade" tabindex="-1" data-width="1200">
+       <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">   
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-home"></i><?php echo $tr->translate("ADD_ZONE");?>
+				</div>
+				<div class="caption pull-right">
+					<a href="<?php //echo $url_new;?>" >
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form id="frm_zone" name="frm_zone" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<div class="form-body">
+					 		 <div class="form-group">
+									<label class="col-md-3 control-label"><?php echo $tr->translate("TITLE");?></label>
+									<div class="col-md-8">
+										<?php echo $frm_zone->getElement('title_en');?>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label"><?php echo $tr->translate("ADDRESS");?></label>
+									<div class="col-md-8">
+										<?php echo $frm_zone->getElement('txt_address');?>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label"><?php echo $tr->translate("STATUS");?></label>
+									<div class="col-md-8">
+										<?php echo $frm_zone->getElement('status');?>
+									</div>
+								</div>
+						
+							<div class="form-group">
+								<label  class="col-md-12 col-md-offset-4 col-md-8">
+								    <button type="button" name="save_close" onclick="cancel1()" value="saveclose" class="btn btn-primary" ><i class="glyphicon glyphicon-log-in"></i><?php echo $tr->translate("CANCEL")?></button>
+									<button type="button" name="btnsave_zone" id="btnsave_zone" onclick="addNewZone();" class="btn btn-primary"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_CLOSE")?> </button>
+								</label>
+							</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+          </div>
+        </div>
+    </div>
+ </div>	
+  <!--end form popup add new zone  -->
