@@ -228,7 +228,8 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		(SELECT tb_measure.name FROM `tb_measure` WHERE tb_measure.id=it.measure_id LIMIT 1) as measue_name,
 		(SELECT name FROM `tb_category` WHERE id=it.cate_id LIMIT 1) AS cate_name,
 		(SELECT name FROM `tb_brand` WHERE id=it.brand_id LIMIT 1) AS brand_name,
-		(SELECT cust_name FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
+		(SELECT (CASE WHEN contact_name IS NULL THEN cust_name ELSE contact_name END) FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
+
 		(SELECT phone FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS phone,
 		(SELECT contact_name FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS contact_name,
 		(SELECT email FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS email,
@@ -271,11 +272,11 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['customer_id']>0){
 			$where .= " AND s.customer_id =".$search['customer_id'];
 		}
-// 		$dbg = new Application_Model_DbTable_DbGlobal();
-// 		$where.=$dbg->getAccessPermission();
-		//$order=" ORDER BY so.saleorder_id DESC";
-		//echo $sql.$where;exit();
-		return $db->fetchAll($sql.$where);
+
+		$dbg = new Application_Model_DbTable_DbGlobal();
+		$where.=$dbg->getAccessPermission();
+		$order=" ORDER BY so.saleorder_id DESC";
+		return $db->fetchAll($sql.$where.$order);
 	}
 	function getAllCustomer($search){//7
 		$db = $this->getAdapter();
