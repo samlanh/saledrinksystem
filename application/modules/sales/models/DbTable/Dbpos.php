@@ -80,43 +80,43 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 			$sale_id = $this->insert($info_purchase_order);
 			
 			$data['receipt'] = $db_global->getReceiptNumber(1);
-			
-			$info_purchase_order=array(
-					"branch_id"   	=> 	1,//$branch_id['branch_id'],
-					"customer_id"   => 	$data["customer_id"],
-					"payment_type"  => 	1,//payment by customer/invoice
-					"payment_id"    => 	1,	//payment by cash/paypal/cheque
-					"receipt_no"    => 	$data['receipt'],
-					"receipt_date"  =>  date("Y-m-d"),
-					"date_input"    =>  date("Y-m-d"),
-					"total"         => 	$data['total_dollar'],
-					"paid"          => 	$data["total_paid"],
-					"paid_dollar"   => 	$data['receive_dollar'],
-					"paid_riel"     => 	$data['receive_riel'],
-					"balance"       => 	$data['balance'],
-// 					"remark"        => 	$data['remark'],
-					"user_id"       => 	$GetUserId,
-					'status'        =>1,
-					"bank_name"     => 	'',
-					"cheque_number" => 	'',
-					"exchange_rate" => 	$data['exchange_rate'],
-			);
-			$this->_name="tb_receipt";
-			$reciept_id = $this->insert($info_purchase_order);
-			
-			$data_item= array(
-					'receipt_id'  => $reciept_id,
-					'invoice_id'  => $sale_id,
-					'total'		  => $data['total_dollar'],
-					'paid'	      => $data["total_paid"],
-					'balance'	  => $data['balance'],
-					'is_completed'=> ($data['balance']==0)?1:0,
-					'status'      => 1,
-					'date_input'  => date("Y-m-d"),
-			);
-			$this->_name='tb_receipt_detail';
-			$this->insert($data_item);
-	
+			if($data['total_paid']>0){
+				$info_purchase_order=array(
+						"branch_id"   	=> 	1,//$branch_id['branch_id'],
+						"customer_id"   => 	$data["customer_id"],
+						"payment_type"  => 	1,//payment by customer/invoice
+						"payment_id"    => 	1,	//payment by cash/paypal/cheque
+						"receipt_no"    => 	$data['receipt'],
+						"receipt_date"  =>  date("Y-m-d"),
+						"date_input"    =>  date("Y-m-d"),
+						"total"         => 	$data['total_dollar'],
+						"paid"          => 	$data["total_paid"],
+						"paid_dollar"   => 	$data['receive_dollar'],
+						"paid_riel"     => 	$data['receive_riel'],
+						"balance"       => 	$data['balance'],
+	// 					"remark"        => 	$data['remark'],
+						"user_id"       => 	$GetUserId,
+						'status'        =>1,
+						"bank_name"     => 	'',
+						"cheque_number" => 	'',
+						"exchange_rate" => 	$data['exchange_rate'],
+				);
+				$this->_name="tb_receipt";
+				$reciept_id = $this->insert($info_purchase_order);
+				
+				$data_item= array(
+						'receipt_id'  => $reciept_id,
+						'invoice_id'  => $sale_id,
+						'total'		  => $data['total_dollar'],
+						'paid'	      => $data["total_paid"],
+						'balance'	  => $data['balance'],
+						'is_completed'=> ($data['balance']==0)?1:0,
+						'status'      => 1,
+						'date_input'  => date("Y-m-d"),
+				);
+				$this->_name='tb_receipt_detail';
+				$this->insert($data_item);
+			}
 			$ids=explode(',',$data['identity']);
 			$total_point=0;
 			foreach ($ids as $i)

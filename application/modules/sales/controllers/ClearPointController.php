@@ -49,13 +49,13 @@ class Sales_ClearpointController extends Zend_Controller_Action
 		{
 			$post = $this->getRequest()->getPost();
 			try{
-				$db = new Sales_Model_DbTable_DbCustomer();
-				$db->addCustomer($post);
+				$db = new Sales_Model_DbTable_DbClearPoint();
+				$db->addClearPointr($post);
 				if(!empty($post['saveclose']))
 				{
-					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/customer/');
+					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/clearpoint/');
 				}else{
-					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/customer/add');
+					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/clearpoint/add');
 				}
 			}catch(Exception $e){
 				Application_Form_FrmMessage::message('INSERT_FAIL');
@@ -128,5 +128,15 @@ class Sales_ClearpointController extends Zend_Controller_Action
 		$result = $get_code->addZone($post);
 		echo Zend_Json::encode($result);
 		exit();
+	}
+	
+	public function getinvoiceAction(){
+		if($this->getRequest()->isPost()){
+			$post=$this->getRequest()->getPost();
+			$db = new Application_Model_DbTable_DbGlobal();
+			$rs = $db->getAllPoint($post['post_id'], $post['type_id']);
+			echo Zend_Json::encode($rs);
+			exit();
+		}
 	}
 }

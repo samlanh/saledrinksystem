@@ -571,6 +571,33 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 	}
    	return  $db->fetchAll($sql);
    }
+   
+   //fucntion get all clear point 
+   function getAllPoint($post_id,$type){
+   	$db= $this->getAdapter();
+   	if($type==1){//by customer
+   		$sql="SELECT s.id,s.sale_no,s.customer_id,s.total_pointafter,is_pointclear,s.saving_id,s.date_sold,s.total_point,c.cu_code
+			FROM tb_sales_order AS s,tb_customer AS c
+			WHERE s.customer_id=c.id
+			AND s.saving_id=1
+			AND s.is_pointclear=1
+			AND s.total_pointafter >0  
+			AND s.status=1
+			AND s.customer_id=$post_id";
+   		$sql.=" ORDER BY s.id DESC ";
+   	}else{//by invoice
+   		$sql="SELECT s.id,s.sale_no,s.customer_id,s.total_pointafter,is_pointclear,s.saving_id,s.date_sold,s.total_point,c.cu_code
+			FROM tb_sales_order AS s,tb_customer AS c
+			WHERE s.customer_id=c.id
+			AND s.saving_id=1
+			AND s.is_pointclear=1
+			AND s.total_pointafter >0
+			AND s.status=1
+			AND s.id=$post_id";
+   	}
+   	return  $db->fetchAll($sql);
+   }
+   
    	function getAllCustomer($opt=null){
    		$db=$this->getAdapter();
    		$sql=" SELECT id, CONCAT(cust_name,',',contact_name) AS cust_name,cu_code FROM tb_customer WHERE 

@@ -23,7 +23,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 				</div>
 			</div>
 			<div class="portlet-body form">
-				<form id="frm" action="<?php echo $url_submit; ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<form id="frm" action=" " class="form-horizontal" enctype="multipart/form-data" method="post">
 				<div class="form-body">
 						<div class="form-group">
 							 <label class="control-label col-md-2"><?php echo $tr->translate("Clear Point Type");?> <span class="required">
@@ -101,7 +101,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 									<th><?php echo $tr->translate("POINT");?></th>
 							</tr>
 						 </table>
-						 <input type="hidden" id="identity" name="identity" />
+						 <input type="text" id="identity" name="identity" />
 					</div>
 					    
 					    <div class="form-group">
@@ -206,6 +206,8 @@ $('#frm').submit(function() {
 	
  $(document).ready(function() {
 	getCustomerLimit();
+	$("#cu_code").val('');
+	$("#customer_id").val(0);
 });
  <?php $url_customer_limit =  $this->url(array('module'=>'sales','controller'=>'customer','action'=>'getcustomerlimit')); ?>
 function getCustomerLimit(){
@@ -322,7 +324,7 @@ function addNewZone(){
 	});
 }
 
-<?php $urlgetinvoice =  $this->url(array('module'=>'sales','controller'=>'payment','action'=>'getinvoice')); ?>
+<?php $urlgetinvoice =  $this->url(array('module'=>'sales','controller'=>'clearpoint','action'=>'getinvoice')); ?>
 function getInvoice(type){
 	if(type==1){
 		post_id=$("#customer_id").val();
@@ -355,6 +357,7 @@ function getInvoice(type){
 					if(i==0){
 						$("#customer_id").val(data[i].customer_id);
 						$("#customer_id").select2();
+						$("#cu_code").val(data[i].cu_code);
 					}
 					index=i+1;
 					template+='<tr style="height:30px;">';
@@ -362,8 +365,8 @@ function getInvoice(type){
 						template+='<td >'+index+'</td>';
 						template+='<td >'+data[i].date_sold+'</td>';
 						template+='<td >'+data[i].sale_no+'<input type="hidden" value='+data[i].id+' id="invoice_no'+index+'" name="invoice_no'+index+'"/></td>';
-						template+='<td >'+data[i].net_total+'<input type="hidden" value='+data[i].net_total+' id="subtotal'+index+'" name="subtotal'+index+'"/></td>';
-						template+='<td >'+data[i].balance+'<input type="hidden" value='+data[i].balance+' id="balance_after'+index+'" name="balance_after'+index+'"/></td>';
+						template+='<td >'+data[i].total_point+'<input type="hidden" value='+data[i].total_point+' id="total_point'+index+'" name="total_point'+index+'"/></td>';
+						template+='<td >'+data[i].total_pointafter+'<input type="hidden" value='+data[i].total_pointafter+' id="total_pointafter'+index+'" name="total_pointafter'+index+'"/></td>';
 				    template+="</tr>";
 					
 					if($('#identity').val()!="") {
@@ -372,7 +375,15 @@ function getInvoice(type){
 					} else {$('#identity').val(index);}
 				}
 				$('#table_order').append(template);
-				if(data.length>0){netTotal();}else{$('#balance').val(0);$('#all_total').val(0);$('#paid').val(0); alert("No invoice to make payment");}
+				if(data.length>0){
+					netTotal();
+					$('#clear_point').val($('#all_total').val());
+					$('#balance_point').val(0);
+				}else{
+					$('#all_total').val(0);
+					$('#clear_point').val(0);
+					$('#balance_point').val(0);
+				 }
 			},
 			error:function(e){
 				alert("error"+e);
@@ -402,14 +413,14 @@ function netTotal() {//use
 		//subtotal += Number($('#subtotal'+rowIDArray[n]).val());
 		//paid +=Number($('#paid_amount'+rowIDArray[n]).val());
 		//discount +=Number($('#discount'+rowIDArray[n]).val());
-		subtotal += Number($('#balance_after'+rowIDArray[n]).val());
+		subtotal += Number($('#total_pointafter'+rowIDArray[n]).val());
 		
 	}
 	//var alltotal = Number(subtotal - discount).toFixed(2);
 	$('#all_total').val(subtotal);
 	//$('#paid').val(paid.toFixed(2));
 	$('#paid').val(0);
-	doRemain();
+	//doRemain();
 }
 function doRemain() {
 	var all_total = Number($('#all_total').val());
@@ -434,6 +445,19 @@ function checkControll(){
 		$( "#customer_id" ).attr( "readOnly", true );
 		$( "#invoice_id" ).attr( "readOnly", false );
     }
+}
+
+function getBalancePoint(){
+	all_total=Number($("#all_total").val());
+	clear_point=Number($("#clear_point").val());
+	if(clear_point>all_total){
+		alert("Clear Point Cannot bigger then all total point!");
+		$("#clear_point").val(all_total)
+		$("#balance_point").val(0);
+	}else{
+		$("#balance_point").val(all_total-clear_point);
+	}
+	
 }
 
 </script>
