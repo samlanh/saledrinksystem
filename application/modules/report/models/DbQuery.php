@@ -149,11 +149,11 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 	}
 	public function getAllSaleOrderReport($search){//4
 		$db= $this->getAdapter();
-		$sql="  SELECT s.id,
+		$sql="  SELECT s.id,s.saving_id,
 				(SELECT NAME FROM `tb_sublocation` WHERE tb_sublocation.id = s.branch_id AND STATUS=1 AND NAME!='' LIMIT 1) AS branch_name,
 				(SELECT CONCAT(cust_name,' ',contact_name) FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
 				(SELECT NAME FROM `tb_sale_agent` WHERE id=s.saleagent_id LIMIT 1) AS agent_name,
-				s.sale_no,s.date_sold,s.payment_date,s.all_total,s.tax,s.discount_value,
+				s.sale_no,s.date_sold,s.payment_date,s.all_total,s.tax,s.discount_value,s.total_pointafter,
 				(s.net_total+s.transport_fee) AS net_total,s.paid,s.balance,
 				(SELECT block_name FROM tb_zone WHERE tb_zone.id=c.zone_id LIMIT 1) AS zone,
 				(SELECT p.province_en_name FROM ln_province AS p WHERE p.province_id=c.province_id LIMIT 1)AS province,
@@ -186,6 +186,9 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 			
 		}
 		
+		if($search['point']>-1 && $search['point']!=''){
+			$where .= " AND s.saving_id =".$search['point'];
+		}
 		
 		if($search['province_id']>0){
 			$where .= " AND c.province_id = ".$search['province_id'];
@@ -243,6 +246,9 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		(SELECT contact_name FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS contact_name,
 		(SELECT email FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS email,
 		
+		(SELECT block_name FROM tb_zone WHERE tb_zone.id=c.zone_id LIMIT 1) AS zone,
+		(SELECT p.province_en_name FROM ln_province AS p WHERE p.province_id=c.province_id LIMIT 1)AS province,
+		
 		(SELECT u.username FROM tb_acl_user AS u WHERE u.user_id = s.user_mod LIMIT 1 ) AS user_name,
 		so.qty_unit,so.qty_detail,so.qty_order,so.price,so.sub_total,s.net_total,
 		s.id,s.sale_no,s.date_sold,s.payment_date,s.remark,
@@ -250,8 +256,8 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		s.balance,so.saleorder_id
 		FROM `tb_sales_order` AS s,
 		`tb_salesorder_item` AS so,
-		tb_product AS it
-		WHERE s.id=so.saleorder_id AND it.id=so.pro_id
+		tb_product AS it,tb_customer As c
+		WHERE s.id=so.saleorder_id AND it.id=so.pro_id AND s.customer_id=c.id
 		AND s.status=1 ";
 		$from_date =(empty($search['start_date']))? '1': " s.date_sold >= '".$search['start_date']." 00:00:00'";
 		$to_date = (empty($search['end_date']))? '1': " s.date_sold <= '".$search['end_date']." 23:59:59'";
@@ -272,9 +278,7 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		if($search['item']>0){
 			$where .= " AND it.id =".$search['item'];
 		}
-		if($search['point']>-1 && $search['point']!=''){
-			$where .= " AND s.saving_id =".$search['point'];
-		}
+		
 		if($search['saleagent_id']>0){
 			$where .= " AND s.saleagent_id =".$search['saleagent_id'];
 		}
@@ -284,6 +288,14 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 		}
 		if($search['customer_id']>0){
 			$where .= " AND s.customer_id =".$search['customer_id'];
+		}
+		
+		if($search['province_id']>0){
+			$where .= " AND c.province_id = ".$search['province_id'];
+		}
+		
+		if($search['zone_id']>0){
+			$where .= " AND c.zone_id = ".$search['zone_id'];
 		}
 
 		$dbg = new Application_Model_DbTable_DbGlobal();

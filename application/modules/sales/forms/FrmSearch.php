@@ -141,6 +141,18 @@ public function init()
 		$customer_type->setMultiOptions($opt);
 		$customer_type->setValue($request->getParam("customer_type"));
 		$this->addElement($customer_type);
+		
+		//point
+		$options=array( ''=>$tr->translate('Choose Point'),'1'=>$tr->translate('Yes'),'0'=>$tr->translate('No'));
+		$point_value = $request->getParam('point');
+		$point=new Zend_Form_Element_Select('point');
+		$point->setMultiOptions($options);
+		$point->setAttribs(array(
+				'id'=>'point',
+				'class'=>'form-control select2me'
+		));
+		$point->setValue($point_value);
+		$this->addElement($point);
 		/*$options="";
 		$sql = "SELECT id,name FROM `tb_price_type` WHERE name!='' ";
 		$sql.=" ORDER BY id DESC ";

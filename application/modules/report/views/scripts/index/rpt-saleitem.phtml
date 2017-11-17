@@ -30,14 +30,16 @@ $frm=$this->form_purchase;
             <div class="portlet-body form frmfilter">
 				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
 					<div class="form-group" style="padding-top: 6px;">
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("txt_search");?></label>
-						<label class="control-label col-md-3"><?php echo $frm->getElement("customer_id");?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('item');?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("category_id");?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('saleagent_id');?></label>
-						<label class="control-label col-md-3"><?php echo $frm->getElement("point");?></label>
-						 <label class="control-label col-md-3"><?php echo $frm_sales_report->getElement('start_date');?></label>
-						<label class="control-label col-md-3"><?php echo $frm_sales_report->getElement("end_date");?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("txt_search");?></label>
+						<label class="control-label col-md-2"><?php echo $frm->getElement("customer_id");?></label>
+						
+						<label class="control-label col-md-2"><?php echo $frm->getElement('province_id');?></label>
+						<label class="control-label col-md-2"><?php echo $frm->getElement('zone_id');?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('item');?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("category_id");?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('saleagent_id');?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement('start_date');?></label>
+						<label class="control-label col-md-2"><?php echo $frm_sales_report->getElement("end_date");?></label>
 						<label class="control-label col-md-1">
 							<input type="submit" value="<?php echo $tr->translate("SEARCH")?>"  class="ui-button ui-widget ui-state-default ui-corner-all ui-state-hover" name="btn_search" name="btn_search" /> 
 						</label>
@@ -94,12 +96,14 @@ $frm=$this->form_purchase;
 		                    <td>&nbsp;<?php echo $tr->translate("NUM");?></td>
 							<td>&nbsp;<?php echo $tr->translate("CUSTOMER_NAME");?></td>
 							<td>&nbsp;<?php echo $tr->translate("SALE_AGENT");?></td>
+							<td>&nbsp;<?php echo $tr->translate("PROVINCE_NAME");?></td>
+							<td>&nbsp;<?php echo $tr->translate("ZONE_NAME");?></td>
 							<td>&nbsp;<?php echo $tr->translate("INVOICE NUMBER");?></td>
 							<td width="10%">&nbsp;<?php echo $tr->translate("SALE_DATE");?></td>
 							<td width="10%">&nbsp;<?php echo $tr->translate("PAYMENT_DATE");?></td>
 							<td><?php echo $tr->translate("CATE_NAME");?></td>
 							<td><?php echo $tr->translate("ITEM_NAME");?></td>
-							<td>&nbsp;<?php echo $tr->translate("POINT");?></td>
+							 
 							<td>&nbsp;<?php echo $tr->translate("QTY");?></td>
 							<td>&nbsp;<?php echo $tr->translate("FREE_QTY");?></td>
 							<td width="10%">&nbsp;<?php echo $tr->translate("ITEM_PRICE");?></td>
@@ -124,13 +128,15 @@ $frm=$this->form_purchase;
 						   <td align="center" style="white-space: nowrap;">&nbsp;<?php echo $index+1?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["customer_name"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["staff_name"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["province"];?></td>
+						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["zone"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["sale_no"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_sold"]));?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["payment_date"]));?></td>
 						   
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["cate_name"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["item_name"];?></td>
-						   <td style="white-space: nowrap;">&nbsp;<?php echo ($point==0)?"":"".number_format($point,2);?> </td>
+						   
 						   <td style="white-space: nowrap;">&nbsp;<?php echo number_format($rs["qty_unit"],2);?>  </td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo ($rs['qty_detail']==0)?"":"".number_format($rs["qty_detail"],2);?>  </td>
 						   <td>&nbsp;$&nbsp;<?php echo number_format($rs["price"],2);?></td>
@@ -153,7 +159,7 @@ $frm=$this->form_purchase;
 		                <tbody><tr height="30px;" bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:2px 0px; ">
 		                    <td><strong><?php echo $tr->translate("TOTAL_QTYSOLD");?></strong></td>
 		                    <td><strong><?php echo $tr->translate("FREE_QTY");?></strong></td>
-		                    <td><strong><?php echo $tr->translate("POINT");?></strong></td>
+		                    
 		                    <td><strong><?php echo $tr->translate("TOTAL_SOLD_AMOUNT");?></strong></td>
 		                    <td><strong><?php echo $tr->translate("DISCOUNT");?></strong></td>
 		                    <td><strong><?php echo $tr->translate("PAID");?></strong></td>
@@ -162,7 +168,7 @@ $frm=$this->form_purchase;
 		                 <tr class="style" style=" line-height: 24px; font-size:11px;">
 		                    <td>&nbsp;<?php echo number_format($qty_sold,2);?>&nbsp;</td>
 		                    <td>&nbsp;<?php echo number_format($qty_free,2);?>&nbsp;</td>
-		                    <td>&nbsp;<?php echo ($points==0)?"":"".number_format($points,2);?>&nbsp;</td>
+		                   
 		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_netotal,2);?>&nbsp;</td>
 		                    <td>&nbsp;$&nbsp;<?php echo number_format($discount,2);?>&nbsp;</td>
 		                    <td>&nbsp;$&nbsp;<?php echo number_format($d_paid,2);?>&nbsp;</td>

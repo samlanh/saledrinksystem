@@ -36,6 +36,7 @@ $brach_name =  $this->branch;
 						<label class="control-label col-md-2"><?php echo $formFilter->getElement('zone_id');?></label>
 						<label class="control-label col-md-2"><?php echo $formFilter->getElement('saleagent_id');?></label>
 						<label class="control-label col-md-2"><?php echo $formFilter->getElement('payment_balance');?></label>
+						<label class="control-label col-md-2"><?php echo $formFilter->getElement("point");?></label>
 						<label class="control-label col-md-2"><?php echo $formFilter->getElement('start_date');?></label>
 						<label class="control-label col-md-2"><?php echo $formFilter->getElement('end_date');?></label>
 						<label class="control-label col-md-2">
@@ -100,6 +101,7 @@ $brach_name =  $this->branch;
 							<td>&nbsp;<?php echo $tr->translate("ZONE_NAME");?></td>
 							<td><?php echo $tr->translate("SALE_DATE");?></td>
 							<td><?php echo $tr->translate("PAYMENT_DATE");?></td>
+							<td>&nbsp;<?php echo $tr->translate("POINT");?></td>
 							<td>&nbsp;<?php echo $tr->translate("AMOUNT");?></td>
 							<td>&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
 							<td>&nbsp;<?php echo $tr->translate("GRAND_TOTAL");?></td>
@@ -108,7 +110,7 @@ $brach_name =  $this->branch;
 							<td>&nbsp;<?php echo $tr->translate("BY_USER");?></td>
 		                </tr>
 		                <?php $num=1; 
-			                $r_netotal = 0;$r_paid = 0; $r_balance = 0;
+			                $r_netotal = 0;$r_paid = 0; $r_balance = 0;$points=0;
 			                $d_netotal = 0;$d_paid = 0; $d_balance = 0;
 			                $b_netotal = 0;$b_paid = 0; $b_balance = 0;
 			                $all_total=0;
@@ -123,6 +125,8 @@ $brach_name =  $this->branch;
 						   <td style="white-space: nowrap;">&nbsp;<?php echo $rs["zone"];?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["date_sold"]));?></td>
 						   <td style="white-space: nowrap;">&nbsp;<?php echo date("d/m/Y",strtotime($rs["payment_date"]));?></td>
+						   
+						   <td style="white-space: nowrap;"> <?php echo ($rs['saving_id']==0)?"":"&nbsp;".number_format($rs["total_pointafter"],2);?></td>
 						   <td style="white-space: nowrap;"> <?php echo ($rs['net_total']==0)?"":"&nbsp;$&nbsp;".number_format($rs["net_total"],2);?></td>
 						   <td style="white-space: nowrap;"> <?php echo ($rs['discount_value']==0)?"":"&nbsp;$&nbsp;".number_format($rs["discount_value"],2);?></td>
 						   <td style="white-space: nowrap;"> <?php echo ($rs['all_total']==0)?"":"&nbsp;$&nbsp;".number_format($rs["all_total"],2);?></td>
@@ -136,6 +140,7 @@ $brach_name =  $this->branch;
 								$all_total = $all_total+$rs["all_total"];
 								$d_balance = $d_balance+$rs["balance"];
 								$discount=$discount +$rs["discount_value"];
+								$points=$points+$rs['total_pointafter'];
                     }?>
 		                </tbody>
 		           </table>
@@ -143,6 +148,7 @@ $brach_name =  $this->branch;
 		             <table border="1" style="border-collapse:collapse;border:1px solid #000; font-size:12px;" width="100%" cellspacing="0">
 		                <tbody><tr height="30px;" bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:2px 0px; ">
 		                    <td><strong><?php echo $tr->translate("AMOUNT");?></strong></td>
+		                    <td><strong><?php echo $tr->translate("POINT");?></strong></td>
 		                    <td>&nbsp;<?php echo $tr->translate("DISCOUNT");?></td>
 		                    <td>&nbsp;<?php echo $tr->translate("GRAND_TOTAL");?></td>
 		                    <td><strong><?php echo $tr->translate("PAID");?></strong></td>
@@ -150,6 +156,7 @@ $brach_name =  $this->branch;
 		                </tr>
 		                 <tr class="style" style=" line-height: 24px; font-size:12px;">
 		                    <td> <?php echo ($d_netotal==0)?"":"&nbsp;$&nbsp;".number_format($d_netotal,2);?>&nbsp;</td>
+		                     <td>&nbsp;<?php echo ($points==0)?"":"".number_format($points,2);?>&nbsp;</td>
 		                    <td> <?php echo ($discount==0)?"":"&nbsp;$&nbsp;".number_format($discount,2);?>&nbsp;</td>
 							<td> <?php echo ($all_total==0)?"":"&nbsp;$&nbsp;".number_format($all_total,2);?>&nbsp;</td>
 		                    <td> <?php echo ($d_paid==0)?"":"&nbsp;$&nbsp;".number_format($d_paid,2);?>&nbsp;</td>

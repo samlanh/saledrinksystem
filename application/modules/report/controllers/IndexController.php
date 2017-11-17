@@ -84,6 +84,7 @@ class report_indexController extends Zend_Controller_Action
     		$data = array(
     				'text_search'=>'',
     				'province_id'=>'0',
+    				'point'    	 =>-1,
     				'zone_id'	 =>'0',
     				'saleagent_id'=>'-1',
     				'start_date'=>date("Y-m-d"),
