@@ -121,6 +121,8 @@ class report_indexController extends Zend_Controller_Action
     	}else{
     		$search = array(
     				'txt_search'=>'',
+    				'province_id'=>0,
+    				'zone_id'	 =>0,
     				'customer_id'=>'0',
     				'point'    =>-1,
     				'start_date'=>date("Y-m-d"),

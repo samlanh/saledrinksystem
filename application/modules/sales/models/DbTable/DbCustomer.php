@@ -156,12 +156,14 @@ class Sales_Model_DbTable_DbCustomer extends Zend_Db_Table_Abstract
 // 			$credit_limit = $rsterm['credit_limit'];
 // 			$credit_term = $rsterm['credit_term'];
 // 		}
+		$db_cu= new Sales_Model_DbTable_DbCustomer();
+		$code = $db_cu->getCustomerCode(1);
 		$session_user=new Zend_Session_Namespace('auth');
 		$db = new Application_Model_DbTable_DbGlobal();
 		$userName=$session_user->user_name;
 		$GetUserId= $session_user->user_id;
 			$data=array(
- 				'cu_code'		=> $post['cu_code'],
+ 				'cu_code'		=> $code,
 				'cust_name'		=> $post['txt_name'],
 				'phone'			=> $post['txt_phone'],
 				'contact_name'	=> $post['txt_contact_name'],//test

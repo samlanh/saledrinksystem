@@ -101,7 +101,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 									<th><?php echo $tr->translate("POINT");?></th>
 							</tr>
 						 </table>
-						 <input type="text" id="identity" name="identity" />
+						 <input type="hidden" id="identity" name="identity" />
 					</div>
 					    
 					    <div class="form-group">
@@ -360,7 +360,7 @@ function getInvoice(type){
 						$("#cu_code").val(data[i].cu_code);
 					}
 					index=i+1;
-					template+='<tr style="height:30px;">';
+					template+='<tr style="height:30px;" id="row_order_'+index+'" >';
 			            template+='<td ><img onClick="deleteRecord('+index+')" src="<?php echo BASE_URL; ?>/images/icon/delete.gif" /></td>';
 						template+='<td >'+index+'</td>';
 						template+='<td >'+data[i].date_sold+'</td>';
@@ -402,6 +402,7 @@ function deleteRecord(index) {
 	$("#row_order_"+index).remove();
 	netTotal();
 }
+
 
 function netTotal() {//use
 	var subtotal=0;

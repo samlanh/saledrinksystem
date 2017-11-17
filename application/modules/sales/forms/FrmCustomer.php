@@ -8,7 +8,6 @@ class Sales_Form_FrmCustomer extends Zend_Form
 public function Formcustomer($data=null) {
 $db=new Application_Model_DbTable_DbGlobal();
 		$db_cu= new Sales_Model_DbTable_DbCustomer();
-		
 		$code = $db_cu->getCustomerCode(1);
 		
 		$nameElement = new Zend_Form_Element_Text('txt_name');

@@ -25,45 +25,44 @@ class Sales_Model_DbTable_DbClearPoint extends Zend_Db_Table_Abstract
 	}
 	 
 	
-	function getAllCustomer($search){
+	function getAllClearPoint($search){
 		$db = $this->getAdapter();
-		$sql=" SELECT id,cust_name,
-				 contact_name,contact_phone,address,
-				 (SELECT block_name FROM tb_zone WHERE tb_zone.id=zone_id LIMIT 1) AS zone,
-				 (SELECT p.province_en_name FROM ln_province AS p WHERE p.province_id=tb_customer.province_id LIMIT 1)AS province,
-				( SELECT name_en FROM `tb_view` WHERE TYPE=5 AND key_code=tb_customer.status LIMIT 1) STATUS,
-				( SELECT fullname FROM `tb_acl_user` WHERE tb_acl_user.user_id=tb_customer.user_id LIMIT 1) AS user_name
-				 FROM `tb_customer` WHERE (cust_name!=''OR contact_name!=''  )";
-		$from_date =(empty($search['start_date']))? '1': " date >= '".$search['start_date']." 00:00:00'";
-		$to_date = (empty($search['end_date']))? '1': " date <= '".$search['end_date']." 23:59:59'";
-		$where = " AND ".$from_date." AND ".$to_date;
-		if(!empty($search['text_search'])){
-			$s_where = array();
-			$s_search = trim(addslashes($search['text_search']));
-			$s_search = str_replace(' ', '',$s_search);
-			$s_where[] = "REPLACE(cust_name,' ','')  	LIKE '%{$s_search}%'";
-			$s_where[] = "REPLACE(phone,' ','')  		LIKE '%{$s_search}%'";
-			$s_where[] = "REPLACE(contact_name,' ','')  LIKE '%{$s_search}%'";
-			$s_where[] = "REPLACE(contact_phone,' ','')	LIKE '%{$s_search}%'";
-			$s_where[] = "REPLACE(address,' ','')  		LIKE '%{$s_search}%'";
+		$sql="SELECT p.id,
+				(SELECT contact_name FROM tb_customer WHERE tb_customer.id=p.customer_id) AS NAME,
+			     p.create_date,p.total_point,p.clear_point,p.balance_point,
+				( SELECT fullname FROM `tb_acl_user` WHERE tb_acl_user.user_id=p.user_id LIMIT 1) AS user_name,
+				( SELECT name_en FROM `tb_view` WHERE TYPE=5 AND key_code=p.status LIMIT 1) STATUS
+		 FROM tb_clearpoint AS p ";
+// 		$from_date =(empty($search['start_date']))? '1': " date >= '".$search['start_date']." 00:00:00'";
+// 		$to_date = (empty($search['end_date']))? '1': " date <= '".$search['end_date']." 23:59:59'";
+// 		$where = " AND ".$from_date." AND ".$to_date;
+// 		if(!empty($search['text_search'])){
+// 			$s_where = array();
+// 			$s_search = trim(addslashes($search['text_search']));
+// 			$s_search = str_replace(' ', '',$s_search);
+// 			$s_where[] = "REPLACE(cust_name,' ','')  	LIKE '%{$s_search}%'";
+// 			$s_where[] = "REPLACE(phone,' ','')  		LIKE '%{$s_search}%'";
+// 			$s_where[] = "REPLACE(contact_name,' ','')  LIKE '%{$s_search}%'";
+// 			$s_where[] = "REPLACE(contact_phone,' ','')	LIKE '%{$s_search}%'";
+// 			$s_where[] = "REPLACE(address,' ','')  		LIKE '%{$s_search}%'";
 			
-			$s_where[] = " email LIKE '%{$s_search}%'";
-			$s_where[] = " website LIKE '%{$s_search}%'";
-			$s_where[] = " remark LIKE '%{$s_search}%'";
-			$where .=' AND ('.implode(' OR ',$s_where).')';
-		}
+// 			$s_where[] = " email LIKE '%{$s_search}%'";
+// 			$s_where[] = " website LIKE '%{$s_search}%'";
+// 			$s_where[] = " remark LIKE '%{$s_search}%'";
+// 			$where .=' AND ('.implode(' OR ',$s_where).')';
+// 		}
 		
-		if($search['customer_id']>0){
-			$where .= " AND id = ".$search['customer_id'];
-		}
-		if($search['customer_type']>0){
-			$where .= " AND cu_type = ".$search['customer_type'];
-		}
+// 		if($search['customer_id']>0){
+// 			$where .= " AND id = ".$search['customer_id'];
+// 		}
+// 		if($search['customer_type']>0){
+// 			$where .= " AND cu_type = ".$search['customer_type'];
+// 		}
 		//$order=" ORDER BY id DESC ";
 		$order=" ORDER BY id DESC";
 		
 // 		echo $sql.$where.$order;
-		return $db->fetchAll($sql.$where.$order);
+		return $db->fetchAll($sql.$order);
 	}
 	
 	public function addClearPointr($data)

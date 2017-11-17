@@ -500,7 +500,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 						</div>
 					</div>
 					<div class="portlet-body form">
-						<form id="frmcustomer" name="frmcustomer" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" enctype="multipart/form-data" method="post">
+						<form id="frmcustomer" name="frmcustomer" class="form-horizontal" enctype="multipart/form-data" method="post">
 						<div class="form-body">
 								<div class="form-group">
 									<label class="control-label col-md-2"><?php //echo $tr->translate("Branch Name");?><span class="required">
@@ -885,8 +885,8 @@ function addNewCustomer(){
 				     name: txt_name
 				   };
 		   addDataToSelectbox(dijit.byId('customer_id'), client_store, itemcustomer, data.cus_id);
-		   dijit.byId('frmcustomer').reset();
-		   $('#frmcustomer').trigger("reset");
+		   //dijit.byId('frmcustomer').reset();
+		   $('#frmcustomer').trigger('reset');
 		   
 		   dojo.byId("lbl_customer").innerHTML=txt_name;
 		   dojo.byId("lbl_phone").innerHTML=$("#contact_phone").val();

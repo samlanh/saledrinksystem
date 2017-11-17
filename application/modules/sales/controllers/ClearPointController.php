@@ -22,11 +22,11 @@ class Sales_ClearpointController extends Zend_Controller_Action
 					'end_date'=>date("Y-m-d"),
 			);
 		}
-		$db = new Sales_Model_DbTable_DbCustomer();
-		$rows = $db->getAllCustomer($search);
+		$db = new Sales_Model_DbTable_DbClearPoint();
+		$rows = $db->getAllClearPoint($search);
 		$list = new Application_Form_Frmlist();
-		$columns=array("CUSTOMER_NAME","CUSTOMER_TYPE",
-		"CONTACT_NAME","CONTACT_NUMBER","ADDRESS","ZONE","PROVINCE","BY_USER");
+		$columns=array("CUSTOMER_NAME","DATE",
+		"TOTAL_POINT","CLEAR_POINT","BALANCE_POINT","BY_USER","STATUS");
 		$link=array(
 				'module'=>'sales','controller'=>'clearpoint','action'=>'index',
 		);
