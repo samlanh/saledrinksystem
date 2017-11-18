@@ -2,6 +2,11 @@
 $tr=Application_Form_FrmLanguages::getCurrentlanguage();
 $brach_name =  $this->branch;
 $formFilter = $this->formFilter;
+
+$user_info = new Application_Model_DbTable_DbGetUserInfo();
+$result = $user_info->getUserInfo();
+$level = $result["level"];
+
 ?>
 <title>Product Current Stock Report</title>
 <div class="row">
@@ -11,10 +16,12 @@ $formFilter = $this->formFilter;
 				<div class="caption">
 					<i class="fa fa-globe"></i><?php echo $tr->translate("PRODUCT_REPORT");?>
 				</div>
+				<?php if($level==1){?>
 						<div class="btn-group pull-right">
 							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
 							   Actions <i class="fa fa-angle-down"></i>
 							 </button>
+							 
 								<ul class="dropdown-menu" role="menu">
 									<li>
 										<a href="#" onclick="doPrint();">
@@ -24,9 +31,9 @@ $formFilter = $this->formFilter;
 									<li>
 										<a href="#" onClick="exports()"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel </a>
 									</li>
-									
 								</ul>
-					</div>
+					   </div>
+					   <?php }?>
 			</div>
             <div class="portlet-body form frmfilter">
 				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
@@ -70,12 +77,11 @@ $formFilter = $this->formFilter;
 		    	<td align="center">
 		        	<table width="100%" style="font-family: 'Khmer OS Battambang';" cellpadding="0" cellpadding="0">
 		            	<tbody><tr>
-		                	<td width="20%" valign="top"><img src="<?php echo $this->baseUrl();?>/images/logo.jpg" height="55px"></td>
+		                	<td width="20%" valign="top"><img src="<?php echo $this->baseUrl();?>/images/Logo.jpg" height="55px"></td>
 		                	<td width="60%" valign="top">
 		                		<ul>
-		                			<li style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("COMPANY_CUSTOMER");?></li>
-		                			<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'">របាយការណ៏ បញ្ជីផលិតផល</li>
-									<li style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php if($this->search!=""){echo $this->search;}else{echo "All Branch";}?></li>
+		                			<li style="text-align:center; font-size:14px; font-family:'Khmer OS Muol'"><?php echo $tr->translate("COMPANY_CUSTOMER");?></li>
+		                			<li style="text-align:center; font-size:14px; font-family:'Khmer OS Muol'">របាយការណ៏ បញ្ជីផលិតផល</li>
 		                			<!--<li style="text-align:center; font-size:13px;"><?php //echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li>-->
 		                		</ul>
 		                	</td>
@@ -87,7 +93,7 @@ $formFilter = $this->formFilter;
 		                			<tbody><tr>
 		                				<td style="font-size: 11px;">
 		                				    <span style="white-space: nowrap;"><?php echo $tr->translate("ADDRESS_COMPANY");?></span>
-		                					<br><?php echo $tr->translate("TEL_COMPANY");?> 
+		                					<br>ទំនាក់ទំនងផ្ទាល់<?php echo $tr->translate("TEL_COMPANY");?> 
 		                				</td>
 		                				<td width="65%"></td>
 		                			</tr>

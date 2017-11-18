@@ -6,15 +6,13 @@
   $rpt_customer=$this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-customer'), null, true);
   $rpt_saleperson=$this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-saleperson'), null, true);
    $rpt_expense = $this->url(array('module'=>'report','controller'=>'index','action'=>'rpt-expense'), null, true);
-   
    $user_info = new Application_Model_DbTable_DbGetUserInfo();
-	$result = $user_info->getUserInfo();
-	$tr = Application_Form_FrmLanguages::getCurrentlanguage(); 
-	$session_user=new Zend_Session_Namespace('auth');
-	$request=Zend_Controller_Front::getInstance()->getRequest();
-	 $level = $result["level"];
-	// echo $level;
-  
+   $result = $user_info->getUserInfo();
+   $tr = Application_Form_FrmLanguages::getCurrentlanguage();
+   $session_user=new Zend_Session_Namespace('auth');
+   $request=Zend_Controller_Front::getInstance()->getRequest();
+   $level = $result["level"];
+   // echo $level;  
   ?>
 <div class="row">
                <!-- 

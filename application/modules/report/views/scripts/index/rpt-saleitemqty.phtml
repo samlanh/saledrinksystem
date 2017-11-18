@@ -1,6 +1,9 @@
 <?php 
 $tr=Application_Form_FrmLanguages::getCurrentlanguage();
 $frm_sales_report = $this->form_search;
+$user_info = new Application_Model_DbTable_DbGetUserInfo();
+$result = $user_info->getUserInfo();
+$level = $result["level"];
 ?>
 <title><?php echo $tr->translate("RPT_PRODUCT_SOLD");?></title>
 <div class="row">
@@ -10,6 +13,7 @@ $frm_sales_report = $this->form_search;
 				<div class="caption">
 					<i class="fa fa-globe"></i><?php echo $tr->translate("RPT_PRODUCT_SOLD");?>
 				</div>
+				<?php if($level==1){?>
 						<div class="btn-group pull-right">
 							 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
 							   Actions <i class="fa fa-angle-down"></i>
@@ -25,6 +29,7 @@ $frm_sales_report = $this->form_search;
 									</li>
 								</ul>
 					</div>
+					<?php }?>
 			</div>
             <div class="portlet-body form frmfilter">
 				<form method="post" action="<?php //echo $formFilter->getAction(); ?>">
@@ -69,8 +74,8 @@ $frm_sales_report = $this->form_search;
 		                	<td width="20%" valign="top"></td>
 		                	<td width="60%" valign="top">
 		                		<ul>
-		                			<li style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("COMPANY_CUSTOMER");?></li>
-		                			<li style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("RPT_PRODUCT_SOLD");?></li>
+		                			<li style="text-align:center; font-size:14px; font-family:'Khmer OS Muol'"><?php echo $tr->translate("COMPANY_CUSTOMER");?></li>
+		                			<li style="text-align:center; font-size:14px; font-family:'Khmer OS Muol'"><?php echo $tr->translate("RPT_PRODUCT_SOLD");?></li>
 		                			<li style="text-align:center; font-size:16px;"><?php echo date("d/m/Y",strtotime($this->rssearch['start_date']));?> ដល់ <?php echo date("d/m/Y",strtotime($this->rssearch['end_date']));?></li>
 		                		</ul>
 		                	</td>

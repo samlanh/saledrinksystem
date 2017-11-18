@@ -202,8 +202,8 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 			$where .= " AND s.saleagent_id = ".$search['saleagent_id'];
 		}
  
-		$dbg = new Application_Model_DbTable_DbGlobal();
-		$where.=$dbg->getAccessPermission();
+// 		$dbg = new Application_Model_DbTable_DbGlobal();
+// 		$where.=$dbg->getAccessPermission();
 		$order=" ORDER BY id DESC ";
 		return $db->fetchAll($sql.$where.$order);
 	}
@@ -298,8 +298,8 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 			$where .= " AND c.zone_id = ".$search['zone_id'];
 		}
 
-		$dbg = new Application_Model_DbTable_DbGlobal();
-		$where.=$dbg->getAccessPermission();
+// 		$dbg = new Application_Model_DbTable_DbGlobal();
+// 		$where.=$dbg->getAccessPermission();
 		$order=" ORDER BY so.saleorder_id DESC";
 		return $db->fetchAll($sql.$where.$order);
 	}

@@ -22,19 +22,11 @@
 			<form class="form-horizontal" method="post" action="" >
 				<div class="form-body">
 							<div class="form-group">
-								<div class="col-md-3">
-									<?php echo $formFilter->getElement('name');?>
-								</div>
-												
-								<div class="col-md-3">
-									<?php echo $formFilter->getElement('parent');?>
-								</div>
-								<label class="col-md-1 control-label"><?php echo $tr->translate("STATUS");?></label>
-								<div class="col-md-3">
-									<?php echo $formFilter->getElement('status');?>
-								</div>
-								<div class="col-md-2">
-									<button type="submit" class="btn green"><?php echo $tr->translate("SEARCH");?></button>
+								<div class="col-md-12">
+									<label class="col-md-3 control-label"><?php echo $formFilter->getElement('name');?></label>
+									<label class="col-md-3 control-label"><?php echo $formFilter->getElement('parent');?></label>
+									<label class="col-md-3 control-label"><?php echo $formFilter->getElement('status');?></label>
+									<label class="col-md-1 control-label"><button type="submit" class="btn green"><?php echo $tr->translate("SEARCH");?></button></label>
 								</div>
 							</div>
 				</div>
