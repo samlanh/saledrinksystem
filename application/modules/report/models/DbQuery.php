@@ -153,7 +153,8 @@ Class report_Model_DbQuery extends Zend_Db_Table_Abstract{
 				(SELECT NAME FROM `tb_sublocation` WHERE tb_sublocation.id = s.branch_id AND STATUS=1 AND NAME!='' LIMIT 1) AS branch_name,
 				(SELECT CONCAT(cust_name,' ',contact_name) FROM `tb_customer` WHERE tb_customer.id=s.customer_id LIMIT 1 ) AS customer_name,
 				(SELECT NAME FROM `tb_sale_agent` WHERE id=s.saleagent_id LIMIT 1) AS agent_name,
-				s.sale_no,s.date_sold,s.payment_date,s.all_total,s.tax,s.discount_value,s.total_pointafter,
+				s.sale_no,s.date_sold,s.payment_date,s.all_total,s.tax,s.discount_value,
+				(SELECT p.total_pointafter FROM tb_sales_order AS p WHERE  p.id=s.id AND p.is_pointclear=1 LIMIT 1) AS total_pointafter,s.is_pointclear,
 				(s.net_total+s.transport_fee) AS net_total,s.paid,s.balance,
 				(SELECT block_name FROM tb_zone WHERE tb_zone.id=c.zone_id LIMIT 1) AS zone,
 				(SELECT p.province_en_name FROM ln_province AS p WHERE p.province_id=c.province_id LIMIT 1)AS province,
@@ -1699,6 +1700,56 @@ SUM(vp.paid) AS total_paid
 		$to_date = (empty($search['end_date']))? '1': " s.payment_date <= '".$search['end_date']." 23:59:59'";
 		$where .= " AND ".$to_date;
 		//echo $sql.$where;
+		return $db->fetchAll($sql.$where.$order);
+	}
+	
+	function getClearPoint($search=null){
+		//4
+		$db= $this->getAdapter();
+		$sql=" SELECT  cp.id,(SELECT s.sale_no FROM tb_sales_order AS s WHERE s.id=cpd.invoice_id LIMIT 1 )AS invoice,
+				 c.contact_name  AS cus_name,
+				(SELECT z.block_name FROM tb_zone AS z WHERE c.zone_id=z.id LIMIT 1)AS zone_name,
+				(SELECT p.province_en_name FROM ln_province AS p WHERE c.province_id=p.province_id LIMIT 1)AS province,
+				 cp.customer_id,cpd.invoice_id,cp.create_date,
+				 cp.reamark,cp.total_point,cp.clear_point,cp.balance_point,cp.is_clearpoint,
+				(SELECT u.`fullname` FROM `tb_acl_user` AS u WHERE u.`user_id`=cp.user_id LIMIT 1) AS user_name
+				FROM tb_clearpoint cp,tb_clearpoint_detail AS cpd,tb_customer AS c
+				WHERE cp.status=1
+				AND cp.id=cpd.clearpoint_id
+				AND cp.customer_id=c.id";
+		$from_date =(empty($search['start_date']))? '1': " cp.create_date >= '".$search['start_date']." 00:00:00'";
+		$to_date = (empty($search['end_date']))? '1': " cp.create_date <= '".$search['end_date']." 23:59:59'";
+		$where = " AND ".$from_date." AND ".$to_date;
+		if(!empty($search['text_search'])){
+			$s_where = array();
+			$s_search = trim(addslashes($search['text_search']));
+			$s_search = str_replace(' ', '',$s_search);
+			$s_where[] = "REPLACE(c.contact_name,' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE((SELECT s.sale_no FROM tb_sales_order AS s WHERE s.id=cpd.invoice_id LIMIT 1 ),' ','')  	LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(cp.balance_point,' ','')  LIKE '%{$s_search}%'";
+			$s_where[] = "REPLACE(cp.clear_point,' ','')  	LIKE '%{$s_search}%'";
+			$where .=' AND ('.implode(' OR ',$s_where).')';
+		}
+		if($search['customer_id']>0){
+			$where.= " AND c.id = ".$search['customer_id'];
+		}
+		
+		if($search['point']>-1 && $search['point']!=''){
+			$where.= " AND cp.is_clearpoint =".$search['point'];
+		}
+		
+		if($search['province_id']>0){
+			$where .= " AND c.province_id = ".$search['province_id'];
+		}
+		
+		if($search['zone_id']>0){
+			$where .= " AND c.zone_id = ".$search['zone_id'];
+		}
+		
+		// 		$dbg = new Application_Model_DbTable_DbGlobal();
+		// 		$where.=$dbg->getAccessPermission();
+		$order="  GROUP BY cpd.clearpoint_id
+                 ORDER BY cp.create_date DESC";
 		return $db->fetchAll($sql.$where.$order);
 	}
 }

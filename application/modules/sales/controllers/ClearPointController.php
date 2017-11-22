@@ -11,15 +11,12 @@ class Sales_ClearpointController extends Zend_Controller_Action
 	{
 		if($this->getRequest()->isPost()){
 			$search = $this->getRequest()->getPost();
-			$search['start_date']=date("Y-m-d",strtotime($search['start_date']));
-			$search['end_date']=date("Y-m-d",strtotime($search['end_date']));
+// 			$search['start_date']=date("Y-m-d",strtotime($search['start_date']));
+// 			$search['end_date']=date("Y-m-d",strtotime($search['end_date']));
 		}else{
 			$search =array(
 					'text_search'=>'',
 					'customer_id'=>0,
-					'customer_type'=>0,
-					'start_date'=>date("Y-m-d"),
-					'end_date'=>date("Y-m-d"),
 			);
 		}
 		$db = new Sales_Model_DbTable_DbClearPoint();
@@ -28,9 +25,9 @@ class Sales_ClearpointController extends Zend_Controller_Action
 		$columns=array("CUSTOMER_NAME","DATE",
 		"TOTAL_POINT","CLEAR_POINT","BALANCE_POINT","BY_USER","STATUS");
 		$link=array(
-				'module'=>'sales','controller'=>'clearpoint','action'=>'index',
+				'module'=>'sales','controller'=>'clearpoint','action'=>'edit',
 		);
-		$this->view->list=$list->getCheckList(0, $columns, $rows, array('branch_name'=>$link,'cust_name'=>$link,'contact_name'=>$link,'level'=>$link));
+		$this->view->list=$list->getCheckList(0, $columns, $rows, array('cus_name'=>$link,'create_date'=>$link,'total_point'=>$link));
 		
         $formFilter = new Sales_Form_FrmSearch();
 		$this->view->formFilter = $formFilter;
@@ -85,35 +82,36 @@ class Sales_ClearpointController extends Zend_Controller_Action
 		$id = $this->getRequest()->getParam('id');
 		if($this->getRequest()->isPost())
 		{
+			$post = $this->getRequest()->getPost();
 			try{
-				$post = $this->getRequest()->getPost();
-				//$post["id"]=$id;
-				$customer= new Sales_Model_DbTable_DbCustomer();
-				$customer->updateCustomer($post);
-				Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ',"/sales/customer");
-				//$this->_redirect('/sales/customer/index');
-			}catch (Exception $e){
-				
-				Application_Form_FrmMessage::message("Update customer failed !");
+				$db = new Sales_Model_DbTable_DbClearPoint();
+				$db->updateClearPoint($post,$id);
+				if(!empty($post['saveclose']))
+				{
+					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/clearpoint/');
+				}else{
+					Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/clearpoint/add');
+				}
+			}catch(Exception $e){
+				Application_Form_FrmMessage::message('INSERT_FAIL');
 				$err =$e->getMessage();
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		///slect row and rows detail 
+		$db = new Sales_Model_DbTable_DbClearPoint();
+		$this->view->row=$db->getClearPointById($id);
+		$this->view->row_detail=$db->getClearPointDetailByid($id);
+		/////////////////for veiw form
+		$formcustomer = new Sales_Form_FrmClearpoint(null);
+		$formStockAdd = $formcustomer->Formcustomer(null);
+		Application_Model_Decorator::removeAllDecorator($formcustomer);
+		$this->view->form = $formcustomer;
 		
-			$sql = "SELECT c.* FROM `tb_customer`AS c WHERE c.id=".$id." LIMIT 1";
-		$db = new Application_Model_DbTable_DbGlobal();
-		$row = $db->getGlobalDbRow($sql);
-		// lost item info
-		$formStock=new Sales_Form_FrmCustomer($row);
-		$formStockEdit = $formStock->Formcustomer($row);
-		Application_Model_Decorator::removeAllDecorator($formStockEdit);// omit default zend html tag
-		$this->view->form = $formStockEdit;
-	
-		//control action
-		$formControl = new Application_Form_FrmAction(null);
-		$formViewControl = $formControl->AllAction(null);
-		Application_Model_Decorator::removeAllDecorator($formViewControl);
-		$this->view->control = $formViewControl;
+		$formcustomer = new Sales_Form_FrmPayment(null);
+		$formStockAdd = $formcustomer->Payment(null);
+		Application_Model_Decorator::removeAllDecorator($formcustomer);
+		$this->view->form_payment = $formcustomer;
 		
 		///frm zone name
 		$fm = new Sales_Form_FrmCustomerType();

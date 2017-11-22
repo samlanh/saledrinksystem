@@ -35,7 +35,26 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 <form id='office_receipt' action="" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
 <script type="dojo/method" event="onSubmit">   
    if(this.validate()) {
+           if(dijit.byId("saleagent_id").get("value")==''){
+				alert("Please Select Sale Agent Name!!!");
+				dijit.byId("saleagent_id").focus();
+				return false;
+			}
+			if(dijit.byId("customer_id").get("value")==""){
+				alert("Please Customer Name!!!");
+				dijit.byId("customer_id").focus();
+				return false;
+			}
+
+			 var rowId = $('#identity').val();
+	         if(rowId==''){alert("មិនមាន ទំនិញ ក្នុងកន្រ្តក");dijit.byId("product_id").focus();return false;}
+
+			balance = dijit.byId("balance").get("value");
+			customer_id = dijit.byId("customer_id").get("value");
+			if(balance> 0 && (customer_id=='' || customer_id==1)){alert("សូមជ្រើសរើស អតិថិជន");dijit.byId("customer_id").focus();return false;}
+	$("#save_new").prop('disabled', true);
     return true;
+
    }else {
     return false;
    }
@@ -195,11 +214,25 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 	                                        </div>
 	                                    <!--/end add row product  -->  
 	                                        
+	                                        <div class="form-group">
+												<div class="form-group">
+													<div class="col-md-3"></div>
+													<div class="col-md-2">
+													</div>
+													<div class="col-md-2">
+														<a href="<?php echo $this->baseUrl();?>/sales/index/"><button type="button" class="btn red btn-block btn-lg"><i class="fa fa-times"></i> <?php echo $tr->translate("GO_BACK")?></button></a>
+													</div>
+													<div class="col-md-2">
+														<button type="submit" name="save_new"  id="save_new" class="btn blue btn-block btn-lg"><i class="fa fa-save"></i> <?php echo $tr->translate("SAVE_NEW")?> </button>
+													</div>
+													<div class="col-md-3"></div>
+												</div>
+											</div>
+	                                        
 	                                    </div>
 	                                     <div style="clear:both;"></div>
 	                                </div>
 	                                <div style="clear:both;"></div>
-	                               
 							</label>
 							<!--information Customer Payment  -->
 							<label class="control-label col-md-3" style="background: #eee;">
@@ -325,7 +358,7 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 
 <!--show save print -->
 <div class="dijitHidden" style="width: 20cm !important; height: 12cm ; padding: 0px; margin: 0px;">
-<div id="invoice" data-dojo-type="dijit.Dialog" style="width:24cm;height: 18cm ;" align="center" data-dojo-props="title:'<?php echo $tr->translate("INVOICE");?>'"  >
+<div id="invoice" data-dojo-type="dijit.Dialog" style="width:24cm; " align="center" data-dojo-props="title:'<?php echo $tr->translate("INVOICE");?>'"  >
 	<div id="PrintReceipt" style="border:1px dashed #ccc;width:18cm !important; padding: 0px; margin-bottom:30px; ">
 			<style>
 		.hearder_table{height:25px !important;}
@@ -359,9 +392,11 @@ white-space: nowrap;font-size: 14px;line-height:33px;}
 							</td>
 							<td width="20%" align="center" valign="top" style=""><div style="font-size: 14px;font-family:'Khmer MEF2';">វិក្កយបត្រ</div>INVOICE
 							</td>
-							<td width="40%" valign="top">
-								<div style="white-space: nowrap;"><?php echo $tr->translate("ADDRESS_COMPANY"); ?></div>
+							<td width="40%" valign="top" class="one">
+								<div style="white-space: nowrap;"><?php //echo $tr->translate("ADDRESS_COMPANY"); ?></div><br/>
+								<div style="font-weight:bold;color:#000; font-size: 13px;font-family:'Khmer OS Battambang';margin-top: -3px;">
 								លេខទូរសព្ទ<?php echo $tr->translate("TEL_COMPANY"); ?>
+								</div>
 							</td>
 						</tr>
 					</table>

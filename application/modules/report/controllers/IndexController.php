@@ -1235,4 +1235,32 @@ class report_indexController extends Zend_Controller_Action
     	Application_Model_Decorator::removeAllDecorator($form_search);
     	$this->view->form_search = $form_search;
     }
+    
+    public function rptClearPointAction()//purchase report
+    {
+    	if($this->getRequest()->isPost()){
+    		$data = $this->getRequest()->getPost();
+    		$data['start_date']=date("Y-m-d",strtotime($data['start_date']));
+    		$data['end_date']=date("Y-m-d",strtotime($data['end_date']));
+    	}else{
+    		$data = array(
+    				'text_search'=>'',
+    				'province_id'=>'0',
+    				'point'    	 =>-1,
+    				'zone_id'	 =>'0',
+    				 
+    				'start_date'=>date("Y-m-d"),
+    				'end_date'=>date("Y-m-d"),
+    				'customer_id'=>0,
+    				'payment_balance'=>-1,
+    		);
+    	}
+    	$this->view->rssearch = $data;
+    	$query = new report_Model_DbQuery();
+    	$this->view->repurchase =  $query->getClearPoint($data);
+    	$formFilter = new Sales_Form_FrmSearch();
+    	$this->view->form_purchase = $formFilter;
+    	Application_Model_Decorator::removeAllDecorator($formFilter);
+    }
+    
 }

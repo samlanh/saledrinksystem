@@ -92,7 +92,7 @@ class Sales_Form_FrmPayment extends Zend_Form
     	$this->addElement($paid_dollar);
     	
     	$clear_point = new Zend_Form_Element_Text('clear_point');
-    	$clear_point->setAttribs(array("class"=>"validate[required] form-control","onkeyup"=>"getBalancePoint();",'require'=>true,"placeHolder"=>"Clear Point"));
+    	$clear_point->setAttribs(array("class"=>"validate[required] form-control","onkeyup"=>"getBalancePoint();",'require'=>true,"placeHolder"=>"Clear Point",'readonly'=>'readonly'));
     	$this->addElement($clear_point);
     	
     	$balance_point = new Zend_Form_Element_Text('balance_point');

@@ -32,7 +32,7 @@ class Sales_IndexController extends Zend_Controller_Action
 		$columns=array("INVOICE_NO","CON_NAME","SALE_DATE","PAYMENT_DATE",
 				"SUB_TOTAL","DISCOUNT","TRANSPORT_FEE","TOTAL_AMOUNT","PAID","BALANCE","PRINT","លុបវិក្កយបត្រ","BY_USER");
 		$link=array(
-				'module'=>'sales','controller'=>'index','action'=>'edit',
+				'module'=>'sales','controller'=>'index','action'=>'index',
 		);
 		$invoice=array(
 				'module'=>'sales','controller'=>'possale','action'=>'invoice',);

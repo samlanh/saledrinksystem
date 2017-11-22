@@ -99,6 +99,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 									<th><?php echo $tr->translate("វិក័យបត្រ");?></th>
 									<th><?php echo $tr->translate("ចំនួនលក់");?></th>
 									<th><?php echo $tr->translate("POINT");?></th>
+									<th><?php echo $tr->translate("SUB_POINT");?></th>
 							</tr>
 						 </table>
 						 <input type="hidden" id="identity" name="identity" />
@@ -125,7 +126,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 							<div class="col-md-4">
 								<div class="input-icon right"></div>
 							</div>
-							<label class="control-label col-md-2"><?php echo $tr->translate("Clear Point");?> 
+							<label class="control-label col-md-2"><?php echo $tr->translate("Total Clear Point");?> 
 							</label>
 							<div class="col-md-4">
 								<div class="input-icon right">
@@ -348,6 +349,7 @@ function getInvoice(type){
 					template+='<th><?php echo $tr->translate("វិក័យបត្រ");?></th>';
 					template+='<th><?php echo $tr->translate("ចំនួនលក់");?></th>';
 					template+='<th><?php echo $tr->translate("POINT");?></th>';
+					template+='<th width="10%"><?php echo $tr->translate("SUB_POINT");?></th>';
 				template+='</tr>';
 				
 				$('#identity').val("");
@@ -367,6 +369,7 @@ function getInvoice(type){
 						template+='<td >'+data[i].sale_no+'<input type="hidden" value='+data[i].id+' id="invoice_no'+index+'" name="invoice_no'+index+'"/></td>';
 						template+='<td >'+data[i].total_point+'<input type="hidden" value='+data[i].total_point+' id="total_point'+index+'" name="total_point'+index+'"/></td>';
 						template+='<td >'+data[i].total_pointafter+'<input type="hidden" value='+data[i].total_pointafter+' id="total_pointafter'+index+'" name="total_pointafter'+index+'"/></td>';
+						template+='<td ><input type="number"  min="0" step="1" required="require" value='+data[i].total_pointafter+' id="sub_point'+index+'" name="sub_point'+index+'" onkeyup="getSubpointAfter('+index+')"/></td>';
 				    template+="</tr>";
 					
 					if($('#identity').val()!="") {
@@ -377,8 +380,7 @@ function getInvoice(type){
 				$('#table_order').append(template);
 				if(data.length>0){
 					netTotal();
-					$('#clear_point').val($('#all_total').val());
-					$('#balance_point').val(0);
+					 
 				}else{
 					$('#all_total').val(0);
 					$('#clear_point').val(0);
@@ -406,7 +408,8 @@ function deleteRecord(index) {
 
 function netTotal() {//use
 	var subtotal=0;
-	var paid = 0;
+	var clear_point=0;
+	var balance_point=0;
 	discount=0;
 	var rowId = $('#identity').val();
 	var rowIDArray = rowId.split(',');
@@ -415,14 +418,28 @@ function netTotal() {//use
 		//paid +=Number($('#paid_amount'+rowIDArray[n]).val());
 		//discount +=Number($('#discount'+rowIDArray[n]).val());
 		subtotal += Number($('#total_pointafter'+rowIDArray[n]).val());
+		clear_point += Number($('#sub_point'+rowIDArray[n]).val());
+		balance_point += Number($('#sub_point'+rowIDArray[n]).val());
 		
 	}
 	//var alltotal = Number(subtotal - discount).toFixed(2);
 	$('#all_total').val(subtotal);
-	//$('#paid').val(paid.toFixed(2));
-	$('#paid').val(0);
+	$('#clear_point').val(clear_point);
+	$('#balance_point').val(subtotal-balance_point);
+	 
 	//doRemain();
 }
+
+function getSubpointAfter(r){
+	var sub_point=Number($("#sub_point"+r).val());
+	var sub_pointafter=Number($("#total_pointafter"+r).val());
+	if(sub_point > sub_pointafter){
+		 $('#sub_point'+r).val(sub_pointafter);
+		 $('#sub_point'+r).focus();
+   }
+	netTotal();
+}
+
 function doRemain() {
 	var all_total = Number($('#all_total').val());
 	var paid = Number($('#paid').val());

@@ -19,6 +19,12 @@ class Sales_PossaleController extends Zend_Controller_Action
 			try {
 				if(!empty($data['identity'])){
 					$db->addSaleOrder($data);
+					if(!empty($data['saveclose']))
+					{
+						Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/index/');
+					}else{
+						Application_Form_FrmMessage::Sucessfull('INSERT_SUCCESS','/sales/possale');
+					}
 					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/possale");
 				}
 				Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/sales/possale");
