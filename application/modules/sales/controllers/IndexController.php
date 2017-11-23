@@ -32,7 +32,7 @@ class Sales_IndexController extends Zend_Controller_Action
 		$columns=array("INVOICE_NO","CON_NAME","SALE_DATE","PAYMENT_DATE",
 				"SUB_TOTAL","DISCOUNT","TRANSPORT_FEE","TOTAL_AMOUNT","PAID","BALANCE","PRINT","លុបវិក្កយបត្រ","BY_USER");
 		$link=array(
-				'module'=>'sales','controller'=>'index','action'=>'index',
+				'module'=>'sales','controller'=>'index','action'=>'edit',
 		);
 		$invoice=array(
 				'module'=>'sales','controller'=>'possale','action'=>'invoice',);
@@ -49,6 +49,7 @@ class Sales_IndexController extends Zend_Controller_Action
 	}	
 	
 	function editAction(){
+		$db = new Sales_Model_DbTable_Dbpos();
 		$id=$this->getRequest()->getParam('id');
 		$db = new Sales_Model_DbTable_Dbpos();
 		if($this->getRequest()->isPost()) {
@@ -66,15 +67,19 @@ class Sales_IndexController extends Zend_Controller_Action
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
-		$db = new Sales_Model_DbTable_Dbpos();
-		$this->view->rsproduct = $db->getAllProductName();
-		$this->view->rscustomer = $db->getAllCustomerName();
-		$db = new Application_Model_DbTable_DbGlobal();
-		$this->view->term_opt = $db->getAllTermCondition();
 		
 		$sal=new Sales_Model_DbTable_Dbpos();
 		$this->view->sale=$sal->getSaleByeId($id);
 		$this->view->sale_item=$sal->getSaleDetailByeId($id);
+		
+		//$db = new Sales_Model_DbTable_Dbpos();
+		$this->view->rsproduct = $db->getAllProductName();
+		$this->view->rscustomer = $db->getAllCustomerName();
+		
+		$this->view->rsrate= $db->getExchangeRate();
+		
+		$db = new Application_Model_DbTable_DbGlobal();
+		$this->view->term_opt = $db->getAllTermCondition();
 		
 		$formpopup = new Sales_Form_FrmCustomer(null);
 		$formpopup = $formpopup->Formcustomer(null);
@@ -94,6 +99,12 @@ class Sales_IndexController extends Zend_Controller_Action
 		$formShowAgent = $formAgent->showSaleAgentForm(null);
 		Application_Model_Decorator::removeAllDecorator($formShowAgent);
 		$this->view->form_agent = $formShowAgent;
+		
+		//form add zonen popup
+		$fm = new Sales_Form_FrmCustomerType();
+		$frm = $fm->add();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->form_zone = $frm;
 	}
 	
 	function addAction(){

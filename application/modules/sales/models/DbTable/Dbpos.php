@@ -223,51 +223,55 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 			
 			$reciept_id=$this->getReceiptId($sale_id);
 			$data['receipt'] = $db_global->getReceiptNumber(1);
-			$info_purchase_order=array(
-					"branch_id"   	=> 	1,//$branch_id['branch_id'],
-					"customer_id"   => 	$data["customer_id"],
-					"payment_type"  => 	1,//payment by customer/invoice
-					"payment_id"    => 	1,	//payment by cash/paypal/cheque
-					"receipt_no"    => 	$data['receipt'],
-					"receipt_date"  =>  date("Y-m-d"),
-					"date_input"    =>  date("Y-m-d"),
-					"total"         => 	$data['total_dollar'],
-					"paid"          => 	$data["total_paid"],
-					"paid_dollar"   => 	$data['receive_dollar'],
-					"paid_riel"     => 	$data['receive_riel'],
-					"balance"       => 	$data['balance'],
-					// 					"remark"        => 	$data['remark'],
-					"user_id"       => 	$GetUserId,
-					'status'        =>1,
-					"bank_name"     => 	'',
-					"cheque_number" => 	'',
-					"exchange_rate" => 	$data['exchange_rate'],
-			);
-			$this->_name="tb_receipt";
-			if(!empty($reciept_id)){
-				$where=" id=".$reciept_id;
-				 $this->update($info_purchase_order, $where);
+			if($data['total_paid']>0){
+				$info_purchase_order=array(
+						"branch_id"   	=> 	1,//$branch_id['branch_id'],
+						"customer_id"   => 	$data["customer_id"],
+						"payment_type"  => 	1,//payment by customer/invoice
+						"payment_id"    => 	1,	//payment by cash/paypal/cheque
+						"receipt_no"    => 	$data['receipt'],
+						"receipt_date"  =>  date("Y-m-d"),
+						"date_input"    =>  date("Y-m-d"),
+						"total"         => 	$data['total_dollar'],
+						"paid"          => 	$data["total_paid"],
+						"paid_dollar"   => 	$data['receive_dollar'],
+						"paid_riel"     => 	$data['receive_riel'],
+						"balance"       => 	$data['balance'],
+						// 					"remark"        => 	$data['remark'],
+						"user_id"       => 	$GetUserId,
+						'status'        =>1,
+						"bank_name"     => 	'',
+						"cheque_number" => 	'',
+						"exchange_rate" => 	$data['exchange_rate'],
+				);
+				$this->_name="tb_receipt";
+				if(!empty($reciept_id)){
+					$where=" id=".$reciept_id;
+					 $this->update($info_purchase_order, $where);
+				}
+					
+				$data_item= array(
+						'receipt_id'  => $reciept_id,
+						'invoice_id'  => $sale_id,
+						'total'		  => $data['total_dollar'],
+						'paid'	      => $data["total_paid"],
+						'balance'	  => $data['balance'],
+						'is_completed'=> ($data['balance']==0)?1:0,
+						'status'      => 1,
+						'date_input'  => date("Y-m-d"),
+				);
+				$this->_name='tb_receipt_detail';
+				$where=" invoice_id=".$data['id'];
+				$this->update($data_item, $where);
 			}
-				
-			$data_item= array(
-					'receipt_id'  => $reciept_id,
-					'invoice_id'  => $sale_id,
-					'total'		  => $data['total_dollar'],
-					'paid'	      => $data["total_paid"],
-					'balance'	  => $data['balance'],
-					'is_completed'=> ($data['balance']==0)?1:0,
-					'status'      => 1,
-					'date_input'  => date("Y-m-d"),
-			);
-			$this->_name='tb_receipt_detail';
-			$where=" invoice_id=".$data['id'];
-			$this->update($data_item, $where);
 		
 			$sql =" DELETE FROM tb_salesorder_item WHERE saleorder_id=".$data["id"];
 			$db->query($sql);
 			$ids=explode(',',$data['identity']);
+			$total_point=0;
 			foreach ($ids as $i)
 			{
+				$total_point=$total_point+$data['qty_'.$i];
 				$data_item= array(
 						'saleorder_id'=> $sale_id,
 						'pro_id'	  => $data['product_id'.$i],
@@ -287,6 +291,16 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 				$this->_name='tb_salesorder_item';
 				$this->insert($data_item);
 			}
+			
+			//update point in sale order
+			$this->_name="tb_sales_order";
+			$data_point= array(
+					'total_point'		=> $total_point,
+					'total_pointafter'	=> $total_point,
+					"is_pointclear"   	=> 	1,
+			);
+			$where=" id=".$sale_id;
+			$this->update($data_point,$where);
 		
 			$sql = "DELETE FROM tb_quoatation_termcondition WHERE quoation_id=".$data["id"];
 			$db->query($sql);
@@ -440,7 +454,8 @@ class Sales_Model_DbTable_Dbpos extends Zend_Db_Table_Abstract
 	
 	function getSaleByeId($id){
 		$db=$this->getAdapter();
-		$sql="SELECT * FROM tb_sales_order WHERE id=".$id;
+		$sql="SELECT customer_id,saleagent_id,sale_no,saving_id,payment_date,date_sold,remark,`status`
+			  FROM tb_sales_order WHERE id=".$id;
 		return $db->fetchRow($sql);
 	}
 	
